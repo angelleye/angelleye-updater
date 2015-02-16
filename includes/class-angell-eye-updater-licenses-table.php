@@ -109,7 +109,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
 	public function column_product_status ( $item ) {
 		$response = '';
 		if ( 'active' == $item['product_status'] ) {
-			$deactivate_url = wp_nonce_url( add_query_arg( 'action', 'deactivate-product', add_query_arg( 'filepath', $item['product_file_path'], add_query_arg( 'page', 'angelleye-helper', network_admin_url( 'index.php' ) ) ) ), 'bulk-licenses' );
+			$deactivate_url = wp_nonce_url( add_query_arg( 'action', 'deactivation_request', add_query_arg( 'filepath', $item['product_file_path'], add_query_arg( 'page', 'angelleye-helper', network_admin_url( 'index.php' ) ) ) ), 'bulk-licenses' );
 			$response = '<a href="' . esc_url( $deactivate_url ) . '">' . __( 'Deactivate', 'angelleye-updater' ) . '</a>' . "\n";
 		} else {
 			$response .= '<input name="license_keys[' . esc_attr( $item['product_file_path'] ) . ']" id="license_keys-' . esc_attr( $item['product_file_path'] ) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr( sprintf( __( 'Place %s license key here', 'angelleye-updater' ), $item['product_name'] ) ) . '" />' . "\n";

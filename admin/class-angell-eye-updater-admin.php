@@ -423,7 +423,7 @@ if ( jQuery( 'form[name="upgrade-themes"]' ).length ) {
 		$notices_hook = is_multisite() ? 'network_admin_notices' : 'admin_notices';
 		add_action( $notices_hook, array( $this, 'admin_notices' ) );
 
-		$supported_actions = array( 'activate-products', 'deactivate-product' );
+		$supported_actions = array( 'activate-products', 'deactivation_request' );
 
 		$action = $this->get_post_or_get_action( $supported_actions );
 
@@ -451,7 +451,7 @@ if ( jQuery( 'form[name="upgrade-themes"]' ).length ) {
 					}
 				break;
 
-				case 'deactivate-product':
+				case 'deactivation_request':
 					if ( isset( $_GET['filepath'] ) && ( '' != $_GET['filepath'] ) ) {
 						$response = $this->deactivate_product( $_GET['filepath'] );
 					}
@@ -542,7 +542,7 @@ if ( jQuery( 'form[name="upgrade-themes"]' ).length ) {
 					$message = __( 'No license keys were specified for activation.', 'angelleye-updater' );
 				break;
 
-				case 'deactivate-product':
+				case 'deactivation_request':
 					if ( 'true' == $_GET['status'] && ( 0 >= count( $request_errors ) ) ) {
 						$message = __( 'Product deactivated successfully.', 'angelleye-updater' );
 					} else {
@@ -704,7 +704,7 @@ if ( jQuery( 'form[name="upgrade-themes"]' ).length ) {
 
 				if ( true == $activate ) {
 					// key: base file, 0: product id, 1: file_id, 2: hashed license.
-					$already_active[$k] = array( $product_keys[$k]['product_id'], $product_keys[$k]['file_id'], md5( $products[$k] ) );
+					$already_active[$k] = array( $product_keys[$k]['product_id'], $product_keys[$k]['file_id'],  $products[$k] );
 					$has_update = true;
 				}
 			}

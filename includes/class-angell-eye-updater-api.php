@@ -36,7 +36,7 @@ class AngellEYE_Updater_API {
 
 	public function __construct () {
 		$this->token = 'angelleye-updater';
-		$this->api_url = site_url('?AngellEYE_Activation&action=pingback');
+		$this->api_url = site_url('?AngellEYE_Activation');
 		$this->products_api_url = 'http://www.angelleye.com/wc-api/angelleye-installer-api';
 		$this->errors = array();
 	} // End __construct()
@@ -61,7 +61,7 @@ class AngellEYE_Updater_API {
 			return false;
 		}
 
-		$request = $this->request( 'activation', array( 'licence_key' => $key, 'product_id' => $product_id, 'home_url' => esc_url( home_url( '/' ) ) ) );
+		$request = $this->request( 'activation_request', array( 'license_key' => $key, 'product_id' => $product_id, 'domain_name' => esc_url( home_url( '/' ) ) ) );
 
 		return ! isset( $request->error );
 	} // End activate()
@@ -75,7 +75,7 @@ class AngellEYE_Updater_API {
 	public function deactivate ( $key ) {
 		$response = false;
 
-		$request = $this->request( 'deactivation', array( 'licence_key' => $key, 'home_url' => esc_url( home_url( '/' ) ) ) );
+		$request = $this->request( 'deactivation_request', array( 'license_key' => $key, 'domain_name' => esc_url( home_url( '/' ) ) ) );
 
 		return ! isset( $request->error );
 	} // End deactivate()
@@ -89,7 +89,7 @@ class AngellEYE_Updater_API {
 	public function check ( $key ) {
 		$response = false;
 
-		$request = $this->request( 'check', array( 'licence_key' => $key ) );
+		$request = $this->request( 'check', array( 'license_key' => $key ) );
 
 		return ! isset( $request->error );
 	} // End check()
@@ -102,7 +102,7 @@ class AngellEYE_Updater_API {
 	public function ping () {
 		$response = false;
 
-		$request = $this->request( 'ping' );
+		$request = $this->request( 'pingback' );
 
 		return isset( $request->success );
 	} // End ping()
@@ -163,8 +163,8 @@ class AngellEYE_Updater_API {
 			$url = $this->products_api_url;
 		}
 
-		$supported_methods = array( 'check', 'activation', 'deactivation', 'ping', 'pluginupdatecheck', 'themeupdatecheck' );
-		$supported_params = array( 'licence_key', 'file_id', 'product_id', 'home_url', 'license_hash', 'plugin_name', 'theme_name', 'version' );
+		$supported_methods = array( 'check', 'activation', 'deactivation', 'pingback', 'pluginupdatecheck', 'themeupdatecheck' );
+		$supported_params = array( 'license_key', 'file_id', 'product_id', 'domain_name', 'license_hash', 'plugin_name', 'theme_name', 'version' );
 
 		$defaults = array(
 			'method' => strtoupper( $method ),
@@ -211,6 +211,10 @@ class AngellEYE_Updater_API {
 
 		// Set up a filter on our default arguments. If any arguments are removed by the filter, replace them with the default value.
 		$args = wp_parse_args( (array)apply_filters( 'angelleye_updater_request_args', $defaults, $endpoint, $params, $method ), $defaults );
+		
+		if( isset($endpoint) && !empty($endpoint) ) {
+			$url .= '&action='.$endpoint;
+		}
 
 		$response = wp_remote_get( $url, $args );
 

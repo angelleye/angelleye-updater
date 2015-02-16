@@ -39,7 +39,7 @@ class AngellEYE_Updater_Update_Checker {
 	 * @return void
 	 */
 	public function __construct ( $file, $product_id, $file_id, $license_hash = '' ) {
-		$this->api_url = site_url('?AngellEYE_Activation&action=pingback');
+		$this->api_url = site_url('?AngellEYE_Activation');
 		$this->file = $file;
 		$this->product_id = $product_id;
 		$this->file_id = $file_id;

@@ -221,7 +221,7 @@ if ( jQuery( 'form[name="upgrade-themes"]' ).length ) {
 			// Help screen.
 			case 'help':
 				do_action( 'angelleye_updater_help_screen_before' );
-				$this->load_help_screen_boxes();
+				//$this->load_help_screen_boxes();
 				require_once( $this->screens_path . 'screen-help.php' );
 				do_action( 'angelleye_updater_help_screen_after' );
 			break;

@@ -1,5 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 /**
  * AngellEYE Updater API Class
@@ -28,254 +30,282 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * - get_error_log()
  * - clear_error_log()
  */
+
 class AngellEYE_Updater_API {
-	private $token;
-	private $api_url;
-	private $products_api_url;
-	private $errors;
 
-	public function __construct () {
-		$this->token = 'angelleye-updater';
-		$this->api_url = site_url('?AngellEYE_Activation');
-		$this->products_api_url = 'http://www.angelleye.com/wc-api/angelleye-installer-api';
-		$this->errors = array();
-	} // End __construct()
+    private $token;
+    private $api_url;
+    private $products_api_url;
+    private $errors;
 
-	/**
-	 * Activate a given license key for this installation.
-	 * @since    1.0.0
-	 * @param   string $key 		 	The license key to be activated.
-	 * @param   string $product_id	 	Product ID to be activated.
-	 * @return boolean      			Whether or not the activation was successful.
-	 */
-	public function activate ( $key, $product_id, $plugin_file = '' ) {
-		$response = false;
+    public function __construct() {
+        $this->token = 'angelleye-updater';
+        $this->api_url = site_url('?AngellEYE_Activation');
+        $this->products_api_url = 'http://www.angelleye.com/wc-api/angelleye-installer-api';
+        $this->errors = array();
+    }
 
-		//Ensure we have a correct product id.
-		$product_id = trim( $product_id );
-		if( ! is_numeric( $product_id ) ){
-			$plugins = get_plugins();
-			$plugin_name = isset( $plugins[ $plugin_file ]['Name'] ) ? $plugins[ $plugin_file ]['Name'] : $plugin_file;
-			$error = '<strong>There seems to be incorrect data for the plugin ' . $plugin_name . '. Please contact <a href="https://support.angelleye.com" target="_blank">AngellEYE Support</a> with this message.</strong>';
-			$this->log_request_error( $error );
-			return false;
-		}
+// End __construct()
 
-		$request = $this->request( 'activation_request', array( 'license_key' => $key, 'product_id' => $product_id, 'domain_name' => esc_url( home_url( '/' ) ) ) );
+    /**
+     * Activate a given license key for this installation.
+     * @since    1.0.0
+     * @param   string $key 		 	The license key to be activated.
+     * @param   string $product_id	 	Product ID to be activated.
+     * @return boolean      			Whether or not the activation was successful.
+     */
+    public function activate($key, $product_id, $plugin_file = '') {
+        $response = false;
 
-		return ! isset( $request->error );
-	} // End activate()
+        //Ensure we have a correct product id.
+        $product_id = trim($product_id);
+        if (!is_numeric($product_id)) {
+            $plugins = get_plugins();
+            $plugin_name = isset($plugins[$plugin_file]['Name']) ? $plugins[$plugin_file]['Name'] : $plugin_file;
+            $error = '<strong>There seems to be incorrect data for the plugin ' . $plugin_name . '. Please contact <a href="https://support.angelleye.com" target="_blank">AngellEYE Support</a> with this message.</strong>';
+            $this->log_request_error($error);
+            return false;
+        }
 
-	/**
-	 * Deactivate a given license key for this installation.
-	 * @since    1.0.0
-	 * @param   string $key  The license key to be deactivated.
-	 * @return boolean      Whether or not the deactivation was successful.
-	 */
-	public function deactivate ( $key ) {
-		$response = false;
+        $request = $this->request('activation_request', array('license_key' => $key, 'product_id' => $product_id, 'domain_name' => esc_url(home_url('/'))));
 
-		$request = $this->request( 'deactivation_request', array( 'license_key' => $key, 'domain_name' => esc_url( home_url( '/' ) ) ) );
+        return !isset($request->error);
+    }
 
-		return ! isset( $request->error );
-	} // End deactivate()
+// End activate()
 
-	/**
-	 * Check if the license key is valid.
-	 * @since    1.0.0
-	 * @param   string $key The license key to be validated.
-	 * @return boolean      Whether or not the license key is valid.
-	 */
-	public function check ( $key ) {
-		$response = false;
+    /**
+     * Deactivate a given license key for this installation.
+     * @since    1.0.0
+     * @param   string $key  The license key to be deactivated.
+     * @return boolean      Whether or not the deactivation was successful.
+     */
+    public function deactivate($key) {
+        $response = false;
 
-		$request = $this->request( 'check', array( 'license_key' => $key ) );
+        $request = $this->request('deactivation_request', array('license_key' => $key, 'domain_name' => esc_url(home_url('/'))));
 
-		return ! isset( $request->error );
-	} // End check()
+        return !isset($request->error);
+    }
 
-	/**
-	 * Check if the API is up and reachable.
-	 * @since    1.2.4
-	 * @return boolean Whether or not the API is up and reachable.
-	 */
-	public function ping () {
-		$response = false;
+// End deactivate()
 
-		$request = $this->request( 'pingback' );
+    /**
+     * Check if the license key is valid.
+     * @since    1.0.0
+     * @param   string $key The license key to be validated.
+     * @return boolean      Whether or not the license key is valid.
+     */
+    public function check($key) {
+        $response = false;
 
-		return isset( $request->success );
-	} // End ping()
+        $request = $this->request('check', array('license_key' => $key));
 
-	/**
-	 * Check if a product license key is actually active for the current website.
-	 * @access   public
-	 * @since    1.3.0
-	 * @return   boolean Whether or not the given key is actually active for the current website.
-	 */
-	public function product_active_status_check ( $file, $product_id, $file_id, $license_hash ) {
-		$response = true;
+        return !isset($request->error);
+    }
 
-		$request_type = 'pluginupdatecheck';
-		$name_label = 'plugin_name';
-		if ( strpos( $file, 'style.css' ) ) {
-			$request_type = 'themeupdatecheck';
-			$name_label = 'theme_name';
-			$file = str_replace( '/style.css', '', $file );
-		}
+// End check()
 
-		$args = array(
-	        $name_label => $file,
-	        'product_id' => $product_id,
-	        'version' => '1.0.0',
-	        'file_id' => $file_id,
-	        'license_hash' => $license_hash,
-	        'url' => esc_url( home_url( '/' ) )
-	    );
+    /**
+     * Check if the API is up and reachable.
+     * @since    1.0.0
+     * @return boolean Whether or not the API is up and reachable.
+     */
+    public function ping() {
+        $response = false;
 
-	    // Send request checking for an update
-	    $request = $this->request( $request_type, $args, 'POST' );
+        $request = $this->request('pingback');
 
-	    // If request is false, don't alter the transient
-	    if( false !== $request ) {
-	    	if ( isset( $request->payload->errors->woo_updater_api_license_deactivated ) ) {
-	    		$response = false;
-	    	} else {
-	    		$response = true;
-	    	}
-	    }
-	    return (bool)$response;
-	} // End product_active_status_check()
+        return isset($request->success);
+    }
 
-	/**
-	 * Make a request to the AngellEYE API.
-	 *
-	 * @access private
-	 * @since 1.0.0
-	 * @param string $endpoint (must include / prefix)
-	 * @param array $params
-	 * @return array $data
-	 */
-	private function request ( $endpoint = 'check', $params = array(), $method = 'post' ) {
-		$url = $this->api_url;
+// End ping()
 
-		if ( in_array( $endpoint, array( 'themeupdatecheck', 'pluginupdatecheck' ) ) ) {
-			$url = $this->products_api_url;
-		}
+    /**
+     * Check if a product license key is actually active for the current website.
+     * @access   public
+     * @since    1.0.0
+     * @return   boolean Whether or not the given key is actually active for the current website.
+     */
+    public function product_active_status_check($file, $product_id, $file_id, $license_hash) {
+        $response = true;
 
-		$supported_methods = array( 'check', 'activation', 'deactivation', 'pingback', 'pluginupdatecheck', 'themeupdatecheck' );
-		$supported_params = array( 'license_key', 'file_id', 'product_id', 'domain_name', 'license_hash', 'plugin_name', 'theme_name', 'version' );
+        $request_type = 'pluginupdatecheck';
+        $name_label = 'plugin_name';
+        if (strpos($file, 'style.css')) {
+            $request_type = 'themeupdatecheck';
+            $name_label = 'theme_name';
+            $file = str_replace('/style.css', '', $file);
+        }
 
-		$defaults = array(
-			'method' => strtoupper( $method ),
-			'timeout' => 45,
-			'redirection' => 5,
-			'httpversion' => '1.0',
-			'blocking' => true,
-			'headers' => array( 'user-agent' => 'AngellEYEUpdater/1.0.0' ),
-			'cookies' => array(),
-			'ssl_verify' => false,
-			'user-agent' => 'AngellEYE Updater; http://www.angelleye.com'
-	    );
+        $args = array(
+            $name_label => $file,
+            'product_id' => $product_id,
+            'version' => '1.0.0',
+            'file_id' => $file_id,
+            'license_hash' => $license_hash,
+            'url' => esc_url(home_url('/'))
+        );
 
-		if ( 'GET' == strtoupper( $method ) ) {
-			if ( 0 < count( $params ) ) {
-				foreach ( $params as $k => $v ) {
-					if ( in_array( $k, $supported_params ) ) {
-						$url = add_query_arg( $k, $v, $url );
-					}
-				}
-			}
+        // Send request checking for an update
+        $request = $this->request($request_type, $args, 'POST');
 
-			if ( in_array( $endpoint, $supported_methods ) ) {
-				$url = add_query_arg( 'request', $endpoint, $url );
-			}
+        // If request is false, don't alter the transient
+        if (false !== $request) {
+            if (isset($request->payload->errors->woo_updater_api_license_deactivated)) {
+                $response = false;
+            } else {
+                $response = true;
+            }
+        }
+        return (bool) $response;
+    }
 
-			// Pass if this is a network install on all requests
-			$url = add_query_arg( 'network', is_multisite() ? 1 : 0, $url );
-		} else {
-			if ( is_multisite() ) {
-				$params['network'] = 1;
-			} else {
-				$params['network'] = 0;
-			}
+// End product_active_status_check()
 
-			if ( in_array( $endpoint, $supported_methods ) ) {
-				$params['request'] = $endpoint;
-			}
+    /**
+     * Make a request to the AngellEYE API.
+     *
+     * @access private
+     * @since 1.0.0
+     * @param string $endpoint (must include / prefix)
+     * @param array $params
+     * @return array $data
+     */
+    private function request($endpoint = 'check', $params = array(), $method = 'post') {
+        $url = $this->api_url;
+
+        if (in_array($endpoint, array('themeupdatecheck', 'pluginupdatecheck'))) {
+            $url = $this->products_api_url;
+        }
+
+        $supported_methods = array('check', 'activation', 'deactivation', 'pingback', 'pluginupdatecheck', 'themeupdatecheck');
+        $supported_params = array('license_key', 'file_id', 'product_id', 'domain_name', 'license_hash', 'plugin_name', 'theme_name', 'version');
+
+        $defaults = array(
+            'method' => strtoupper($method),
+            'timeout' => 45,
+            'redirection' => 5,
+            'httpversion' => '1.0',
+            'blocking' => true,
+            'headers' => array('user-agent' => 'AngellEYEUpdater/1.0.0'),
+            'cookies' => array(),
+            'ssl_verify' => false,
+            'user-agent' => 'AngellEYE Updater; http://www.angelleye.com'
+        );
+
+        if ('GET' == strtoupper($method)) {
+            if (0 < count($params)) {
+                foreach ($params as $k => $v) {
+                    if (in_array($k, $supported_params)) {
+                        $url = add_query_arg($k, $v, $url);
+                    }
+                }
+            }
+
+            if (in_array($endpoint, $supported_methods)) {
+                $url = add_query_arg('request', $endpoint, $url);
+            }
+
+            // Pass if this is a network install on all requests
+            $url = add_query_arg('network', is_multisite() ? 1 : 0, $url);
+        } else {
+            if (is_multisite()) {
+                $params['network'] = 1;
+            } else {
+                $params['network'] = 0;
+            }
+
+            if (in_array($endpoint, $supported_methods)) {
+                $params['request'] = $endpoint;
+            }
 
 
-			// Add the 'body' parameter if using a POST method. Not required if using a GET method.
-			$defaults['body'] = $params;
-		}
+            // Add the 'body' parameter if using a POST method. Not required if using a GET method.
+            $defaults['body'] = $params;
+        }
 
-		// Set up a filter on our default arguments. If any arguments are removed by the filter, replace them with the default value.
-		$args = wp_parse_args( (array)apply_filters( 'angelleye_updater_request_args', $defaults, $endpoint, $params, $method ), $defaults );
-		
-		if( isset($endpoint) && !empty($endpoint) ) {
-			$url .= '&action='.$endpoint;
-		}
+        // Set up a filter on our default arguments. If any arguments are removed by the filter, replace them with the default value.
+        $args = wp_parse_args((array) apply_filters('angelleye_updater_request_args', $defaults, $endpoint, $params, $method), $defaults);
 
-		$response = wp_remote_get( $url, $args );
+        if (isset($endpoint) && !empty($endpoint)) {
+            $url .= '&action=' . $endpoint;
+        }
 
-		if( is_wp_error( $response ) ) {
-			$data = new StdClass;
-			$data->error = __( 'AngellEYE Request Error', 'angelleye-updater' );
-		} else {
-			$data = $response['body'];
-			$data = json_decode( $data );
-		}
+        $response = wp_remote_get($url, $args);
 
-		// Store errors in a transient, to be cleared on each request.
-		if ( isset( $data->error ) && ( '' != $data->error ) ) {
-			$error = esc_html( $data->error );
-			$error = '<strong>' . $error . '</strong>';
-			if ( isset( $data->additional_info ) ) { $error .= '<br /><br />' . esc_html( $data->additional_info ); }
-			$this->log_request_error( $error );
-		}elseif ( empty( $data ) ) {
-			$error = '<strong>' . __( 'There was an error making your request, please try again.', 'angelleye-updater' ) . '</strong>';
-			$this->log_request_error( $error );
-		}
+        if (is_wp_error($response)) {
+            $data = new StdClass;
+            $data->error = __('AngellEYE Request Error', 'angelleye-updater');
+        } else {
+            $data = $response['body'];
+            $data = json_decode($data);
+        }
 
-		return $data;
-	} // End request()
+        // Store errors in a transient, to be cleared on each request.
+        if (isset($data->error) && ( '' != $data->error )) {
+            $error = esc_html($data->error);
+            $error = '<strong>' . $error . '</strong>';
+            if (isset($data->additional_info)) {
+                $error .= '<br /><br />' . esc_html($data->additional_info);
+            }
+            $this->log_request_error($error);
+        } elseif (empty($data)) {
+            $error = '<strong>' . __('There was an error making your request, please try again.', 'angelleye-updater') . '</strong>';
+            $this->log_request_error($error);
+        }
 
-	/**
-	 * Log an error from an API request.
-	 *
-	 * @access private
-	 * @since 1.0.0
-	 * @param string $error
-	 */
-	public function log_request_error ( $error ) {
-		$this->errors[] = $error;
-	} // End log_request_error()
+        return $data;
+    }
 
-	/**
-	 * Store logged errors in a temporary transient, such that they survive a page load.
-	 * @since  1.0.0
-	 * @return  void
-	 */
-	public function store_error_log () {
-		set_transient( $this->token . '-request-error', $this->errors );
-	} // End store_error_log()
+// End request()
 
-	/**
-	 * Get the current error log.
-	 * @since  1.0.0
-	 * @return  void
-	 */
-	public function get_error_log () {
-		return get_transient( $this->token . '-request-error' );
-	} // End get_error_log()
+    /**
+     * Log an error from an API request.
+     *
+     * @access private
+     * @since 1.0.0
+     * @param string $error
+     */
+    public function log_request_error($error) {
+        $this->errors[] = $error;
+    }
 
-	/**
-	 * Clear the current error log.
-	 * @since  1.0.0
-	 * @return  void
-	 */
-	public function clear_error_log () {
-		return delete_transient( $this->token . '-request-error' );
-	} // End clear_error_log()
-} // End Class
+// End log_request_error()
+
+    /**
+     * Store logged errors in a temporary transient, such that they survive a page load.
+     * @since  1.0.0
+     * @return  void
+     */
+    public function store_error_log() {
+        set_transient($this->token . '-request-error', $this->errors);
+    }
+
+// End store_error_log()
+
+    /**
+     * Get the current error log.
+     * @since  1.0.0
+     * @return  void
+     */
+    public function get_error_log() {
+        return get_transient($this->token . '-request-error');
+    }
+
+// End get_error_log()
+
+    /**
+     * Clear the current error log.
+     * @since  1.0.0
+     * @return  void
+     */
+    public function clear_error_log() {
+        return delete_transient($this->token . '-request-error');
+    }
+
+// End clear_error_log()
+}
+
+// End Class
 ?>

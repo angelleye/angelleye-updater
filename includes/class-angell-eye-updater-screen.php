@@ -1,90 +1,105 @@
 <?php
-// File Security Check.
-if ( ! defined( 'ABSPATH' ) ) exit;
 
+// File Security Check.
+if (!defined('ABSPATH'))
+    exit;
 
 class AngellEYE_Updater_Screen {
-	/**
-	 * Generate header HTML.
-	 * @access  public
-	 * @since   1.0.0
-	 * @return  void
-	 */
-	public static function get_header ( $token = 'angelleye-updater', $screen_icon = 'tools' ) {
-		do_action( 'angelleye_updater_screen_before', $token, $screen_icon );
-		$html = '<div class="wrap angelleye-updater-wrap">' . "\n";
-		$html .= get_screen_icon( $screen_icon );
-		$html .= '<h2 class="nav-tab-wrapper">' . "\n";
-		$html .= self::get_navigation_tabs();
-		$html .= '</h2>' . "\n";
-		echo $html;
-		do_action( 'angelleye_updater_screen_header_before_content', $token, $screen_icon );
-	} // End get_header()
 
-	/**
-	 * Generate footer HTML.
-	 * @access  public
-	 * @since   1.0.0
-	 * @return  void
-	 */
-	public static function get_footer ( $token = 'angelleye-updater', $screen_icon = 'tools' ) {
-		do_action( 'angelleye_updater_screen_footer_after_content', $token, $screen_icon );
-		$html = '</div><!--/.wrap angelleye-updater-wrap-->' . "\n";
-		echo $html;
-		do_action( 'angelleye_updater_screen_after', $token, $screen_icon );
-	} // End get_footer()
+    /**
+     * Generate header HTML.
+     * @access  public
+     * @since   1.0.0
+     * @return  void
+     */
+    public static function get_header($token = 'angelleye-updater', $screen_icon = 'tools') {
+        do_action('angelleye_updater_screen_before', $token, $screen_icon);
+        $html = '<div class="wrap angelleye-updater-wrap">' . "\n";
+        $html .= get_screen_icon($screen_icon);
+        $html .= '<h2 class="nav-tab-wrapper">' . "\n";
+        $html .= self::get_navigation_tabs();
+        $html .= '</h2>' . "\n";
+        echo $html;
+        do_action('angelleye_updater_screen_header_before_content', $token, $screen_icon);
+    }
 
-	/**
-	 * Generate navigation tabs HTML, based on a specific admin menu.
-	 * @access  public
-	 * @since   1.0.0
-	 * @return  string/WP_Error
-	 */
-	public static function get_navigation_tabs ( $menu_key = 'angelleye' ) {
-		$html = '';
+// End get_header()
 
-		$screens = AngellEYE_Updater_Screen::get_available_screens();
+    /**
+     * Generate footer HTML.
+     * @access  public
+     * @since   1.0.0
+     * @return  void
+     */
+    public static function get_footer($token = 'angelleye-updater', $screen_icon = 'tools') {
+        do_action('angelleye_updater_screen_footer_after_content', $token, $screen_icon);
+        $html = '</div><!--/.wrap angelleye-updater-wrap-->' . "\n";
+        echo $html;
+        do_action('angelleye_updater_screen_after', $token, $screen_icon);
+    }
 
-		$current_tab = self::get_current_screen();
-		if ( 0 < count( $screens ) ) {
-			foreach ( $screens as $k => $v ) {
-				$class = 'nav-tab';
-				if ( $current_tab == $k ) {
-					$class .= ' nav-tab-active';
-				}
+// End get_footer()
 
-				$url = add_query_arg( 'page', 'angelleye-helper', network_admin_url( 'index.php' ) );
-				$url = add_query_arg( 'screen', $k, $url );
-				$html .= '<a href="' . esc_url( $url ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $v ) . '</a>';
-			}
-		}
+    /**
+     * Generate navigation tabs HTML, based on a specific admin menu.
+     * @access  public
+     * @since   1.0.0
+     * @return  string/WP_Error
+     */
+    public static function get_navigation_tabs($menu_key = 'angelleye') {
+        $html = '';
 
-		return $html;
-	} // End get_navigation_tabs()
+        $screens = AngellEYE_Updater_Screen::get_available_screens();
 
-	/**
-	 * Return the token for the current screen.
-	 * @access  public
-	 * @since   1.2.0
-	 * @return  string The token for the current screen.
-	 */
-	public static function get_current_screen () {
-		$screen = 'licenses'; // Default.
-		if ( isset( $_GET['screen'] ) && '' != $_GET['screen'] ) $screen = esc_attr( $_GET['screen'] );
-		return $screen;
-	} // End get_current_screen()
+        $current_tab = self::get_current_screen();
+        if (0 < count($screens)) {
+            foreach ($screens as $k => $v) {
+                $class = 'nav-tab';
+                if ($current_tab == $k) {
+                    $class .= ' nav-tab-active';
+                }
 
-	/**
-	 * Return an array of available admin screens.
-	 * @access  public
-	 * @since   1.2.0
-	 * @return  array Available admin screens.
-	 */
-	public static function get_available_screens () {
-		return array(
-			'licenses' => __( 'Licenses', 'angelleye-updater' ),
-			'help' => __( 'Help', 'angelleye-updater' )
-			);
-	} // End get_available_screens()
-} // End Class
+                $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php'));
+                $url = add_query_arg('screen', $k, $url);
+                $html .= '<a href="' . esc_url($url) . '" class="' . esc_attr($class) . '">' . esc_html($v) . '</a>';
+            }
+        }
+
+        return $html;
+    }
+
+// End get_navigation_tabs()
+
+    /**
+     * Return the token for the current screen.
+     * @access  public
+     * @since   1.0.0
+     * @return  string The token for the current screen.
+     */
+    public static function get_current_screen() {
+        $screen = 'licenses'; // Default.
+        if (isset($_GET['screen']) && '' != $_GET['screen'])
+            $screen = esc_attr($_GET['screen']);
+        return $screen;
+    }
+
+// End get_current_screen()
+
+    /**
+     * Return an array of available admin screens.
+     * @access  public
+     * @since   1.0.0
+     * @return  array Available admin screens.
+     */
+    public static function get_available_screens() {
+        return array(
+            'licenses' => __('Licenses', 'angelleye-updater'),
+            'help' => __('Help', 'angelleye-updater')
+        );
+    }
+
+// End get_available_screens()
+}
+
+// End Class
 ?>

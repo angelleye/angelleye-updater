@@ -32,7 +32,7 @@ class AngellEYE_Updater_Self_Updater {
 	 * @return void
 	 */
 	public function __construct ( $file ) {
-		$this->api_url = 'http://www.angelleye.com/woo-dojo-api/';
+		$this->api_url = site_url('?AngellEYE_Activation');
 		$this->file = plugin_basename( $file );
 
 		// Check For Updates
@@ -120,7 +120,11 @@ class AngellEYE_Updater_Self_Updater {
 	 */
 	public function request ( $args ) {
 	    // Send request
-	    $request = wp_remote_post( $this->api_url, array(
+	    
+	    if( isset($args) && !empty($args) ) {
+	    	$plugin_checkup_url = $this->api_url .'&action='. $args['action'];
+	    }
+	    $request = wp_remote_post($plugin_checkup_url , array(
 			'method' => 'POST',
 			'timeout' => 45,
 			'redirection' => 5,

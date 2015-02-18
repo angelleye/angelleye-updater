@@ -106,8 +106,8 @@ class AngellEYE_Updater {
 
 		if ( is_admin() ) {
 			// Load the self-updater.
-			require_once $this->plugin_path . 'includes/class-angell-eye-updater-self-updater.php';
-			$this->updater = new AngellEYE_Updater_Self_Updater( $file );
+			//require_once $this->plugin_path . 'includes/class-angell-eye-updater-self-updater.php';
+			//$this->updater = new AngellEYE_Updater_Self_Updater( $file );
 
 			// Load the admin.
 			

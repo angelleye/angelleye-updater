@@ -177,17 +177,26 @@ class AngellEYE_Updater_Update_Checker {
 	 */
 	protected function request ( $args ) {
 	    // Send request
+	    
+	    
+	    
+	    if( isset($args['action']) && !empty($args['action']) ) {
+	    	$this->api_url .= '&action='.$args['action'];	
+	    } else {
+	    	if( isset($args['request']) && !empty($args['request'])) {
+	    		$this->api_url .= '&action='.$args['request'];	
+	    	}
+	    }
+	    
 	    $request = wp_remote_post( $this->api_url, array(
-			'method' => 'POST',
-			'timeout' => 45,
-			'redirection' => 5,
-			'httpversion' => '1.0',
-			'blocking' => true,
-			'headers' => array( 'user-agent' => 'AngellEYEUpdater/1.3.0' ),
+			'timeout' => 60,
+			'httpversion' => '1.1',
+			'user-agent' => 'paypal-ipn/',
 			'body' => $args,
-			'cookies' => array(),
 			'sslverify' => false
 		    ) );
+		    
+
 	    // Make sure the request was successful
 	    if( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 ) {
 	        // Request failed
@@ -199,7 +208,7 @@ class AngellEYE_Updater_Update_Checker {
 	    } else {
 	    	$response = false;
 	    }
-
+	
 	    if( is_object( $response ) && isset( $response->payload ) ) {
 	        return $response->payload;
 	    } else {

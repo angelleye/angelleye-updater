@@ -827,7 +827,7 @@ class AngellEYE_Updater_Admin {
         $activated_products = $this->get_activated_products();
         if (0 < count($products)) {
             require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-update-checker.php';
-            require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-theme-update-checker.php';
+            //require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-theme-update-checker.php';
             foreach ($products as $k => $v) {
                 if (isset($v['product_id']) && isset($v['file_id'])) {
                     $license_hash = isset($activated_products[$k][2]) ? $activated_products[$k][2] : '';

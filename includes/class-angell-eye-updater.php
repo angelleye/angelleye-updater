@@ -88,12 +88,12 @@ class AngellEYE_Updater {
         $this->define_admin_hooks($file);
 
         // Run this on activation.
-        register_activation_hook($this->file, array($this, 'activation'));
+        //register_activation_hook($this->file, array($this, 'activation'));
 
         if (is_admin()) {
             // Load the self-updater.
-            //require_once $this->plugin_path . 'includes/class-angell-eye-updater-self-updater.php';
-            //$this->updater = new AngellEYE_Updater_Self_Updater( $file );
+            require_once $this->plugin_path . 'includes/class-angell-eye-updater-self-updater.php';
+            $this->updater = new AngellEYE_Updater_Self_Updater( $file );
             // Load the admin.
             // Look for enabled updates across all themes (active or otherwise). If they are available, queue them.
             add_action('init', array($this, 'maybe_queue_theme_updates'), 1);

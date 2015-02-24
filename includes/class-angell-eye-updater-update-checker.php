@@ -159,10 +159,21 @@ class AngellEYE_Updater_Update_Checker {
         // Send request for detailed information
         $response = $this->request($args);
 
-        $response->sections = (array) $response->sections;
-        $response->compatibility = (array) $response->compatibility;
-        $response->tags = (array) $response->tags;
-        $response->contributors = (array) $response->contributors;
+        if( isset($response->sections) && !empty($response->sections) ) {
+            $response->sections = (array) $response->sections;
+        }
+        
+        if( isset($response->compatibility) && !empty($response->compatibility) ) {
+            $response->compatibility = (array) $response->compatibility;
+        }
+        
+        if( isset($response->tags) && !empty($response->tags) ) {
+            $response->tags = (array) $response->tags;
+        }
+        
+        if( isset($response->contributors) && !empty($response->contributors) ) {
+            $response->contributors = (array) $response->contributors;
+        }
 
         if (count($response->compatibility) > 0) {
             foreach ($response->compatibility as $k => $v) {

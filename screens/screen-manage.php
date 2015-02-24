@@ -2,7 +2,7 @@
 
 <div id="col-container" class="about-wrap">
     <?php
-    echo '<div class="updated">' . wpautop(sprintf(__('See below for a list of the AngellEYE products in use on %s. You can %s, as well as our %s on how this works. %s', 'angelleye-updater'), get_bloginfo('name'), '<a href="https://www.angelleye.com/my-account/my-licenses">view your licenses here</a>', '<a href="http://docs.angelleye.com/document/angelleye-helper/?utm_source=helper">documentation</a>', '&nbsp;&nbsp;<a href="' . esc_url(admin_url('update-core.php')) . '" class="button">' . __('Check for Updates', 'angelleye-updater') . '</a>')) . '</div>' . "\n";
+    //echo '<div class="updated">' . wpautop(sprintf(__('See below for a list of the AngellEYE products in use on %s. You can %s, as well as our %s on how this works. %s', 'angelleye-updater'), get_bloginfo('name'), '<a href="https://www.angelleye.com/my-account/my-licenses">view your licenses here</a>', '<a href="http://docs.angelleye.com/document/angelleye-helper/?utm_source=helper">documentation</a>', '&nbsp;&nbsp;<a href="' . esc_url(admin_url('update-core.php')) . '" class="button">' . __('Check for Updates', 'angelleye-updater') . '</a>')) . '</div>' . "\n";
     ?>
     <div class="col-wrap">
         <form id="activate-products" method="post" action="" class="validate">

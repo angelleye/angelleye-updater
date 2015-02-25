@@ -16,7 +16,7 @@ class AngellEYE_Updater_Activator {
      * @since    1.0.0
      */
 	public static function activate() {
-		if (!defined('AU_PLUGIN_BASENAME')) {
+		if (!defined('PIW_PLUGIN_BASENAME')) {
 			deactivate_plugins(AU_PLUGIN_DIR . '/angell-eye-updater.php');
 			wp_die("<strong>Angell EYE Updater</strong> requires <strong>PayPal IPN for WordPress</strong> plugin to work normally. Please activate it or install it.<br /><br />Back to the WordPress <a href='" . get_admin_url(null, 'plugins.php') . "'>Plugins page</a>.");
 		} else {

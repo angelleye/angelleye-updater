@@ -21,6 +21,26 @@ if (!defined('WPINC')) {
 }
 
 /**
+ *  define PIW_PLUGIN_DIR constant for global use
+ */
+ if (!defined('AU_PLUGIN_DIR'))
+    define('AU_PLUGIN_DIR', dirname(__FILE__));
+
+/**
+ * define PIW_PLUGIN_URL constant for global use
+ */
+if (!defined('AU_PLUGIN_URL'))
+    define('AU_PLUGIN_URL', plugin_dir_url(__FILE__));
+ 
+ 
+ /**
+  * define plugin basename
+  */
+ if (!defined('AU_PLUGIN_BASENAME')) {
+    define( 'AU_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+ }
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-angell-eye-updater-activator.php
  */

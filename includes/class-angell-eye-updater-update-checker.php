@@ -175,7 +175,7 @@ class AngellEYE_Updater_Update_Checker {
             $response->contributors = (array) $response->contributors;
         }
 
-        if (count($response->compatibility) > 0) {
+        if ( isset($response->compatibility) && count($response->compatibility) > 0 ) {
             foreach ($response->compatibility as $k => $v) {
                 $response->compatibility[$k] = (array) $v;
             }

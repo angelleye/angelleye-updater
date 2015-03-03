@@ -14,16 +14,22 @@
  * Text Domain:       angell-eye-updater
  * Domain Path:       /languages
  */
-
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
     die;
 }
 
 /**
+ * define plugin basename
+ */
+if (!defined('AA_PLUGIN_BASENAME')) {
+    define('AA_PLUGIN_BASENAME', plugin_basename(__FILE__));
+}
+
+/**
  *  define PIW_PLUGIN_DIR constant for global use
  */
- if (!defined('AU_PLUGIN_DIR'))
+if (!defined('AU_PLUGIN_DIR'))
     define('AU_PLUGIN_DIR', dirname(__FILE__));
 
 /**
@@ -31,14 +37,14 @@ if (!defined('WPINC')) {
  */
 if (!defined('AU_PLUGIN_URL'))
     define('AU_PLUGIN_URL', plugin_dir_url(__FILE__));
- 
- 
- /**
-  * define plugin basename
-  */
- if (!defined('AU_PLUGIN_BASENAME')) {
-    define( 'AU_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
- }
+
+
+/**
+ * define plugin basename
+ */
+if (!defined('AU_PLUGIN_BASENAME')) {
+    define('AU_PLUGIN_BASENAME', plugin_basename(__FILE__));
+}
 
 /**
  * The code that runs during plugin activation.

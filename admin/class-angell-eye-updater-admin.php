@@ -864,6 +864,19 @@ class AngellEYE_Updater_Admin {
         }
     }
 
+    /**
+     *  angell_eye_activation_base_plug_active function used for check base plugin active or not
+     *  @since    1.0.0
+     */
+    public function angell_eye_updater_base_plug_active() {
+
+        if (!defined('PIW_PLUGIN_BASENAME')) {
+            if (!in_array(@$_GET['action'], array('activate-plugin', 'upgrade-plugin', 'activate', 'do-plugin-upgrade')) && is_plugin_active(AU_PLUGIN_BASENAME)) {
+                deactivate_plugins(AU_PLUGIN_BASENAME);
+            }
+        }
+    }
+
 // End ensure_keys_are_actually_active()
 }
 

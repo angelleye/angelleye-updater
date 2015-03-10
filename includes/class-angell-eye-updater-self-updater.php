@@ -36,7 +36,7 @@ class AngellEYE_Updater_Self_Updater {
      * @return void
      */
     public function __construct($file) {
-        $this->api_url = site_url('?AngellEYE_Activation');
+        $this->api_url = AU_WEBSITE_URL. '?AngellEYE_Activation';
         $this->file = plugin_basename($file);
 
         // Check For Updates

@@ -31,6 +31,12 @@ if (!defined('AA_PLUGIN_BASENAME')) {
  */
 if (!defined('AU_PLUGIN_DIR'))
     define('AU_PLUGIN_DIR', dirname(__FILE__));
+    
+/**
+ *  define AU_WEBSITE_URL constant for global use
+ */
+if (!defined('AU_WEBSITE_URL'))
+    define('AU_WEBSITE_URL', 'http://www.angelleye.com/');    
 
 /**
  * define PIW_PLUGIN_URL constant for global use

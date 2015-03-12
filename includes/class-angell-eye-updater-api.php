@@ -41,7 +41,7 @@ class AngellEYE_Updater_API {
     public function __construct() {
         $this->token = 'angelleye-updater';
         $this->api_url = AU_WEBSITE_URL . '?AngellEYE_Activation';
-        $this->products_api_url = AU_WEBSITE_URL . '/wc-api/angelleye-installer-api';
+        $this->products_api_url = AU_WEBSITE_URL . 'wc-api/angelleye-installer-api';
         $this->errors = array();
     }
 

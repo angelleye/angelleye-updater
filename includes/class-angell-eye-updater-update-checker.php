@@ -43,7 +43,7 @@ class AngellEYE_Updater_Update_Checker {
      * @return void
      */
     public function __construct($file, $product_id, $file_id, $license_hash = '') {
-        $this->api_url = AU_WEBSITE_URL. '?AngellEYE_Activation';
+        $this->api_url = AU_WEBSITE_URL . '?AngellEYE_Activation';
         $this->file = $file;
         $this->product_id = $product_id;
         $this->file_id = $file_id;
@@ -159,23 +159,23 @@ class AngellEYE_Updater_Update_Checker {
         // Send request for detailed information
         $response = $this->request($args);
 
-        if( isset($response->sections) && !empty($response->sections) ) {
+        if (isset($response->sections) && !empty($response->sections)) {
             $response->sections = (array) $response->sections;
         }
-        
-        if( isset($response->compatibility) && !empty($response->compatibility) ) {
+
+        if (isset($response->compatibility) && !empty($response->compatibility)) {
             $response->compatibility = (array) $response->compatibility;
         }
-        
-        if( isset($response->tags) && !empty($response->tags) ) {
+
+        if (isset($response->tags) && !empty($response->tags)) {
             $response->tags = (array) $response->tags;
         }
-        
-        if( isset($response->contributors) && !empty($response->contributors) ) {
+
+        if (isset($response->contributors) && !empty($response->contributors)) {
             $response->contributors = (array) $response->contributors;
         }
 
-        if ( isset($response->compatibility) && count($response->compatibility) > 0 ) {
+        if (isset($response->compatibility) && count($response->compatibility) > 0) {
             foreach ($response->compatibility as $k => $v) {
                 $response->compatibility[$k] = (array) $v;
             }

@@ -1,4 +1,4 @@
-<?php if (!defined('ABSPATH')) exit; // Exit if accessed directly  ?>
+<?php if (!defined('ABSPATH')) exit; // Exit if accessed directly   ?>
 <div class="about-wrap">
     <div class="changelog">
         <?php do_action('angelleye_helper_before'); ?>

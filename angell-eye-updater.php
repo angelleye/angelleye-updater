@@ -29,20 +29,23 @@ if (!defined('AA_PLUGIN_BASENAME')) {
 /**
  *  define PIW_PLUGIN_DIR constant for global use
  */
-if (!defined('AU_PLUGIN_DIR'))
+if (!defined('AU_PLUGIN_DIR')) {
     define('AU_PLUGIN_DIR', dirname(__FILE__));
-    
+}
+
 /**
  *  define AU_WEBSITE_URL constant for global use
  */
-if (!defined('AU_WEBSITE_URL'))
-    define('AU_WEBSITE_URL', 'http://www.angelleye.com/');    
+if (!defined('AU_WEBSITE_URL')) {
+    define('AU_WEBSITE_URL', 'http://www.angelleye.com/');
+}
 
 /**
  * define PIW_PLUGIN_URL constant for global use
  */
-if (!defined('AU_PLUGIN_URL'))
+if (!defined('AU_PLUGIN_URL')) {
     define('AU_PLUGIN_URL', plugin_dir_url(__FILE__));
+}
 
 
 /**

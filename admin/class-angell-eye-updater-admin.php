@@ -827,14 +827,10 @@ class AngellEYE_Updater_Admin {
         $activated_products = $this->get_activated_products();
         if (0 < count($products)) {
             require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-update-checker.php';
-            //require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-theme-update-checker.php';
             foreach ($products as $k => $v) {
                 if (isset($v['product_id']) && isset($v['file_id'])) {
                     $license_hash = isset($activated_products[$k][2]) ? $activated_products[$k][2] : '';
-
-                    // If it's a theme, use the theme update checker. Otherwise, use the plugin update checker.
                     if (strpos($k, 'style.css')) {
-                        new AngellEYE_Updater_Theme_Update_Checker($k, $v['product_id'], $v['file_id'], $license_hash);
                     } else {
                         new AngellEYE_Updater_Update_Checker($k, $v['product_id'], $v['file_id'], $license_hash);
                     }

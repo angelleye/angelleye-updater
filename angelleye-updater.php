@@ -11,7 +11,7 @@
  * Author URI:        http://www.angelleye.com/
  * License:           GNU General Public License v3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:       angell-eye-updater
+ * Text Domain:       angelleye-updater
  * Domain Path:       /languages
  */
 // If this file is called directly, abort.
@@ -57,19 +57,19 @@ if (!defined('AU_PLUGIN_BASENAME')) {
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-angell-eye-updater-activator.php
+ * This action is documented in includes/class-angelleye-updater-activator.php
  */
 function activate_angelleye_updater() {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-angell-eye-updater-activator.php';
+    require_once plugin_dir_path(__FILE__) . 'includes/class-angelleye-updater-activator.php';
     AngellEYE_Updater_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-angell-eye-updater-deactivator.php
+ * This action is documented in includes/class-angelleye-updater-deactivator.php
  */
 function deactivate_angelleye_updater() {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-angell-eye-updater-deactivator.php';
+    require_once plugin_dir_path(__FILE__) . 'includes/class-angelleye-updater-deactivator.php';
     AngellEYE_Updater_Deactivator::deactivate();
 }
 
@@ -80,7 +80,7 @@ register_deactivation_hook(__FILE__, 'deactivate_angelleye_updater');
  * The core plugin class that is used to define internationalization,
  * dashboard-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path(__FILE__) . 'includes/class-angell-eye-updater.php';
+require plugin_dir_path(__FILE__) . 'includes/class-angelleye-updater.php';
 
 /**
  * Begins execution of the plugin.

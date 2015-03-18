@@ -64,11 +64,11 @@ class AngellEYE_Updater_Admin {
     public function __construct($file) {
         $this->token = 'angelleye-updater'; // Don't ever change this, as it will mess with the data stored of which products are activated, etc.
         // Load in the class to use for the admin screens.
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-screen.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-screen.php';
 
 
         // Load the API.
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-api.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-api.php';
 
         $this->api = new AngellEYE_Updater_API();
 
@@ -425,7 +425,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function enqueue_styles() {
-        wp_enqueue_style('angelleye-updater-admin', esc_url($this->assets_url . 'css/angell-eye-updater-admin.css'), array(), '1.0.0', 'all');
+        wp_enqueue_style('angelleye-updater-admin', esc_url($this->assets_url . 'css/angelleye-updater-admin.css'), array(), '1.0.0', 'all');
     }
 
 // End enqueue_styles()
@@ -439,7 +439,7 @@ class AngellEYE_Updater_Admin {
     public function enqueue_scripts() {
         $screen = get_current_screen();
         wp_enqueue_script('post');
-        wp_register_script('angelleye-updater-admin', $this->assets_url . 'js/angell-eye-updater-admin.js', array('jquery'));
+        wp_register_script('angelleye-updater-admin', $this->assets_url . 'js/angelleye-updater-admin.js', array('jquery'));
 
         // Only load script and localization on helper admin page.
         if ('dashboard_page_angelleye-helper' == $screen->id) {
@@ -826,7 +826,7 @@ class AngellEYE_Updater_Admin {
         $products = $this->get_detected_products();
         $activated_products = $this->get_activated_products();
         if (0 < count($products)) {
-            require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-update-checker.php';
+            require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-update-checker.php';
             foreach ($products as $k => $v) {
                 if (isset($v['product_id']) && isset($v['file_id'])) {
                     $license_hash = isset($activated_products[$k][2]) ? $activated_products[$k][2] : '';

@@ -9,7 +9,7 @@
             <input type="hidden" name="action" value="activate-products" />
             <input type="hidden" name="page" value="<?php echo esc_attr($this->page_slug); ?>" />
             <?php
-            require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-licenses-table.php';
+            require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-licenses-table.php';
             $this->list_table = new AngellEYE_Updater_Licenses_Table();
             $this->list_table->data = $this->get_detected_products();
             $this->list_table->prepare_items();

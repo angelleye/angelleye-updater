@@ -92,7 +92,7 @@ class AngellEYE_Updater {
 
         if (is_admin()) {
             // Load the self-updater.
-            require_once $this->plugin_path . 'includes/class-angell-eye-updater-self-updater.php';
+            require_once $this->plugin_path . 'includes/class-angelleye-updater-self-updater.php';
             $this->updater = new AngellEYE_Updater_Self_Updater($file);
             // Load the admin.
             // Look for enabled updates across all themes (active or otherwise). If they are available, queue them.
@@ -129,18 +129,18 @@ class AngellEYE_Updater {
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-loader.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-loader.php';
 
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angell-eye-updater-i18n.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-i18n.php';
 
         /**
          * The class responsible for defining all actions that occur in the Dashboard.
          */
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-angell-eye-updater-admin-display.php';
+        //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-angelleye-updater-admin-display.php';
 
 
         $this->loader = new AngellEYE_Updater_Loader();
@@ -172,7 +172,7 @@ class AngellEYE_Updater {
      */
     private function define_admin_hooks($file) {
 
-        require_once $this->plugin_path . 'admin/class-angell-eye-updater-admin.php';
+        require_once $this->plugin_path . 'admin/class-angelleye-updater-admin.php';
         $plugin_admin = new AngellEYE_Updater_Admin($file, $this->get_plugin_name(), $this->get_version());
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');

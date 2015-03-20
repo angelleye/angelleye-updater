@@ -40,7 +40,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
      * @return  void
      */
     public function no_items() {
-        echo wpautop(__('No AngellEYE products found.', 'angelleye-updater'));
+        echo wpautop(__('No '.AU_COMPANY_NAME.' products found.', 'angelleye-updater'));
     }
 
 // End no_items(0)

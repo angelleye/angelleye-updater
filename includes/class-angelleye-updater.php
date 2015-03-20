@@ -348,7 +348,7 @@ class AngellEYE_Updater {
      * @return  void
      */
     public function admin_notice_require_network_activation() {
-        echo '<div class="error"><p>' . __('AngellEYE Updater must be network activated when in multisite environment.', 'angelleye-updater') . '</p></div>';
+        echo '<div class="error"><p>' . __(AU_COMPANY_NAME.' Updater must be network activated when in multisite environment.', 'angelleye-updater') . '</p></div>';
     }
 
 // End admin_notice_require_network_activation()
@@ -379,7 +379,7 @@ class AngellEYE_Updater {
      */
     public function need_license_message($plugin_data, $r) {
         if (empty($r->package)) {
-            _e(' To enable updates for this AngellEYE product, please activate your license by visiting the Dashboard > AngellEYE Helper screen.', 'angelleye-updater');
+            _e(' To enable updates for this '.AU_COMPANY_NAME.' product, please activate your license by visiting the Dashboard > '.AU_COMPANY_NAME.' Helper screen.', 'angelleye-updater');
         }
     }
 
@@ -400,7 +400,7 @@ class AngellEYE_Updater {
             if (empty($angelleye_queued_updates))
                 return $transient;
 
-            $notice_text = __('To enable this update please activate your AngellEYE license by visiting the Dashboard > AngellEYE Helper screen.', 'angelleye-updater');
+            $notice_text = __('To enable this update please activate your '.AU_COMPANY_NAME.' license by visiting the Dashboard > AngellEYE Helper screen.', 'angelleye-updater');
 
             foreach ($angelleye_queued_updates as $key => $value) {
                 if (isset($transient->response[$value->file]) && isset($transient->response[$value->file]->package) && '' == $transient->response[$value->file]->package && ( FALSE === stristr($transient->response[$value->file]->upgrade_notice, $notice_text) )) {

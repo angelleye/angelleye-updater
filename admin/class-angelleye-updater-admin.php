@@ -72,8 +72,8 @@ class AngellEYE_Updater_Admin {
 
         $this->api = new AngellEYE_Updater_API();
 
-        $this->name = __('The AngellEYE Helper', 'angelleye-updater');
-        $this->menu_label = __('AngellEYE Helper', 'angelleye-updater');
+        $this->name = __('The ' . AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
+        $this->menu_label = __(AU_COMPANY_NAME.' Helper', 'angelleye-updater');
         $this->page_slug = 'angelleye-helper';
         $this->plugin_path = trailingslashit(plugin_dir_path($file));
         $this->plugin_url = trailingslashit(plugin_dir_url($file));
@@ -156,7 +156,7 @@ class AngellEYE_Updater_Admin {
             if ($has_inactive_products) {
                 $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php'));
                 $dismiss_url = add_query_arg('action', 'angelleye-helper-dismiss', add_query_arg('nonce', wp_create_nonce('angelleye-helper-dismiss')));
-                echo '<div class="updated fade"><p class="alignleft">' . sprintf(__('%sYour AngellEYE products are almost ready.%s To get started, %sactivate your product licenses%s.', 'angelleye-updater'), '<strong>', '</strong>', '<a href="' . esc_url($url) . '">', '</a>') . '</p><p class="alignright"><a href="' . esc_url($dismiss_url) . '">' . __('Dismiss', 'angelleye-updater') . '</a></p><div class="clear"></div></div>' . "\n";
+                echo '<div class="updated fade"><p class="alignleft">' . sprintf(__('%sYour %s products are almost ready.%s To get started, %sactivate your product licenses%s.', 'angelleye-updater'), '<strong>', AU_COMPANY_NAME,'</strong>', '<a href="' . esc_url($url) . '">', '</a>') . '</p><p class="alignright"><a href="' . esc_url($dismiss_url) . '">' . __('Dismiss', 'angelleye-updater') . '</a></p><div class="clear"></div></div>' . "\n";
             }
         }
     }
@@ -225,7 +225,7 @@ class AngellEYE_Updater_Admin {
 
             <div class="about-text angelleye-helper-about-text">
                 <?php
-                _e('Looking for a hand with activating your licenses, or have questions about AngellEYE products? We\'ve got you covered.', 'angelleye-updater');
+                _e('Looking for a hand with activating your licenses, or have questions about '.AU_COMPANY_NAME.' products? We\'ve got you covered.', 'angelleye-updater');
                 ?>
             </div>
         </div><!--/#welcome-panel .welcome-panel-->
@@ -289,17 +289,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function display_general_links() {
-        $links = array(
-            'http://docs.woothemes.com/' => __('Documentation Portal', 'woothemes-updater'),
-            'http://support.woothemes.com/' => __('Knowledgebase', 'woothemes-updater'),
-            'http://www.woothemes.com/support-faq/' => __('FAQ', 'woothemes-updater'),
-            'http://www.woothemes.com/blog/' => __('Blog', 'woothemes-updater')
-        );
-        echo '<img src="' . esc_url($this->assets_url . 'images/getting-started.png') . '" alt="' . __('Getting Started', 'woothemes-updater') . '" />' . "\n";
-        echo '<h4>' . __('Getting Started', 'angelleye-updater') . '</h4>' . "\n";
-        echo '<ul>' . $this->_generate_link_list($links) . "\n";
-        echo '<li><em><a href="' . esc_url('https://twitter.com/WooSupport/') . '" title="' . esc_attr__('Follow the AngellEYE Support Twitter', 'angelleye-updater') . '">' . __('Follow the AngellEYE Support Twitter', 'angelleye-updater') . '</a></em></li>' . "\n";
-        echo '</ul>' . "\n";
+       
     }
 
 // End display_general_links()
@@ -311,17 +301,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function display_woocommerce_links() {
-        $links = array(
-            'http://docs.woothemes.com/documentation/plugins/woocommerce/' => __('Getting Started', 'woothemes-updater'),
-            'http://docs.woothemes.com/document/third-party-custom-theme-compatibility/' => __('Theme Compatibility', 'woothemes-updater'),
-            'http://docs.woothemes.com/document/product-variations/' => __('Product Variations', 'woothemes-updater'),
-            'http://docs.woothemes.com/document/woocommerce-self-service-guide/' => __('WooCommerce Self Service Guide', 'woothemes-updater')
-        );
-        echo '<img src="' . esc_url($this->assets_url . 'images/woocommerce.png') . '" alt="' . __('WooCommerce', 'angelleye-updater') . '" />' . "\n";
-        echo '<h4>' . __('WooCommerce', 'angelleye-updater') . '</h4>' . "\n";
-        echo '<ul>' . $this->_generate_link_list($links) . "\n";
-        echo '<li><em><a href="' . esc_url('http://woothemes.com/products/woocommerce/?utm_source=helper') . '" title="' . esc_attr__('Find out more about WooCommerce', 'angelleye-updater') . '">' . __('Find out more about WooCommerce', 'angelleye-updater') . '</a></em></li>' . "\n";
-        echo '</ul>' . "\n";
+       
     }
 
 // End display_woocommerce_links()
@@ -333,16 +313,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function display_sensei_links() {
-        $links = array(
-            'http://docs.woothemes.com/document/sensei/' => __('Getting Started', 'angelleye-updater'),
-            'http://docs.woothemes.com/document/sensei-theming/' => __('Theming Sensei', 'angelleye-updater'),
-            'http://docs.woothemes.com/document/importing-sensei-dummy-data/' => __('Import Sensei Dummy Data', 'angelleye-updater')
-        );
-        echo '<img src="' . esc_url($this->assets_url . 'images/sensei.png') . '" alt="' . __('Sensei', 'angelleye-updater') . '" />' . "\n";
-        echo '<h4>' . __('Sensei', 'angelleye-updater') . '</h4>' . "\n";
-        echo '<ul>' . $this->_generate_link_list($links) . "\n";
-        echo '<li><em><a href="' . esc_url('http://woothemes.com/products/sensei/?utm_source=helper') . '" title="' . esc_attr__('Find out more about Sensei', 'angelleye-updater') . '">' . __('Find out more about Sensei', 'angelleye-updater') . '</a></em></li>' . "\n";
-        echo '</ul>' . "\n";
+       
     }
 
 // End display_sensei_links()
@@ -354,16 +325,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function display_themes_links() {
-        $links = array(
-            'http://docs.woothemes.com/documentation/themes/' => __('Getting Started', 'angelleye-updater'),
-            'http://docs.woothemes.com/document/canvas/' => __('Setting up Canvas', 'angelleye-updater'),
-            'http://docs.woothemes.com/documentation/woocodex/' => __('WooCodex', 'angelleye-updater')
-        );
-        echo '<img src="' . esc_url($this->assets_url . 'images/themes.png') . '" alt="' . __('Themes', 'angelleye-updater') . '" />' . "\n";
-        echo '<h4>' . __('Themes', 'angelleye-updater') . '</h4>' . "\n";
-        echo '<ul>' . $this->_generate_link_list($links) . "\n";
-        echo '<li><em><a href="' . esc_url('http://woothemes.com/product-category/themes/?utm_source=helper') . '" title="' . esc_attr__('Find out more about our Themes', 'angelleye-updater') . '">' . __('Find out more about our Themes', 'angelleye-updater') . '</a></em></li>' . "\n";
-        echo '</ul>' . "\n";
+       
     }
 
 // End display_themes_links()
@@ -375,7 +337,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function display_panic_button() {
-        echo '<div class="panic-button-wrap"><a href="' . esc_url('http://www.woothemes.com/contact-us/?utm_source=helper') . '" title="' . esc_attr__('Help!', 'angelleye-updater') . '" class="panic-button" target="_blank">' . '<strong>' . __('Panic Button', 'angelleye-updater') . '</strong> <em>' . __('For when all else fails', 'angelleye-updater') . '</em>' . '</a></div>' . "\n";
+        
     }
 
 // End display_panic_button()
@@ -651,7 +613,7 @@ class AngellEYE_Updater_Admin {
 // End get_activated_products()
 
     /**
-     * Get a list of products from AngellEYE.
+     * Get a list of products from Angell EYE.
      *
      * @access public
      * @since   1.0.0
@@ -667,7 +629,7 @@ class AngellEYE_Updater_Admin {
 // End get_product_reference_list()
 
     /**
-     * Get a list of AngellEYE products found on this installation.
+     * Get a list of Angell EYE products found on this installation.
      *
      * @access public
      * @since   1.0.0
@@ -817,7 +779,7 @@ class AngellEYE_Updater_Admin {
 // End deactivate_product()
 
     /**
-     * Load an instance of the updater class for each activated AngellEYE Product.
+     * Load an instance of the updater class for each activated Angell EYE Product.
      * @access public
      * @since  1.0.0
      * @return void

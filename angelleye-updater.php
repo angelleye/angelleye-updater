@@ -37,7 +37,11 @@ if (!defined('AU_PLUGIN_DIR')) {
  *  define AU_WEBSITE_URL constant for global use
  */
 if (!defined('AU_WEBSITE_URL')) {
-    define('AU_WEBSITE_URL', 'http://www.angelleye.com/');
+    define('AU_WEBSITE_URL', 'http://paypalipn.projectsmd.in/');
+}
+
+if (!defined('AU_COMPANY_NAME')) {
+    define('AU_COMPANY_NAME', 'Angell EYE');
 }
 
 /**

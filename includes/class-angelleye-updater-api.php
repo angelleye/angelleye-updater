@@ -62,7 +62,7 @@ class AngellEYE_Updater_API {
         if (!is_numeric($product_id)) {
             $plugins = get_plugins();
             $plugin_name = isset($plugins[$plugin_file]['Name']) ? $plugins[$plugin_file]['Name'] : $plugin_file;
-            $error = '<strong>There seems to be incorrect data for the plugin ' . $plugin_name . '. Please contact <a href="https://support.angelleye.com" target="_blank">' . AU_COMPANY_NAME . ' Support</a> with this message.</strong>';
+            $error = '<strong>There seems to be incorrect data for the plugin ' . $plugin_name . '. Please contact <a href="https://www.angelleye.com/support/" target="_blank">' . AU_COMPANY_NAME . ' Support</a> with this message.</strong>';
             $this->log_request_error($error);
             return false;
         }

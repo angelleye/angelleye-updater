@@ -99,8 +99,6 @@ class AngellEYE_Updater_Admin {
         // Process the 'Dismiss' link, if valid.
         add_action('admin_init', array($this, 'maybe_process_dismiss_link'));
 
-        add_action('admin_footer', array($this, 'theme_upgrade_form_adjustments'));
-
         add_action('angelleye_updater_license_screen_before', array($this, 'ensure_keys_are_actually_active'));
 
         add_action('wp_ajax_angelleye_activate_license_keys', array($this, 'ajax_process_request'));
@@ -163,36 +161,7 @@ class AngellEYE_Updater_Admin {
 
 // End maybe_display_activation_notice()
 
-    /**
-     * Run a small snippet of JavaScript to highlight the "you will lose all your changes" text on the theme updates screen.
-     * Be sure to add a confirmation dialog box to the "Update Themes" button as well.
-     *
-     * @access  public
-     * @since   1.0.0
-     * @return  void
-     */
-    public function theme_upgrade_form_adjustments() {
-        global $pagenow;
-        if ('update-core.php' != $pagenow)
-            return;
-        ?>
-        <script type="text/javascript">
-            /* <![CDATA[ */
-            if (jQuery('form[name="upgrade-themes"]').length) {
-                jQuery('form[name=upgrade-themes]').prev('p').wrap('<div class="error fade"></div>');
-
-                jQuery('form[name=upgrade-themes]').find('input.button[name=upgrade]').click(function (e) {
-                    var response = confirm('<?php _e('Any customizations you have made to theme files will be lost. Are you sure you would like to update?', 'angelleye-updater'); ?>');
-                    if (false == response)
-                        return false;
-                });
-            }
-            /*]]>*/
-        </script>
-        <?php
-    }
-
-// End theme_upgrade_form_adjustments()
+   
 
     /**
      * Register the admin screen.
@@ -275,9 +244,7 @@ class AngellEYE_Updater_Admin {
     public function load_help_screen_boxes() {
         add_action('angelleye_helper_column_left', array($this, 'display_general_links'));
         add_action('angelleye_helper_column_left', array($this, 'display_sensei_links'));
-        add_action('angelleye_helper_column_middle', array($this, 'display_woocommerce_links'));
-        add_action('angelleye_helper_column_middle', array($this, 'display_themes_links'));
-        // add_action( 'angelleye_helper_column_right', array( $this, 'display_panic_button' ) );
+        add_action('angelleye_helper_column_middle', array($this, 'display_angelleye_links'));
     }
 
 // End load_help_screen_boxes()
@@ -300,11 +267,10 @@ class AngellEYE_Updater_Admin {
      * @since   1.0.0
      * @return  void
      */
-    public function display_woocommerce_links() {
+    public function display_angelleye_links() {
        
     }
 
-// End display_woocommerce_links()
 
     /**
      * Display rendered HTML markup containing Sensei support links.
@@ -317,18 +283,6 @@ class AngellEYE_Updater_Admin {
     }
 
 // End display_sensei_links()
-
-    /**
-     * Display rendered HTML markup containing Themes support links.
-     * @access  public
-     * @since   1.0.0
-     * @return  void
-     */
-    public function display_themes_links() {
-       
-    }
-
-// End display_themes_links()
 
     /**
      * Display rendered HTML markup containing a panic button.
@@ -639,14 +593,6 @@ class AngellEYE_Updater_Admin {
         $response = array();
         $products = get_plugins();
 
-        $themes = wp_get_themes();
-        if (0 < count($themes)) {
-            foreach ($themes as $k => $v) {
-                $filepath = basename($v->__get('stylesheet_dir')) . '/style.css';
-                $products[$filepath] = array('Name' => $v->__get('name'), 'Version' => $v->__get('version'));
-            }
-        }
-
         if (is_array($products) && ( 0 < count($products) )) {
             $reference_list = $this->get_product_reference_list();
             $activated_products = $this->get_activated_products();
@@ -804,7 +750,7 @@ class AngellEYE_Updater_Admin {
 // End load_updater_instances()
 
     /**
-     * Run checks against the API to ensure the product keys are actually active on WooThemes.com. If not, deactivate them locally as well.
+     * Run checks against the API to ensure the product keys are actually active on angelleye.com. If not, deactivate them locally as well.
      * @access public
      * @since  1.0.0
      * @return void

@@ -155,7 +155,11 @@ class AngellEYE_Updater_API {
             if (isset($request->payload->errors->woo_updater_api_license_deactivated)) {
                 $response = false;
             } else {
-                $response = true;
+                if (isset($request->error) && !empty($request->error)) {
+                    $response = false;
+                } else {
+                    $response = true;
+                }
             }
         }
         return (bool) $response;
@@ -174,10 +178,6 @@ class AngellEYE_Updater_API {
      */
     private function request($endpoint = 'check', $params = array(), $method = 'post') {
         $url = $this->api_url;
-
-        if (in_array($endpoint, array('pluginupdatecheck'))) {
-            $url = $this->products_api_url;
-        }
 
         $supported_methods = array('check', 'activation', 'deactivation', 'pingback', 'pluginupdatecheck');
         $supported_params = array('license_key', 'file_id', 'product_id', 'domain_name', 'license_hash', 'plugin_name', 'theme_name', 'version');

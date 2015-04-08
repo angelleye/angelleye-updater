@@ -139,9 +139,8 @@ class AngellEYE_Updater_Update_Checker {
      */
     public function plugin_information($false, $action, $args) {
         $transient = get_site_transient('update_plugins');
-
         // Check if this plugins API is about this plugin
-        if (!isset($args->slug) || ( $args->slug != $this->file )) {
+        if (!isset($args->slug) || ( $args->slug != $this->product_id )) {
             return $false;
         }
 

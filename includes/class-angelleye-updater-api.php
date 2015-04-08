@@ -59,13 +59,13 @@ class AngellEYE_Updater_API {
 
         //Ensure we have a correct product id.
         $product_id = trim($product_id);
-        if (!is_numeric($product_id)) {
-            $plugins = get_plugins();
-            $plugin_name = isset($plugins[$plugin_file]['Name']) ? $plugins[$plugin_file]['Name'] : $plugin_file;
-            $error = '<strong>There seems to be incorrect data for the plugin ' . $plugin_name . '. Please contact <a href="https://www.angelleye.com/support/" target="_blank">' . AU_COMPANY_NAME . ' Support</a> with this message.</strong>';
-            $this->log_request_error($error);
-            return false;
-        }
+//        if (!is_numeric($product_id)) {
+//            $plugins = get_plugins();
+//            $plugin_name = isset($plugins[$plugin_file]['Name']) ? $plugins[$plugin_file]['Name'] : $plugin_file;
+//            $error = '<strong>There seems to be incorrect data for the plugin ' . $plugin_name . '. Please contact <a href="https://www.angelleye.com/support/" target="_blank">' . AU_COMPANY_NAME . ' Support</a> with this message.</strong>';
+//            $this->log_request_error($error);
+//            return false;
+//        }
 
         $request = $this->request('activation_request', array('license_key' => $key, 'product_id' => $product_id, 'domain_name' => esc_url(home_url('/'))));
 

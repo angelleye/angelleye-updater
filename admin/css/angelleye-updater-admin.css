@@ -104,3 +104,11 @@
     background: linear-gradient(to bottom, #cf0404 0%, #ff3019 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf0404', endColorstr='#ff3019', GradientType=0);
 }
+
+.manage-column.column-license_key {
+    width: 170px;
+}
+
+.manage-column.column-product_version {
+    width: 100px;
+}

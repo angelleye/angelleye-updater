@@ -114,6 +114,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         if( isset($item['license_key']) && !empty($item['license_key']) ) {
             return wpautop($item['license_key']);
         } else {
+        	$response = '';
             $response .= '<input name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(sprintf(__('Place %s license key here', 'angelleye-updater'), $item['product_name'])) . '" />' . "\n";
             return $response;
         }

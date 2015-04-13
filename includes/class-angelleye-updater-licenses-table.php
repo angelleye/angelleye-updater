@@ -32,7 +32,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         parent::__construct($args);
     }
 
-// End __construct()
+    // End __construct()
 
     /**
      * Text to display if no items are present.
@@ -40,10 +40,10 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
      * @return  void
      */
     public function no_items() {
-        echo wpautop(__('No '.AU_COMPANY_NAME.' products found.', 'angelleye-updater'));
+        echo wpautop(__('No ' . AU_COMPANY_NAME . ' products found.', 'angelleye-updater'));
     }
 
-// End no_items(0)
+    // End no_items(0)
 
     /**
      * The content of each column.
@@ -62,7 +62,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         }
     }
 
-// End column_default()
+    // End column_default()
 
     /**
      * Retrieve an array of sortable columns.
@@ -73,7 +73,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         return array();
     }
 
-// End get_sortable_columns()
+    // End get_sortable_columns()
 
     /**
      * Retrieve an array of columns for the list table.
@@ -84,12 +84,13 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         $columns = array(
             'product_name' => __('Product', 'angelleye-updater'),
             'product_version' => __('Version', 'angelleye-updater'),
-            'product_status' => __('License Key', 'angelleye-updater')
+            'license_key' => __('License Key', 'angelleye-updater'),
+            'product_status' => __('Action', 'angelleye-updater')
         );
         return $columns;
     }
 
-// End get_columns()
+    // End get_columns()
 
     /**
      * Content for the "product_name" column.
@@ -101,7 +102,19 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         return wpautop('<strong>' . $item['product_name'] . '</strong>');
     }
 
-// End column_product_name()
+    // End column_product_name()
+
+    /**
+     * Content for the "license_key" column.
+     * @param  array  $item The current item.
+     * @since  1.0.0
+     * @return string       The content of this column.
+     */
+    public function column_license_key($item) {
+        return wpautop($item['license_key']);
+    }
+
+    // End column_license_key()
 
     /**
      * Content for the "product_version" column.
@@ -113,7 +126,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         return wpautop($item['product_version']);
     }
 
-// End column_product_version()
+    // End column_product_version()
 
     /**
      * Content for the "status" column.
@@ -133,7 +146,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         return $response;
     }
 
-// End column_status()
+    // End column_status()
 
     /**
      * Retrieve an array of possible bulk actions.
@@ -145,7 +158,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         return $actions;
     }
 
-// End get_bulk_actions()
+    // End get_bulk_actions()
 
     /**
      * Prepare an array of items to be listed.
@@ -170,7 +183,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         $this->items = $this->found_data;
     }
 
-// End prepare_items()
+    // End prepare_items()
 }
 
 // End Class

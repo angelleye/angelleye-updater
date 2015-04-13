@@ -603,7 +603,7 @@ class AngellEYE_Updater_Admin {
                         if (in_array($k, array_keys($activated_products))) {
                             $status = 'active';
                         }
-                        $response[$k] = array('product_name' => $v['Name'], 'product_version' => $v['Version'], 'file_id' => $reference_list[$k]['file_id'], 'product_id' => $reference_list[$k]['product_id'], 'product_status' => $status, 'product_file_path' => $k);
+                        $response[$k] = array('product_name' => $v['Name'], 'product_version' => $v['Version'], 'file_id' => $reference_list[$k]['file_id'], 'product_id' => $reference_list[$k]['product_id'], 'product_status' => $status, 'product_file_path' => $k, 'license_key' => $activated_products[$k][2]);
                     }
                 }
             }

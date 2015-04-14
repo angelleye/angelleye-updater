@@ -111,3 +111,21 @@
 .manage-column.column-product_status {
     width: 140px;
 }
+
+.angelleye-updater-plugin-upgrade-notice {
+    background: none repeat scroll 0 0 #d54d21;
+    color: #fff;
+    font-weight: 400;
+    margin: 9px 0;
+    padding: 1em;
+}
+.angelleye-updater-plugin-upgrade-notice a {
+    color: #fff;
+}
+.angelleye-updater-plugin-upgrade-notice::before {
+    content: "";
+    display: inline-block;
+    font: 400 18px/1 dashicons;
+    margin: 0 8px 0 -2px;
+    vertical-align: top;
+}

@@ -97,7 +97,7 @@ class AngellEYE_Updater {
             add_action('init', array($this, 'load_queued_updates'), 2);
         }
 
-        $this->add_notice_unlicensed_product();
+        $this->angelleye_add_notice_unlicensed_product();
 
         add_filter('site_transient_' . 'update_plugins', array($this, 'change_update_information'));
     }
@@ -296,17 +296,18 @@ class AngellEYE_Updater {
      * @since   1.1.0
      * @return  void
      */
-    public function add_notice_unlicensed_product() {
+    public function angelleye_add_notice_unlicensed_product() {
         global $angelleye_queued_updates;
+       
         if (!is_array($angelleye_queued_updates) || count($angelleye_queued_updates) < 0)
             return;
 
         foreach ($angelleye_queued_updates as $key => $update) {
-            add_action('in_plugin_update_message-' . $update->file, array($this, 'need_license_message'), 10, 2);
+            add_action('in_plugin_update_message-' . $update->file, array($this, 'angelleye_need_license_message'), 10, 2);
         }
     }
 
-// End add_notice_unlicensed_product()
+// End angelleye_add_notice_unlicensed_product()
 
     /**
      * Message displayed if license not activated
@@ -314,13 +315,13 @@ class AngellEYE_Updater {
      * @param  object $r
      * @return void
      */
-    public function need_license_message($plugin_data, $r) {
+    public function angelleye_need_license_message($plugin_data, $r) {
         if (empty($r->package)) {
-            _e(' To enable updates for this '.AU_COMPANY_NAME.' product, please activate your license by visiting the Dashboard > '.AU_COMPANY_NAME.' Helper screen.', 'angelleye-updater');
+            echo wp_kses_post( '<div class="angelleye-updater-plugin-upgrade-notice">' . __( 'To enable this update please activate your '.AU_COMPANY_NAME.' license by visiting the Dashboard > '.AU_COMPANY_NAME.' Helper screen.', 'angelleye-updater' ) . '</div>' );
         }
     }
 
-// End need_license_message()
+// End angelleye_need_license_message()
 
     /**
      * Change the update information for unlicense AngellEYE products

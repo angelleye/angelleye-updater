@@ -103,4 +103,8 @@ function run_angelleye_updater() {
     $angeleye_updater->run();
 }
 
-run_angelleye_updater();
+add_action( 'plugins_loaded', 'angelleye_updater_load', 99 );
+
+function angelleye_updater_load() {
+	run_angelleye_updater();
+}

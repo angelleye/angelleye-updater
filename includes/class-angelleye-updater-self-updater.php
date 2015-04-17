@@ -66,7 +66,9 @@ class AngellEYE_Updater_Self_Updater {
         $args = array(
             'action' => 'pluginupdatecheck',
             'plugin_name' => $this->file,
-            'version' => $transient->checked[$this->file]
+            'version' => $transient->checked[$this->file],
+            'product_id' => 'angelleye-updater',
+            'license_hash' => ''
         );
 
         // Send request checking for an update
@@ -99,18 +101,30 @@ class AngellEYE_Updater_Self_Updater {
         $args = array(
             'action' => 'plugininformation',
             'plugin_name' => $this->file,
-            'version' => $transient->checked[$this->file]
+            'version' => $transient->checked[$this->file],
+            'product_id' => 'angelleye-updater',
+            'license_hash' => ''
         );
 
         // Send request for detailed information
         $response = $this->request($args);
+        if (isset($response->sections) && !empty($response->sections)) {
+            $response->sections = (array) $response->sections;
+        }
 
-        $response->sections = (array) $response->sections;
-        $response->compatibility = (array) $response->compatibility;
-        $response->tags = (array) $response->tags;
-        $response->contributors = (array) $response->contributors;
+        if (isset($response->compatibility) && !empty($response->compatibility)) {
+            $response->compatibility = (array) $response->compatibility;
+        }
 
-        if (count($response->compatibility) > 0) {
+        if (isset($response->tags) && !empty($response->tags)) {
+            $response->tags = (array) $response->tags;
+        }
+
+        if (isset($response->contributors) && count($response->contributors) > 0) {
+            $response->contributors = (array) $response->contributors;
+        }
+
+        if (isset($response->compatibility) && count($response->compatibility) > 0) {
             foreach ($response->compatibility as $k => $v) {
                 $response->compatibility[$k] = (array) $v;
             }

@@ -244,10 +244,10 @@ class AngellEYE_Updater_API {
 
         // Store errors in a transient, to be cleared on each request.
         if (isset($data->error) && ( '' != $data->error )) {
-            $error = esc_html($data->error);
+            $error = html_entity_decode($data->error);
             $error = '<strong>' . $error . '</strong>';
             if (isset($data->additional_info)) {
-                $error .= '<br /><br />' . esc_html($data->additional_info);
+                $error .= '<br /><br />' . html_entity_decode($data->additional_info);
             }
             $this->log_request_error($error);
         } elseif (empty($data)) {

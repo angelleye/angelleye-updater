@@ -10,27 +10,30 @@ if (!class_exists('WP_List_Table')) {
 class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
 
     public $per_page = 100;
-
+	public $data;
     /**
      * Constructor.
      * @since  1.0.0
      */
-    public function __construct() {
-        global $status, $page;
+    public function __construct( $args = array() ) {
+		global $status, $page;
 
-        $args = array(
-            'singular' => 'license', //singular name of the listed records
-            'plural' => 'licenses', //plural name of the listed records
-            'ajax' => false        //does this table support ajax?
-        );
+		parent::__construct( array(
+			 'singular'  => 'license',     //singular name of the listed records
+			  'plural'    => 'licenses',   //plural name of the listed records
+			  'ajax'      => false        //does this table support ajax?
+		) );
+		$status = 'all';
 
-        $this->data = array();
+		$page = $this->get_pagenum();
 
-        // Make sure this file is loaded, so we have access to plugins_api(), etc.
-        require_once( ABSPATH . '/wp-admin/includes/plugin-install.php' );
+		$this->data = array();
 
-        parent::__construct($args);
-    }
+		// Make sure this file is loaded, so we have access to plugins_api(), etc.
+		require_once( ABSPATH . '/wp-admin/includes/plugin-install.php' );
+
+		parent::__construct( $args );
+	} // End __construct()
 
     // End __construct()
 
@@ -184,7 +187,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             'total_items' => $total_items, //WE have to calculate the total number of items
             'per_page' => $total_items                   //WE have to determine how many items to show on a page
         ));
-        $this->items = $this->found_data;
+        $this->items = $this->data;
     }
 
     // End prepare_items()

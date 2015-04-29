@@ -154,7 +154,7 @@ class AngellEYE_Updater_Self_Updater {
             'redirection' => 5,
             'httpversion' => '1.0',
             'blocking' => true,
-            'headers' => array('user-agent' => 'AngellEYEUpdater/1.1.0'),
+            'headers' => array('user-agent' => 'AngellEYE_Updater'),
             'body' => $args,
             'cookies' => array(),
             'sslverify' => false

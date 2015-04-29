@@ -188,10 +188,10 @@ class AngellEYE_Updater_API {
             'redirection' => 5,
             'httpversion' => '1.0',
             'blocking' => true,
-            'headers' => array('user-agent' => 'AngellEYEUpdater/1.0.0'),
+            'headers' => array('user-agent' => 'AngellEYE_Updater'),
             'cookies' => array(),
             'ssl_verify' => false,
-            'user-agent' => 'AngellEYE Updater; http://www.angelleye.com'
+            'user-agent' => 'AngellEYE_Updater'
         );
 
         if ('GET' == strtoupper($method)) {

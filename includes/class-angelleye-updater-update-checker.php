@@ -209,7 +209,7 @@ class AngellEYE_Updater_Update_Checker {
         $request = wp_remote_post($this->api_url, array(
             'timeout' => 60,
             'httpversion' => '1.1',
-            'user-agent' => 'paypal-ipn/',
+            'user-agent' => 'AngellEYE_Updater',
             'body' => $args,
             'sslverify' => false
         ));

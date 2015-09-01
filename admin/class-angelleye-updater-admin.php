@@ -194,7 +194,7 @@ class AngellEYE_Updater_Admin {
 
             <div class="about-text angelleye-helper-about-text">
                 <?php
-                _e('Looking for a hand with activating your licenses, or have questions about '.AU_COMPANY_NAME.' products? We\'ve got you covered.', 'angelleye-updater');
+                _e('Use this tool to activate your premium extensions by '.AU_COMPANY_NAME.' and enable updates through the <a href="' . admin_url() . 'plugins.php">WordPress Plugins page</a>.', 'angelleye-updater');
                 ?>
             </div>
         </div><!--/#welcome-panel .welcome-panel-->

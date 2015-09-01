@@ -308,4 +308,3 @@ class AngellEYE_Updater_API {
 }
 
 // End Class
-?>

@@ -129,3 +129,6 @@
     margin: 0 8px 0 -2px;
     vertical-align: top;
 }
+.updated.fade {
+    clear: both;
+}

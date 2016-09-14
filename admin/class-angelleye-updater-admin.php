@@ -73,7 +73,7 @@ class AngellEYE_Updater_Admin {
         $this->api = new AngellEYE_Updater_API();
 
         $this->name = __('The ' . AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
-        $this->menu_label = __(AU_COMPANY_NAME.' Helper', 'angelleye-updater');
+        $this->menu_label = __(AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
         $this->page_slug = 'angelleye-helper';
         $this->plugin_path = trailingslashit(plugin_dir_path($file));
         $this->plugin_url = trailingslashit(plugin_dir_url($file));
@@ -154,14 +154,12 @@ class AngellEYE_Updater_Admin {
             if ($has_inactive_products) {
                 $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php'));
                 $dismiss_url = add_query_arg('action', 'angelleye-helper-dismiss', add_query_arg('nonce', wp_create_nonce('angelleye-helper-dismiss')));
-                echo '<div class="updated fade"><p class="alignleft">' . sprintf(__('%sYour %s products are almost ready.%s To get started, %sactivate your product licenses%s.', 'angelleye-updater'), '<strong>', AU_COMPANY_NAME,'</strong>', '<a href="' . esc_url($url) . '">', '</a>') . '</p><p class="alignright"><a href="' . esc_url($dismiss_url) . '">' . __('Dismiss', 'angelleye-updater') . '</a></p><div class="clear"></div></div>' . "\n";
+                echo '<div class="updated fade"><p class="alignleft">' . sprintf(__('%sYour %s products are almost ready.%s To get started, %sactivate your product licenses%s.', 'angelleye-updater'), '<strong>', AU_COMPANY_NAME, '</strong>', '<a href="' . esc_url($url) . '">', '</a>') . '</p><p class="alignright"><a href="' . esc_url($dismiss_url) . '">' . __('Dismiss', 'angelleye-updater') . '</a></p><div class="clear"></div></div>' . "\n";
             }
         }
     }
 
 // End maybe_display_activation_notice()
-
-   
 
     /**
      * Register the admin screen.
@@ -193,9 +191,9 @@ class AngellEYE_Updater_Admin {
             <h1><?php _e('Welcome to Angell EYE Updater', 'angelleye-updater'); ?></h1>
 
             <div class="about-text angelleye-helper-about-text">
-                <?php
-                _e('Use this tool to activate your premium extensions by '.AU_COMPANY_NAME.' and enable updates through the <a href="' . admin_url() . 'plugins.php">WordPress Plugins page</a>.', 'angelleye-updater');
-                ?>
+        <?php
+        _e('Use this tool to activate your premium extensions by ' . AU_COMPANY_NAME . ' and enable updates through the <a href="' . admin_url() . 'plugins.php">WordPress Plugins page</a>.', 'angelleye-updater');
+        ?>
             </div>
         </div><!--/#welcome-panel .welcome-panel-->
         <?php
@@ -256,7 +254,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function display_general_links() {
-       
+        
     }
 
 // End display_general_links()
@@ -268,9 +266,8 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function display_angelleye_links() {
-       
+        
     }
-
 
     /**
      * Display rendered HTML markup containing Sensei support links.
@@ -279,7 +276,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function display_sensei_links() {
-       
+        
     }
 
 // End display_sensei_links()
@@ -603,7 +600,7 @@ class AngellEYE_Updater_Admin {
                         if (in_array($k, array_keys($activated_products))) {
                             $status = 'active';
                         }
-                        if( isset($activated_products[$k][2]) && !empty($activated_products[$k][2]) ) {
+                        if (isset($activated_products[$k][2]) && !empty($activated_products[$k][2])) {
                             $license_key_display = $activated_products[$k][2];
                         } else {
                             $license_key_display = '';
@@ -744,6 +741,7 @@ class AngellEYE_Updater_Admin {
                 if (isset($v['product_id']) && isset($v['file_id'])) {
                     $license_hash = isset($activated_products[$k][2]) ? $activated_products[$k][2] : '';
                     if (strpos($k, 'style.css')) {
+                        
                     } else {
                         new AngellEYE_Updater_Update_Checker($k, $v['product_id'], $v['file_id'], $license_hash);
                     }
@@ -778,12 +776,7 @@ class AngellEYE_Updater_Admin {
      *  @since    1.0.0
      */
     public function angell_eye_updater_base_plug_active() {
-
-        if (!defined('PIW_PLUGIN_BASENAME')) {
-            if (!in_array(@$_GET['action'], array('activate-plugin', 'upgrade-plugin', 'activate', 'do-plugin-upgrade')) && is_plugin_active(AU_PLUGIN_BASENAME)) {
-                deactivate_plugins(AU_PLUGIN_BASENAME);
-            }
-        }
+        
     }
 
 // End ensure_keys_are_actually_active()

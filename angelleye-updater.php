@@ -6,7 +6,7 @@
  * Plugin Name:       Angell EYE Updater
  * Plugin URI:        http://www.angelleye.com/
  * Description:       Manage activations and updates for premium extensions to Angell EYE plugins.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Angell EYE
  * Author URI:        http://www.angelleye.com/
  * License:           GNU General Public License v3.0
@@ -99,7 +99,7 @@ function run_angelleye_updater() {
 
     global $angeleye_updater;
     $angeleye_updater = new AngellEYE_Updater(__FILE__);
-    $angeleye_updater->version = '1.0.0';
+    $angeleye_updater->version = '1.0.3';
     $angeleye_updater->run();
 }
 

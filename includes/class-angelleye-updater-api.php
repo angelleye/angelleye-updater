@@ -235,6 +235,8 @@ class AngellEYE_Updater_API {
         $response = wp_remote_get($url, $args);
 
         if (is_wp_error($response)) {
+            $error_string = $response->get_error_message();
+            echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
             $data = new StdClass;
             $data->error = __(AU_COMPANY_NAME . ' Request Error', 'angelleye-updater');
         } else {

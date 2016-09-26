@@ -18,6 +18,9 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
+= 1.0.5 - xx.xx.xxxx =
+* Tweak - Removes unnecessary version tag.
+
 = 1.0.4 - 09.23.2016 =
 * Fix - WordPress 4.6.x compatibility.
 * Fix - Resolves issues with file paths on update server.

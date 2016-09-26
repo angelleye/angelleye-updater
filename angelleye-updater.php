@@ -99,7 +99,6 @@ function run_angelleye_updater() {
 
     global $angeleye_updater;
     $angeleye_updater = new AngellEYE_Updater(__FILE__);
-    $angeleye_updater->version = '1.0.4';
     $angeleye_updater->run();
 }
 

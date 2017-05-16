@@ -100,6 +100,7 @@ class AngellEYE_Updater {
         $this->angelleye_add_notice_unlicensed_product();
 
         add_filter('site_transient_' . 'update_plugins', array($this, 'change_update_information'));
+        add_action('http_api_curl', array($this, 'http_api_curl_angelleye_updater_add_curl_parameter'), 10, 3);
     }
 
     /**
@@ -349,6 +350,13 @@ class AngellEYE_Updater {
         }
 
         return $transient;
+    }
+    
+    public function http_api_curl_angelleye_updater_add_curl_parameter($handle, $r, $url) {
+        if ( strstr( $url, 'angelleye.com' ) ) {
+            curl_setopt($handle, CURLOPT_VERBOSE, 1);
+            curl_setopt($handle, CURLOPT_SSLVERSION, 6);
+        }
     }
 
 // End change_update_information()

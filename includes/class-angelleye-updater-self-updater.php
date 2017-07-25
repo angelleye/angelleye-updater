@@ -40,10 +40,10 @@ class AngellEYE_Updater_Self_Updater {
         $this->file = plugin_basename($file);
 
         // Check For Updates
-        add_filter('pre_set_site_transient_update_plugins', array($this, 'update_check'));
+        add_filter('pre_set_site_transient_update_plugins', array($this, 'update_check'), 0);
 
         // Check For Plugin Information
-        add_filter('plugins_api', array($this, 'plugin_information'), 10, 3);
+        add_filter('plugins_api', array($this, 'plugin_information'), 0, 3);
     }
 
 // End __construct()

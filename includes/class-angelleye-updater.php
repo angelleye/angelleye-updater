@@ -99,7 +99,7 @@ class AngellEYE_Updater {
 
         $this->angelleye_add_notice_unlicensed_product();
 
-        add_filter('site_transient_' . 'update_plugins', array($this, 'change_update_information'));
+        add_filter('site_transient_' . 'update_plugins', array($this, 'change_update_information'), 0);
         add_action('http_api_curl', array($this, 'http_api_curl_angelleye_updater_add_curl_parameter'), 10, 3);
     }
 

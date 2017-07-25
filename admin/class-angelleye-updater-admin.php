@@ -351,11 +351,10 @@ class AngellEYE_Updater_Admin {
      */
     public function enqueue_scripts() {
         $screen = get_current_screen();
-        wp_enqueue_script('post');
-        wp_register_script('angelleye-updater-admin', $this->assets_url . 'js/angelleye-updater-admin.js', array('jquery'));
-
         // Only load script and localization on helper admin page.
         if ('dashboard_page_angelleye-helper' == $screen->id) {
+            wp_enqueue_script('post');
+            wp_register_script('angelleye-updater-admin', $this->assets_url . 'js/angelleye-updater-admin.js', array('jquery'));
             wp_enqueue_script('angelleye-updater-admin');
             $localization = array(
                 'ajax_url' => admin_url('admin-ajax.php'),

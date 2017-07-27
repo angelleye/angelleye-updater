@@ -12,6 +12,7 @@
             $this->list_table->data = $this->get_detected_products();
             $this->list_table->prepare_items();
             $this->list_table->display();
+            wp_nonce_field( 'angelleye-activate-license', 'angelleye-helper-nonce' ); 
             submit_button(__('Activate Products', 'angelleye-updater'), 'button-primary');
             ?>
         </form>

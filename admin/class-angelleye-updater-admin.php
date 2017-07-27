@@ -352,7 +352,7 @@ class AngellEYE_Updater_Admin {
     public function enqueue_scripts() {
         $screen = get_current_screen();
         // Only load script and localization on helper admin page.
-        if ('dashboard_page_angelleye-helper' == $screen->id) {
+        if ('dashboard_page_angelleye-helper' == $screen->id || 'index_page_angelleye-helper-network' ==  $screen->id) {
             wp_enqueue_script('post');
             wp_register_script('angelleye-updater-admin', $this->assets_url . 'js/angelleye-updater-admin.js', array('jquery'));
             wp_enqueue_script('angelleye-updater-admin');
@@ -379,11 +379,15 @@ class AngellEYE_Updater_Admin {
 
         $action = $this->get_post_or_get_action($supported_actions);
 
-        if ($action && in_array($action, $supported_actions) && check_admin_referer('bulk-' . 'licenses')) {
+        if ($action && in_array($action, $supported_actions) ) {
             $response = false;
             $status = 'false';
             $type = $action;
-
+            if ( $action == 'activate-products' ) {
+                check_admin_referer( 'angelleye-activate-license', 'angelleye-helper-nonce' );
+            } else {
+                check_admin_referer( 'bulk-licenses' );
+            }
             switch ($type) {
                 case 'activate-products':
                     $license_keys = array();

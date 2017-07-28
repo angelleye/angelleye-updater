@@ -102,6 +102,7 @@ class AngellEYE_Updater_Admin {
         add_action('angelleye_updater_license_screen_before', array($this, 'ensure_keys_are_actually_active'));
 
         add_action('wp_ajax_angelleye_activate_license_keys', array($this, 'ajax_process_request'));
+        add_action('admin_notices', array($this, 'angelleye_check_product_license_key_status'));
     }
 
 // End __construct()
@@ -115,9 +116,21 @@ class AngellEYE_Updater_Admin {
     public function maybe_process_dismiss_link() {
         if (isset($_GET['action']) && ( 'angelleye-helper-dismiss' == $_GET['action'] ) && isset($_GET['nonce']) && check_admin_referer('angelleye-helper-dismiss', 'nonce')) {
             update_site_option('angelleye_helper_dismiss_activation_notice', true);
-
             $redirect_url = remove_query_arg('action', remove_query_arg('nonce', $_SERVER['REQUEST_URI']));
-
+            wp_safe_redirect($redirect_url);
+            exit;
+        }
+        if (isset($_GET['action']) && ( 'angelleye-helper-expired-notice-dismiss' == $_GET['action'] ) && isset($_GET['nonce']) && check_admin_referer('angelleye-helper-expired-notice-dismiss', 'nonce')) {
+            $angelleye_helper_dismiss_activation_notice = get_site_option('angelleye_helper_dismiss_activation_notice', false);
+            if( $angelleye_helper_dismiss_activation_notice == false ) {
+                update_site_option('angelleye_helper_dismiss_activation_notice', array('0' => $_GET['product']));
+            } else {
+                $new_value_array = array('0' => $_GET['product']);
+                $update_value = array_merge($new_value_array, $angelleye_helper_dismiss_activation_notice);
+                update_site_option('angelleye_helper_dismiss_activation_notice', $update_value);
+            }
+            $redirect_url = remove_query_arg('action', remove_query_arg('nonce', $_SERVER['REQUEST_URI']));
+            $redirect_url = remove_query_arg('product', $redirect_url);
             wp_safe_redirect($redirect_url);
             exit;
         }
@@ -780,6 +793,42 @@ class AngellEYE_Updater_Admin {
      */
     public function angell_eye_updater_base_plug_active() {
         
+    }
+    
+    
+    public function angelleye_check_product_license_key_status() {
+        if ( false === ( $license_key_status_check = get_transient( 'license_key_status_check' ) ) ) {
+            $already_active = $this->get_activated_products();
+            if( !empty($already_active)) {
+                $notice_array = array();
+                foreach ($already_active as $key => $value) {
+                    if( !empty($value[2])) {
+                         $message = $this->api->check_product_license_key_status($value[2]);
+                         if( !empty($message->message) ) {
+                            $dismiss_url = add_query_arg('action', 'angelleye-helper-expired-notice-dismiss', add_query_arg('nonce', wp_create_nonce('angelleye-helper-expired-notice-dismiss')));
+                            $dismiss_url = add_query_arg('product', $message->product_id, $dismiss_url);
+                            $notice = '<div class="notice notice-error"><p class="alignleft">' . sprintf(__($message->message, 'angelleye-updater')) . '</p><p class="alignright"><a href="' . esc_url($dismiss_url) . '">' . __('Dismiss', 'angelleye-updater') . '</a></p><div class="clear"></div></div>' . "\n"; 
+                            $notice_array[$message->product_id] = $notice;
+                            echo $notice;
+                         }
+                   }
+                }
+                set_transient( 'license_key_status_check', $notice_array, 24 * HOUR_IN_SECONDS );
+            }
+        } else {
+            if( !empty($license_key_status_check) ) {
+                $angelleye_helper_dismiss_activation_notice = get_site_option('angelleye_helper_dismiss_activation_notice', false);
+                foreach ($license_key_status_check as $key => $value) {
+                    if($angelleye_helper_dismiss_activation_notice != false) {
+                        if(!in_array($key, $angelleye_helper_dismiss_activation_notice)) {
+                            echo $value;
+                        }
+                    } else {
+                        echo $value;;
+                    }
+                }
+            }
+        }
     }
 
 // End ensure_keys_are_actually_active()

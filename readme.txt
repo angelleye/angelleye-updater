@@ -3,8 +3,8 @@ Contributors: angelleye
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9CQZZGGMF78VY
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
-Tested up to: 4.6.1
-Stable tag: 1.0.4
+Tested up to: 4.8
+Stable tag: 1.0.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,9 +18,12 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
-= 1.0.5 - xx.xx.xxxx =
+= 1.0.5 - 08.11.2017 =
+* Feature - Adds admin notice for license key expiration details. [#29]
 * Tweak - Removes unnecessary version tag.
 * Tweak - Adjustments to avoid failures from TLS 1.2 configuration on some servers. [#39]
+* Tweak - Adjusts field tip so it doesn't get cut off. [#34]
+* Fix - PHP 7 compatibility. [#35]
 
 = 1.0.4 - 09.23.2016 =
 * Fix - WordPress 4.6.x compatibility.

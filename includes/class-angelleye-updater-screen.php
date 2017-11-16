@@ -14,8 +14,7 @@ class AngellEYE_Updater_Screen {
      */
     public static function get_header($token = 'angelleye-updater', $screen_icon = 'tools') {
         do_action('angelleye_updater_screen_before', $token, $screen_icon);
-        $html = '<div class="wrap angelleye-updater-wrap">' . "\n";
-        $html .= get_screen_icon($screen_icon);
+        $html = '<div class="wrap angelleye-updater-wrap">' . "\n";        
         $html .= '<h2 class="nav-tab-wrapper">' . "\n";
         $html .= self::get_navigation_tabs();
         $html .= '</h2>' . "\n";

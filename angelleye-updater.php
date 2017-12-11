@@ -36,10 +36,13 @@ if (!defined('AU_PLUGIN_DIR')) {
 /**
  *  define AU_WEBSITE_URL constant for global use
  */
-$plugin_website_url = apply_filters('angelleye_updater_web_url','https://www.angelleye.com/');
-if (!defined('AU_WEBSITE_URL')) {    
-    define('AU_WEBSITE_URL', $plugin_website_url);
+function set_angelleye_updater_website_url(){
+   $plugin_website_url = apply_filters('angelleye_updater_web_url','https://www.angelleye.com/');   
+    if (!defined('AU_WEBSITE_URL')) {    
+        define('AU_WEBSITE_URL', $plugin_website_url);
+    } 
 }
+add_action( 'after_setup_theme', 'set_angelleye_updater_website_url' );
 
 if (!defined('AU_COMPANY_NAME')) {
     define('AU_COMPANY_NAME', 'Angell EYE');

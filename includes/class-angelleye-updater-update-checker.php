@@ -89,7 +89,7 @@ class AngellEYE_Updater_Update_Checker {
         $args = array(
             'request' => 'pluginupdatecheck',
             'plugin_name' => $this->file,
-            'version' => $transient->checked[$this->file],
+            'version' => !empty($transient->checked[$this->file]) ? $transient->checked[$this->file] : '1.0.0',
             'product_id' => $this->product_id,
             'file_id' => $this->file_id,
             'license_hash' => $this->license_hash,

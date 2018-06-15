@@ -66,7 +66,7 @@ class AngellEYE_Updater_Self_Updater {
         $args = array(
             'action' => 'pluginupdatecheck',
             'plugin_name' => $this->file,
-            'version' => $transient->checked[$this->file],
+            'version' => !empty($transient->checked[$this->file]) ? $transient->checked[$this->file] : '1.0.0',
             'product_id' => 'angelleye-updater',
             'license_hash' => ''
         );

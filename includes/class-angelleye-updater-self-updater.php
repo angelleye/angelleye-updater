@@ -146,7 +146,7 @@ class AngellEYE_Updater_Self_Updater {
         // Send request
 
         if (isset($args) && !empty($args)) {
-            $plugin_checkup_url = $this->api_url . '&action=' . $args['action'];
+            $plugin_checkup_url = apply_filters('angelleye_updater_web_url',$this->api_url) . '&action=' . $args['action'];
         }
         $request = wp_remote_post($plugin_checkup_url, array(
             'method' => 'POST',

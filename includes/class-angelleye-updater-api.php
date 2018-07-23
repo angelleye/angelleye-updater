@@ -177,8 +177,8 @@ class AngellEYE_Updater_API {
      * @return array $data
      */
     private function request($endpoint = 'check', $params = array(), $method = 'post') {
-        $url = $this->api_url;
-
+        $url = apply_filters('angelleye_updater_web_url',$this->api_url);
+        
         $supported_methods = array('check', 'activation', 'deactivation', 'pingback', 'pluginupdatecheck', 'check_product_license_key_status');
         $supported_params = array('license_key', 'file_id', 'product_id', 'domain_name', 'license_hash', 'plugin_name', 'theme_name', 'version');
 

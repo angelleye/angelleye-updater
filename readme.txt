@@ -19,7 +19,8 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 == Changelog ==
 
 = 1.0.6 - xx.xx.2018 =
-* Fix - Resmoves deprecated function. [#46]
+* Feature - Adds filter to adjust activation endpoint. [#47]
+* Fix - Removes deprecated function. [#46]
 * Fix - Resolves PHP notices. [#49]
 
 = 1.0.5 - 08.11.2017 =

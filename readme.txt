@@ -3,8 +3,8 @@ Contributors: angelleye
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9CQZZGGMF78VY
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
-Tested up to: 4.8
-Stable tag: 1.0.5
+Tested up to: 4.9.8
+Stable tag: 1.0.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,10 +18,10 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
-= 1.0.6 - xx.xx.2018 =
+= 1.0.6 - 08.16.2018 =
 * Feature - Adds filter to adjust activation endpoint. [#47]
 * Fix - Removes deprecated function. [#46]
-* Fix - Resolves PHP notices. [#49]
+* Fix - Resolves PHP notices. [#49][AEUP-1]
 
 = 1.0.5 - 08.11.2017 =
 * Feature - Adds admin notice for license key expiration details. [#29]

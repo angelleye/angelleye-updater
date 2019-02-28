@@ -590,7 +590,7 @@ class AngellEYE_Updater_Admin {
         global $angeleye_updater;
         $response = array();
         $response = $angeleye_updater->get_products();
-        return $response;
+        return apply_filters('angelleye_updater_free_plugin', $response);
     }
 
 // End get_product_reference_list()

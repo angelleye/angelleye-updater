@@ -173,7 +173,6 @@ class AngellEYE_Updater {
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
         $this->loader->add_action('admin_init', $plugin_admin, 'angell_eye_updater_base_plug_active');
-        $this->loader->add_filter('angelleye_updater_free_plugin', $plugin_admin, 'angelleye_add_plugin_updater_plugin', 10, 1);
     }
 
     /**

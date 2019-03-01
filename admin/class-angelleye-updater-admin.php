@@ -590,7 +590,8 @@ class AngellEYE_Updater_Admin {
         global $angeleye_updater;
         $response = array();
         $response = $angeleye_updater->get_products();
-        return apply_filters('angelleye_updater_free_plugin', $response);
+        
+        return $response;
     }
 
 // End get_product_reference_list()
@@ -750,6 +751,17 @@ class AngellEYE_Updater_Admin {
      */
     public function load_updater_instances() {
         $products = $this->get_detected_products();
+        $all_plugins = get_plugins();
+        if( !empty($all_plugins) ) {
+            foreach ($all_plugins as $key => $plugins) {
+                if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
+                    if( isset($plugins['TextDomain']) && !empty($plugins['TextDomain']) && $plugins['TextDomain'] != 'angelleye-updater' ) {
+                        $products[$key] = array('file_id' => '999', 'product_id' => $plugins['TextDomain']);
+                    }
+                }
+                
+            }
+        }
         $activated_products = $this->get_activated_products();
         if (0 < count($products)) {
             require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-update-checker.php';
@@ -832,21 +844,6 @@ class AngellEYE_Updater_Admin {
     }
     
     public function angelleye_add_plugin_updater_plugin($response) {
-        if(empty($response)) {
-            $response = array();
-        }
-        $all_plugins = get_plugins();
-        if( !empty($all_plugins) ) {
-            foreach ($all_plugins as $key => $plugins) {
-                if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
-                    if( isset($plugins['TextDomain']) && !empty($plugins['TextDomain']) && $plugins['TextDomain'] != 'angelleye-updater' ) {
-                        $response[$key] = array('file_id' => '999', 'product_id' => $plugins['TextDomain']);
-                    }
-                }
-                
-            }
-        }
-        error_log( print_r( $response, true ) );
-        return $response;
+        
     }
 }

@@ -824,15 +824,29 @@ class AngellEYE_Updater_Admin {
                             echo $value;
                         }
                     } else {
-                        echo $value;;
+                        echo $value;
                     }
                 }
             }
         }
     }
-
-// End ensure_keys_are_actually_active()
+    
+    public function angelleye_add_plugin_updater_plugin($response) {
+        if(empty($response)) {
+            $response = array();
+        }
+        $all_plugins = get_plugins();
+        if( !empty($all_plugins) ) {
+            foreach ($all_plugins as $key => $plugins) {
+                if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
+                    if( isset($plugins['TextDomain']) && !empty($plugins['TextDomain']) && $plugins['TextDomain'] != 'angelleye-updater' ) {
+                        $response[$key] = array('file_id' => '999', 'product_id' => $plugins['TextDomain']);
+                    }
+                }
+                
+            }
+        }
+        error_log( print_r( $response, true ) );
+        return $response;
+    }
 }
-
-// End Class
-?>

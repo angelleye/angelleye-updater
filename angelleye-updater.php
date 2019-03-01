@@ -37,7 +37,7 @@ if (!defined('AU_PLUGIN_DIR')) {
  *  define AU_WEBSITE_URL constant for global use
  */
 if (!defined('AU_WEBSITE_URL')) {    
-    define('AU_WEBSITE_URL', 'http://localhost/activation/');
+    define('AU_WEBSITE_URL', 'https://www.angelleye.com/');
 }
 
 if (!defined('AU_COMPANY_NAME')) {

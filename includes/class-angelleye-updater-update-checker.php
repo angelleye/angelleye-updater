@@ -95,10 +95,8 @@ class AngellEYE_Updater_Update_Checker {
             'license_hash' => $this->license_hash,
             'url' => esc_url(home_url('/'))
         );
-        error_log( print_r( $args, true ) );
         // Send request checking for an update
         $response = $this->request($args);
-        error_log( print_r( $response, true ) );
         // If response is false, don't alter the transient
         if (false !== $response) {
 
@@ -109,6 +107,10 @@ class AngellEYE_Updater_Update_Checker {
 
                 $transient->response[$this->file] = $response;
             }
+        } else {
+            $response = new stdClass ();
+            $response->slug = $this->product_id;
+            $transient->no_update[ $this->file ] = $response;
         }
 
         return $transient;
@@ -143,7 +145,7 @@ class AngellEYE_Updater_Update_Checker {
         if (!isset($args->slug) || ( $args->slug != $this->product_id )) {
             return $false;
         }
-
+        
         // POST data to send to your API
         $args = array(
             'request' => 'plugininformation',
@@ -157,7 +159,7 @@ class AngellEYE_Updater_Update_Checker {
 
         // Send request for detailed information
         $response = $this->request($args);
-
+        
         if (isset($response->sections) && !empty($response->sections)) {
             $response->sections = (array) $response->sections;
         }
@@ -218,15 +220,12 @@ class AngellEYE_Updater_Update_Checker {
         // Make sure the request was successful
         if (is_wp_error($request) || wp_remote_retrieve_response_code($request) != 200) {
             // Request failed
-            
-            error_log( print_r( $request, true ) );
             return false;
         }
         // Read server response, which should be an object
         if ($request != '') {
             $response = json_decode(wp_remote_retrieve_body($request));
         } else {
-            error_log( print_r( $request, true ) );
             $response = false;
         }
 

@@ -91,9 +91,6 @@ class AngellEYE_Updater {
         //register_activation_hook($this->file, array($this, 'activation'));
 
         if (is_admin()) {
-            // Load the self-updater.
-            require_once $this->plugin_path . 'includes/class-angelleye-updater-self-updater.php';
-            $this->updater = new AngellEYE_Updater_Self_Updater($file);
             add_action('init', array($this, 'load_queued_updates'), 2);
         }
 

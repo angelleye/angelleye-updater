@@ -755,11 +755,8 @@ class AngellEYE_Updater_Admin {
         if( !empty($all_plugins) ) {
             foreach ($all_plugins as $key => $plugins) {
                 if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
-                    if( isset($plugins['TextDomain']) && !empty($plugins['TextDomain']) && $plugins['TextDomain'] != 'angelleye-updater' ) {
-                        $products[$key] = array('file_id' => '999', 'product_id' => $plugins['TextDomain']);
-                    }
+                    $products[$key] = array('file_id' => '999', 'product_id' => $plugins['TextDomain']);
                 }
-                
             }
         }
         $activated_products = $this->get_activated_products();

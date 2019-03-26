@@ -590,6 +590,7 @@ class AngellEYE_Updater_Admin {
         global $angeleye_updater;
         $response = array();
         $response = $angeleye_updater->get_products();
+        
         return $response;
     }
 
@@ -750,6 +751,17 @@ class AngellEYE_Updater_Admin {
      */
     public function load_updater_instances() {
         $products = $this->get_detected_products();
+        $all_plugins = get_plugins();
+        if( !empty($all_plugins) ) {
+            foreach ($all_plugins as $key => $plugins) {
+                if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
+                    if( isset($plugins['TextDomain']) && !empty($plugins['TextDomain']) && $plugins['TextDomain'] != 'angelleye-updater' ) {
+                        $products[$key] = array('file_id' => '999', 'product_id' => $plugins['TextDomain']);
+                    }
+                }
+                
+            }
+        }
         $activated_products = $this->get_activated_products();
         if (0 < count($products)) {
             require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-update-checker.php';
@@ -824,15 +836,14 @@ class AngellEYE_Updater_Admin {
                             echo $value;
                         }
                     } else {
-                        echo $value;;
+                        echo $value;
                     }
                 }
             }
         }
     }
-
-// End ensure_keys_are_actually_active()
+    
+    public function angelleye_add_plugin_updater_plugin($response) {
+        
+    }
 }
-
-// End Class
-?>

@@ -65,6 +65,7 @@ class AngellEYE_Updater_Update_Checker {
 
         // Check For Plugin Information
         add_filter('plugins_api', array($this, 'plugin_information'), 0, 3);
+        add_filter( "upgrader_post_install", array( $this, "angelleye_post_install" ), 10, 3 );
     }
 
 // End init()
@@ -95,10 +96,8 @@ class AngellEYE_Updater_Update_Checker {
             'license_hash' => $this->license_hash,
             'url' => esc_url(home_url('/'))
         );
-
         // Send request checking for an update
         $response = $this->request($args);
-
         // If response is false, don't alter the transient
         if (false !== $response) {
 
@@ -109,6 +108,10 @@ class AngellEYE_Updater_Update_Checker {
 
                 $transient->response[$this->file] = $response;
             }
+        } else {
+            $response = new stdClass ();
+            $response->slug = $this->product_id;
+            $transient->no_update[ $this->file ] = $response;
         }
 
         return $transient;
@@ -143,7 +146,7 @@ class AngellEYE_Updater_Update_Checker {
         if (!isset($args->slug) || ( $args->slug != $this->product_id )) {
             return $false;
         }
-
+        
         // POST data to send to your API
         $args = array(
             'request' => 'plugininformation',
@@ -157,7 +160,7 @@ class AngellEYE_Updater_Update_Checker {
 
         // Send request for detailed information
         $response = $this->request($args);
-
+        
         if (isset($response->sections) && !empty($response->sections)) {
             $response->sections = (array) $response->sections;
         }
@@ -234,8 +237,28 @@ class AngellEYE_Updater_Update_Checker {
             return false;
         }
     }
-
-// End request()
+    
+    public function angelleye_post_install($true, $hook_extra, $result) {
+        global $wp_filesystem;
+        if( isset($hook_extra['plugin']) && !empty($hook_extra['plugin'])) {
+            $all_plugins = get_plugins();
+            if( !empty($all_plugins) && isset($all_plugins[$hook_extra['plugin']])) {
+                $plugins = $all_plugins[$hook_extra['plugin']];
+                if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
+                    $plugin_path = explode('/', $hook_extra['plugin']);
+                    $plugin_folder_path = $plugin_path[0];
+                    $plugin_folder = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin_folder_path . DIRECTORY_SEPARATOR;
+                    $wp_filesystem->move( $result['destination'], $plugin_folder );
+                    $result['destination'] = $plugin_folder;
+                    if ( is_plugin_active( $hook_extra['plugin'] ) ) {
+                        activate_plugin($hook_extra['plugin']);
+                    } 
+                    return $result;
+                }
+            }
+        }
+        return $result;
+    }
 }
 
 // End Class

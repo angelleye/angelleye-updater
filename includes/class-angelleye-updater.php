@@ -358,6 +358,4 @@ class AngellEYE_Updater {
             curl_setopt($handle, CURLOPT_SSLVERSION, 6);
         }
     }
-
-// End change_update_information()
 }

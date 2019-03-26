@@ -18,6 +18,9 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
+= 2.0.0 - xx.xx.2019 =
+* Feature - Adds our free plugins to the updater system. [AEU-2]
+
 = 1.0.6 - 08.16.2018 =
 * Feature - Adds filter to adjust activation endpoint. [#47]
 * Fix - Removes deprecated function. [#46]

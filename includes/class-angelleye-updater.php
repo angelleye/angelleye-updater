@@ -63,7 +63,7 @@ class AngellEYE_Updater {
     public function __construct($file) {
 
         $this->plugin_name = 'angelleye-updater';
-        $this->version = '1.0.6';
+        $this->version = '2.0.0';
 
         $this->load_dependencies();
         $this->set_locale();

@@ -3,8 +3,8 @@ Contributors: angelleye
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9CQZZGGMF78VY
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
-Tested up to: 4.9.8
-Stable tag: 1.0.6
+Tested up to: 5.1.1
+Stable tag: 2.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,8 +18,8 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
-= 2.0.0 - xx.xx.2019 =
-* Feature - Adds our free plugins to the updater system. [AEU-2]
+= 2.0.0 - 03.27.2019 =
+* Feature - Adds all of our plugins to the updater system. [AEU-2]
 * Feature - Pulls updates from GitHub instead of downloads.angelleye.com. [AEU-3]
 
 = 1.0.6 - 08.16.2018 =

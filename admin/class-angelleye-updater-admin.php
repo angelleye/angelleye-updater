@@ -765,6 +765,9 @@ class AngellEYE_Updater_Admin {
             foreach ($products as $k => $v) {
                 if (isset($v['product_id']) && isset($v['file_id'])) {
                     $license_hash = isset($activated_products[$k][2]) ? $activated_products[$k][2] : '';
+                    if(!empty($license_hash)) {
+                        $v['file_id'] = '101';
+                    }
                     if (strpos($k, 'style.css')) {
                         
                     } else {

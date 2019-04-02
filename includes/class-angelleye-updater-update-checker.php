@@ -65,7 +65,7 @@ class AngellEYE_Updater_Update_Checker {
 
         // Check For Plugin Information
         add_filter('plugins_api', array($this, 'plugin_information'), 0, 3);
-        add_filter( "upgrader_post_install", array( $this, "angelleye_post_install" ), 10, 3 );
+        add_filter( "upgrader_post_install", array( $this, "angelleye_post_install" ), 10, 2 );
     }
 
 // End init()
@@ -238,7 +238,7 @@ class AngellEYE_Updater_Update_Checker {
         }
     }
     
-    public function angelleye_post_install($true, $hook_extra, $result) {
+    public function angelleye_post_install($hook_extra, $result) {
         global $wp_filesystem;
         if( isset($hook_extra['plugin']) && !empty($hook_extra['plugin'])) {
             $all_plugins = get_plugins();
@@ -253,7 +253,7 @@ class AngellEYE_Updater_Update_Checker {
                     if ( is_plugin_active( $hook_extra['plugin'] ) ) {
                         activate_plugin($hook_extra['plugin']);
                     } 
-                    return $result;
+                    return $hook_extra;
                 }
             }
         }

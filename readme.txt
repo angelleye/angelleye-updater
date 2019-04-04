@@ -18,6 +18,9 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
+= 2.0.3 - 04.04.2019 =
+* Tweak - Adjusts AE Updater. ([AEU-60](https://github.com/angelleye/angelleye-updater/pull/2))
+
 = 2.0.2 - 04.02.2019 =
 * Tweak - Adjusts updater system to use updates.angelleye.com. [AEU-59]
 

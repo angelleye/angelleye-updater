@@ -245,11 +245,6 @@ class AngellEYE_Updater_Update_Checker {
             if( !empty($all_plugins) && isset($all_plugins[$hook_extra['plugin']])) {
                 $plugins = $all_plugins[$hook_extra['plugin']];
                 if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
-                    $plugin_path = explode('/', $hook_extra['plugin']);
-                    $plugin_folder_path = $plugin_path[0];
-                    $plugin_folder = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin_folder_path . DIRECTORY_SEPARATOR;
-                    $wp_filesystem->move( $result['destination'], $plugin_folder );
-                    $result['destination'] = $plugin_folder;
                     if ( is_plugin_active( $hook_extra['plugin'] ) ) {
                         activate_plugin($hook_extra['plugin']);
                     } 

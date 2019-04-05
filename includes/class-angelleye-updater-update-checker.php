@@ -245,14 +245,26 @@ class AngellEYE_Updater_Update_Checker {
             if( !empty($all_plugins) && isset($all_plugins[$hook_extra['plugin']])) {
                 $plugins = $all_plugins[$hook_extra['plugin']];
                 if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
+                    $plugin_path = explode('/', $hook_extra['plugin']);
+                    $plugin_folder_path_php_file = $plugin_path[1];
                     if ( is_plugin_active( $hook_extra['plugin'] ) ) {
-                        activate_plugin($hook_extra['plugin']);
+                        $this->angelleye_make_auto_active_plugin($hook_extra['plugin'], $result['destination_name'] .'/'. $plugin_folder_path_php_file);
                     } 
-                    return $hook_extra;
+                    return $result;
                 }
             }
         }
         return $result;
+    }
+    
+    public function angelleye_make_auto_active_plugin($old_plugin_path, $new_plugin_path) {
+        $active_plugins = get_option('active_plugins');
+        foreach ($active_plugins as $key => $value) {
+            if($old_plugin_path == $value) {
+                $active_plugins[$key] = $new_plugin_path;
+            }
+            update_option( 'active_plugins', $active_plugins );
+        }
     }
 }
 

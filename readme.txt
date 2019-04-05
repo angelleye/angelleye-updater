@@ -18,6 +18,9 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
+= 2.0.4 - 04.05.2019 =
+* Tweak - Checks for matching directory name of plugin.  Auto-activate after update if directory name did not match. ([AEU-61](https://github.com/angelleye/angelleye-updater/pull/3))
+
 = 2.0.3 - 04.04.2019 =
 * Tweak - Adjusts AE Updater. ([AEU-60](https://github.com/angelleye/angelleye-updater/pull/2))
 

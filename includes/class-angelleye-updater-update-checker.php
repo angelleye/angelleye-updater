@@ -65,7 +65,7 @@ class AngellEYE_Updater_Update_Checker {
 
         // Check For Plugin Information
         add_filter('plugins_api', array($this, 'plugin_information'), 0, 3);
-        add_filter( "upgrader_post_install", array( $this, "angelleye_post_install" ), 10, 2 );
+        add_filter( "upgrader_post_install", array( $this, "angelleye_post_install" ), 10, 3 );
     }
 
 // End init()
@@ -238,21 +238,33 @@ class AngellEYE_Updater_Update_Checker {
         }
     }
     
-    public function angelleye_post_install($hook_extra, $result) {
+    public function angelleye_post_install($true, $hook_extra, $result) {
         global $wp_filesystem;
         if( isset($hook_extra['plugin']) && !empty($hook_extra['plugin'])) {
             $all_plugins = get_plugins();
             if( !empty($all_plugins) && isset($all_plugins[$hook_extra['plugin']])) {
                 $plugins = $all_plugins[$hook_extra['plugin']];
                 if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
+                    $plugin_path = explode('/', $hook_extra['plugin']);
+                    $plugin_folder_path_php_file = $plugin_path[1];
                     if ( is_plugin_active( $hook_extra['plugin'] ) ) {
-                        activate_plugin($hook_extra['plugin']);
+                        $this->angelleye_make_auto_active_plugin($hook_extra['plugin'], $result['destination_name'] .'/'. $plugin_folder_path_php_file);
                     } 
-                    return $hook_extra;
+                    return $result;
                 }
             }
         }
         return $result;
+    }
+    
+    public function angelleye_make_auto_active_plugin($old_plugin_path, $new_plugin_path) {
+        $active_plugins = get_option('active_plugins');
+        foreach ($active_plugins as $key => $value) {
+            if($old_plugin_path == $value) {
+                $active_plugins[$key] = $new_plugin_path;
+            }
+            update_option( 'active_plugins', $active_plugins );
+        }
     }
 }
 

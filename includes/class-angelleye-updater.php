@@ -315,7 +315,8 @@ class AngellEYE_Updater {
      */
     public function angelleye_need_license_message($plugin_data, $r) {
         if (empty($r->package)) {
-            echo wp_kses_post( '<div class="angelleye-updater-plugin-upgrade-notice">' . __( 'To enable this update please activate your '.AU_COMPANY_NAME.' license by visiting the Dashboard > '.AU_COMPANY_NAME.' Helper screen.', 'angelleye-updater' ) . '</div>' );
+            $more_info = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://www.angelleye.com/' . $plugin_data['TextDomain'] . '-update-notice-info/' , __( 'More Info', 'angelleye-updater' ) );
+            echo wp_kses_post( '<div class="angelleye-updater-plugin-upgrade-notice">' . __( 'To enable this update please activate your '.AU_COMPANY_NAME.' license by visiting the Dashboard > '.AU_COMPANY_NAME.' Helper screen. ', 'angelleye-updater' ) . $more_info . '</div>' );
         }
     }
 

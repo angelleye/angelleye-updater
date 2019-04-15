@@ -112,7 +112,9 @@
 .manage-column.column-product_status {
     width: 140px;
 }
-
+.manage-column.column-plugin_status {
+    width: 140px;
+}
 .angelleye-updater-plugin-upgrade-notice {
     background: none repeat scroll 0 0 #d54d21;
     color: #fff;
@@ -132,4 +134,10 @@
 }
 .updated.fade {
     clear: both;
+}
+.dashboard_page_angelleye-helper .red-font {
+    color: red;
+}
+.dashboard_page_angelleye-helper .green-font {
+    color: green;
 }

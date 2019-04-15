@@ -88,7 +88,8 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             'product_name' => __('Product', 'angelleye-updater'),
             'product_version' => __('Version', 'angelleye-updater'),
             'license_key' => __('License Key', 'angelleye-updater'),
-            'product_status' => __('Action', 'angelleye-updater')
+            'product_status' => __('Action', 'angelleye-updater'),
+            'plugin_status' => __('Status', 'angelleye-updater'),
         );
         return $columns;
     }
@@ -117,9 +118,13 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         if( isset($item['license_key']) && !empty($item['license_key']) ) {
             return wpautop($item['license_key']);
         } else {
-        	$response = '';
-            $response .= '<input name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(__('Enter license key here', 'angelleye-updater')) . '" />' . "\n";
-            return $response;
+            if($item['is_paid'] == true) {
+                $response = '';
+                $response .= '<input name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(__('Enter license key here', 'angelleye-updater')) . '" />' . "\n";
+                return $response;
+            } else {
+                return AU_FREE_LICENSE_KEY_TEXT;
+            }
         }
     }
 
@@ -148,10 +153,21 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         if ('active' == $item['product_status']) {
             $deactivate_url = wp_nonce_url(add_query_arg('action', 'deactivation_request', add_query_arg('filepath', $item['product_file_path'], add_query_arg('page', 'angelleye-helper', network_admin_url('index.php')))), 'bulk-licenses');
             $response = '<a href="' . esc_url($deactivate_url) . '">' . __('Deactivate', 'angelleye-updater') . '</a>' . "\n";
-        } 
-
-        return $response;
+            return $response;
+        } else {
+            return AU_EMPTY_ACTION_TEXT;
+        }
     }
+    
+     public function column_plugin_status($item) {
+         if($item['plugin_status'] == 'Not Installed') {
+             $more_info = sprintf( '<a class="" href="%s" target="_blank">%s</a>', 'https://www.angelleye.com/' . $item['product_id'] . '-update-notice-info/' , __( 'More Info', 'angelleye-updater' ) );
+             return '<span class="red-font">' . $item['plugin_status'] . '</span>' . str_repeat('&nbsp;', 2) . $more_info;
+         } else {
+             return '<span class="green-font">' . $item['plugin_status'] . '</span>';
+         }
+         
+     }
 
     // End column_status()
 

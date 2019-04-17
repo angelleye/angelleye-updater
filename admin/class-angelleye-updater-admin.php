@@ -684,11 +684,20 @@ class AngellEYE_Updater_Admin {
             if (!in_array($v, $product_keys)) {
 
                 // Perform API "activation" request.
-                $activate = $this->api->activate($products[$k], $product_keys[$k]['product_id'], $k);
+                $product_id = '';
+                if(isset($product_keys[$k]['product_id']) && !empty($product_keys[$k]['product_id'])) {
+                    $product_id = $product_keys[$k]['product_id'];
+                } else {
+                    $plugin_data = get_plugin_data($k);
+                    if( !empty($plugin_data)) {
+                        $product_id = $plugin_data['TextDomain'];
+                    }
+                }
+                $activate = $this->api->activate($products[$k], $product_id, $k);
 
                 if (true == $activate) {
                     // key: base file, 0: product id, 1: file_id, 2: hashed license.
-                    $already_active[$k] = array($product_keys[$k]['product_id'], $product_keys[$k]['file_id'], $products[$k]);
+                    $already_active[$k] = array($product_id, '101', $products[$k]);
                     $has_update = true;
                 }
             }
@@ -887,7 +896,7 @@ class AngellEYE_Updater_Admin {
             'offers-for-woocommerce' => array(
                 'plugin_url' => 'offers-for-woocommerce',
                 'plugin_name' => 'Offers for WooCommerce',
-                'is_paid' => false
+                'is_paid' => true
             ),
             'angelleye_paypal_divi' => array(
                 'plugin_url' => 'angelleye-paypal-for-divi',
@@ -912,7 +921,7 @@ class AngellEYE_Updater_Admin {
             'paypal-ipn' => array(
                 'plugin_url' => 'paypal-ipn',
                 'plugin_name' => 'PayPal IPN for WordPress',
-                'is_paid' => false
+                'is_paid' => true
             ),
             'paypal-security' => array(
                 'plugin_url' => 'paypal-security',
@@ -956,6 +965,7 @@ class AngellEYE_Updater_Admin {
             $product_status = 'in-active';
             $license_key = '';
             $plugin_status = 'Not Installed';
+            $product_file_path = '';
             if($is_insatlled) {
                 $plugin_status = 'Installed';
                 $version = $this->angelleye_get_plugin_version($v['plugin_url']);

@@ -888,15 +888,20 @@ class AngellEYE_Updater_Admin {
                 'plugin_name' => 'PayPal IPN for WordPress - MailChimp',
                 'is_paid' => true
             ),
-            'ifthengive' => array(
-                'plugin_url' => 'ifthengive',
-                'plugin_name' => 'IfThenGive',
-                'is_paid' => false
-            ),
             'offers-for-woocommerce' => array(
                 'plugin_url' => 'offers-for-woocommerce',
                 'plugin_name' => 'Offers for WooCommerce',
                 'is_paid' => true
+            ),
+            'paypal-ipn' => array(
+                'plugin_url' => 'paypal-ipn',
+                'plugin_name' => 'PayPal IPN for WordPress',
+                'is_paid' => true
+            ),
+            'ifthengive' => array(
+                'plugin_url' => 'ifthengive',
+                'plugin_name' => 'IfThenGive',
+                'is_paid' => false
             ),
             'angelleye_paypal_divi' => array(
                 'plugin_url' => 'angelleye-paypal-for-divi',
@@ -917,11 +922,6 @@ class AngellEYE_Updater_Admin {
                 'plugin_url' => 'angelleye-paypal-invoicing',
                 'plugin_name' => 'PayPal Invoicing for WordPress',
                 'is_paid' => false
-            ),
-            'paypal-ipn' => array(
-                'plugin_url' => 'paypal-ipn',
-                'plugin_name' => 'PayPal IPN for WordPress',
-                'is_paid' => true
             ),
             'paypal-security' => array(
                 'plugin_url' => 'paypal-security',

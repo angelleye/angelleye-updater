@@ -20,6 +20,7 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 = 2.0.5 - 04.30.2019 =
 * Feature - Adds icons / banners to update screens. ([AEU-67](https://github.com/angelleye/angelleye-updater/pull/5))
+* Feature - Adds free plugins to Updater list with status details. ([AEU-64](https://github.com/angelleye/angelleye-updater/pull/4))
 
 = 2.0.4 - 04.05.2019 =
 * Tweak - Checks for matching directory name of plugin.  Auto-activate after update if directory name did not match. ([AEU-61](https://github.com/angelleye/angelleye-updater/pull/3))

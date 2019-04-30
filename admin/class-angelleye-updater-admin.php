@@ -960,13 +960,10 @@ class AngellEYE_Updater_Admin {
                 $plugin_status = 'Installed';
                 $version = $this->angelleye_get_plugin_version($v['plugin_url']);
                 $is_key_active = $this->angelleye_is_key_activated($v['plugin_url']);
-                $is_plugin_activated = $this->angelleye_is_plugin_activated($plugin_key);
-                if($is_plugin_activated) {
-                    $plugin_status = 'Activated';
-                }
                 if($is_key_active) {
                     $license_key = $is_key_active[2];
                     $product_status = 'active';
+                    $plugin_status = 'Activated';
                 } else {
                     $license_key = '';
                     $product_status = 'in-active';

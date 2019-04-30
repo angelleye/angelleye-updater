@@ -105,7 +105,12 @@ class AngellEYE_Updater_Update_Checker {
 
                 add_action('admin_notices', array($this, 'error_notice_for_deactivated_plugin'));
             } else {
-
+                if( isset($response->icons) ) {
+                    $response->icons = (array) $response->icons;
+                }
+                if( isset($response->banners) ) {
+                    $response->banners = (array) $response->banners;
+                }
                 $transient->response[$this->file] = $response;
             }
         } else {
@@ -181,6 +186,13 @@ class AngellEYE_Updater_Update_Checker {
             foreach ($response->compatibility as $k => $v) {
                 $response->compatibility[$k] = (array) $v;
             }
+        }
+        
+        if( isset($response->icons) ) {
+            $response->icons = (array) $response->icons;
+        }
+        if( isset($response->banners) ) {
+            $response->banners = (array) $response->banners;
         }
 
         return $response;

@@ -112,3 +112,5 @@ add_action( 'plugins_loaded', 'angelleye_updater_load', 99 );
 function angelleye_updater_load() {
 	run_angelleye_updater();
 }
+
+

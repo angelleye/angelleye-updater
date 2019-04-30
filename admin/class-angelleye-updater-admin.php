@@ -898,11 +898,6 @@ class AngellEYE_Updater_Admin {
                 'plugin_name' => 'PayPal IPN for WordPress',
                 'is_paid' => true
             ),
-            'ifthengive' => array(
-                'plugin_url' => 'ifthengive',
-                'plugin_name' => 'IfThenGive',
-                'is_paid' => false
-            ),
             'angelleye_paypal_divi' => array(
                 'plugin_url' => 'angelleye-paypal-for-divi',
                 'plugin_name' => 'PayPal for Divi',
@@ -931,11 +926,6 @@ class AngellEYE_Updater_Admin {
             'paypal-wp-button-manager' => array(
                 'plugin_url' => 'paypal-wp-button-manager',
                 'plugin_name' => 'PayPal WP Button Manager',
-                'is_paid' => false
-            ),
-            'woocommerce-price-per-word' => array(
-                'plugin_url' => 'woo-price-per-word',
-                'plugin_name' => 'WooCommerce Price Per Word',
                 'is_paid' => false
             ),
             'angelleye-updater' => array(

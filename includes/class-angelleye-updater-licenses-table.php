@@ -10,31 +10,86 @@ if (!class_exists('WP_List_Table')) {
 class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
 
     public $per_page = 100;
-	public $data;
+    public $data;
+    
+    public $angelleye_plugin_more_info_page;
+
     /**
      * Constructor.
      * @since  1.0.0
      */
-    public function __construct( $args = array() ) {
-		global $status, $page;
+    public function __construct($args = array()) {
+        global $status, $page;
 
-		parent::__construct( array(
-			 'singular'  => 'license',     //singular name of the listed records
-			  'plural'    => 'licenses',   //plural name of the listed records
-			  'ajax'      => false        //does this table support ajax?
-		) );
-		$status = 'all';
+        parent::__construct(array(
+            'singular' => 'license', //singular name of the listed records
+            'plural' => 'licenses', //plural name of the listed records
+            'ajax' => false        //does this table support ajax?
+        ));
+        $status = 'all';
 
-		$page = $this->get_pagenum();
+        $page = $this->get_pagenum();
 
-		$this->data = array();
+        $this->data = array();
 
-		// Make sure this file is loaded, so we have access to plugins_api(), etc.
-		require_once( ABSPATH . '/wp-admin/includes/plugin-install.php' );
+        $this->angelleye_plugin_more_info_page = array(
+            'paypal-ipn-for-wordpress-forwarder' => array(
+                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-ipn-forwarder/'
+            ),
+            'offers-for-woocommerce-wc-vendors' => array(
+                'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce-wc-vendors/'
+            ),
+            'woo-paypal-ratenzahlung' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-ratenzahlung-for-woocommerce/'
+            ),
+            'paypal-for-woocommerce-multi-account-management' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-multi-account-management/'
+            ),
+            'woo-paypal-plus' => array(
+                'web_page' => 'https://www.angelleye.com/product/woocommerce-paypal-plus-plugin/'
+            ),
+            'paypal-ipn-for-wordpress-mailchimp' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-ipn-for-wordpress-paypal-mailchimp-plugin/'
+            ),
+            'offers-for-woocommerce' => array(
+                'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce/'
+            ),
+            'paypal-ipn' => array(
+                'web_page' => 'https://www.angelleye.com/paypal-ipn-update-notice-info/'
+            ),
+            'angelleye-paypal-for-divi' => array(
+                'web_page' => 'https://www.angelleye.com/product/divi-paypal-module-plugin/'
+            ),
+            'paypal-for-woocommerce' => array(
+                'web_page' => 'https://www.angelleye.com/product/woocommerce-paypal-plugin/'
+            ),
+            'woo-paypal-here' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-here-woocommerce-pos/'
+            ),
+            'angelleye-paypal-invoicing' => array(
+                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-invoice-plugin/'
+            ),
+            'paypal-security' => array(
+                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-security/'
+            ),
+            'paypal-wp-button-manager' => array(
+                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-button-manager/'
+            ),
+            'angelleye-updater' => array(
+                'web_page' => 'https://www.angelleye.com/how-to-get-updates-angelleye-wordpress-plugins/'
+            ),
+            'angelleye-gravity-forms-braintree' => array(
+                'web_page' => 'https://www.angelleye.com/product/gravity-forms-braintree-payments/'
+            ),
+        );
 
-		parent::__construct( $args );
-	} // End __construct()
+        // Make sure this file is loaded, so we have access to plugins_api(), etc.
+        require_once( ABSPATH . '/wp-admin/includes/plugin-install.php' );
 
+        parent::__construct($args);
+    }
+
+// End __construct()
     // End __construct()
 
     /**
@@ -115,10 +170,10 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
      * @return string       The content of this column.
      */
     public function column_license_key($item) {
-        if( isset($item['license_key']) && !empty($item['license_key']) ) {
+        if (isset($item['license_key']) && !empty($item['license_key'])) {
             return wpautop($item['license_key']);
         } else {
-            if($item['is_paid'] == true) {
+            if ($item['is_paid'] == true) {
                 $response = '';
                 $response .= '<input name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(__('Enter license key here', 'angelleye-updater')) . '" />' . "\n";
                 return $response;
@@ -158,16 +213,15 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             return AU_EMPTY_ACTION_TEXT;
         }
     }
-    
-     public function column_plugin_status($item) {
-         if($item['plugin_status'] == 'Not Installed') {
-             $more_info = sprintf( '<a class="" href="%s" target="_blank">%s</a>', 'https://www.angelleye.com/' . $item['product_id'] . '-update-notice-info/' , __( 'More Info', 'angelleye-updater' ) );
-             return '<span class="red-font">' . $item['plugin_status'] . '</span>' . str_repeat('&nbsp;', 2) . $more_info;
-         } else {
-             return '<span class="green-font">' . $item['plugin_status'] . '</span>';
-         }
-         
-     }
+
+    public function column_plugin_status($item) {
+        if ($item['plugin_status'] == 'Not Installed') {
+            $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('More Info', 'angelleye-updater'));
+            return '<span class="red-font">' . $item['plugin_status'] . '</span>' . str_repeat('&nbsp;', 2) . $more_info;
+        } else {
+            return '<span class="green-font">' . $item['plugin_status'] . '</span>';
+        }
+    }
 
     // End column_status()
 

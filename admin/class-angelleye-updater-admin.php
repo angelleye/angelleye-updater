@@ -684,11 +684,20 @@ class AngellEYE_Updater_Admin {
             if (!in_array($v, $product_keys)) {
 
                 // Perform API "activation" request.
-                $activate = $this->api->activate($products[$k], $product_keys[$k]['product_id'], $k);
+                $product_id = '';
+                if(isset($product_keys[$k]['product_id']) && !empty($product_keys[$k]['product_id'])) {
+                    $product_id = $product_keys[$k]['product_id'];
+                } else {
+                    $plugin_data = get_plugin_data($k);
+                    if( !empty($plugin_data)) {
+                        $product_id = $plugin_data['TextDomain'];
+                    }
+                }
+                $activate = $this->api->activate($products[$k], $product_id, $k);
 
                 if (true == $activate) {
                     // key: base file, 0: product id, 1: file_id, 2: hashed license.
-                    $already_active[$k] = array($product_keys[$k]['product_id'], $product_keys[$k]['file_id'], $products[$k]);
+                    $already_active[$k] = array($product_id, '101', $products[$k]);
                     $has_update = true;
                 }
             }
@@ -845,5 +854,189 @@ class AngellEYE_Updater_Admin {
     
     public function angelleye_add_plugin_updater_plugin($response) {
         
+    }
+    
+    public function angelleye_get_plugin_list() {
+        $this->angelleye_plugin_info = array(
+            'paypal-ipn-for-wordpress-forwarder' => array(
+                'plugin_url' => 'paypal-ipn-for-wordpress-forwarder',
+                'plugin_name' => 'PayPal IPN for WordPress - Forwarder',
+                'is_paid' => true
+            ),
+            'offers-for-woocommerce-wc-vendors' => array(
+                'plugin_url' => 'offers-for-woocommerce-wc-vendors',
+                'plugin_name' => 'Offers for WooCommerce - WC Vendors',
+                'is_paid' => true
+            ),
+            'woo-paypal-ratenzahlung' => array(
+                'plugin_url' => 'woo-paypal-ratenzahlung',
+                'plugin_name' => 'PayPal Ratenzahlung for WooCommerce',
+                'is_paid' => true
+            ),
+            'paypal-for-woocommerce-multi-account-management' => array(
+                'plugin_url' => 'paypal-for-woocommerce-multi-account-management',
+                'plugin_name' => 'PayPal for WooCommerce Multi-Account Management',
+                'is_paid' => true
+            ),
+            'woo-paypal-plus' => array(
+                'plugin_url' => 'woo-paypal-plus',
+                'plugin_name' => 'PayPal Plus for WooCommerce',
+                'is_paid' => true
+            ),
+            'paypal-ipn-for-wordpress-mailchimp' => array(
+                'plugin_url' => 'paypal-ipn-for-wordpress-mailchimp',
+                'plugin_name' => 'PayPal IPN for WordPress - MailChimp',
+                'is_paid' => true
+            ),
+            'offers-for-woocommerce' => array(
+                'plugin_url' => 'offers-for-woocommerce',
+                'plugin_name' => 'Offers for WooCommerce',
+                'is_paid' => true
+            ),
+            'paypal-ipn' => array(
+                'plugin_url' => 'paypal-ipn',
+                'plugin_name' => 'PayPal IPN for WordPress',
+                'is_paid' => true
+            ),
+            'angelleye_paypal_divi' => array(
+                'plugin_url' => 'angelleye-paypal-for-divi',
+                'plugin_name' => 'PayPal for Divi',
+                'is_paid' => false
+            ),
+            'paypal-for-woocommerce' => array(
+                'plugin_url' => 'paypal-for-woocommerce',
+                'plugin_name' => 'PayPal for WooCommerce',
+                'is_paid' => false
+            ),
+            'woo-paypal-here' => array(
+                'plugin_url' => 'woo-paypal-here',
+                'plugin_name' => 'PayPal Here for WooCommerce',
+                'is_paid' => false
+            ),
+            'angelleye-paypal-invoicing' => array(
+                'plugin_url' => 'angelleye-paypal-invoicing',
+                'plugin_name' => 'PayPal Invoicing for WordPress',
+                'is_paid' => false
+            ),
+            'paypal-security' => array(
+                'plugin_url' => 'paypal-security',
+                'plugin_name' => 'PayPal Security',
+                'is_paid' => false
+            ),
+            'paypal-wp-button-manager' => array(
+                'plugin_url' => 'paypal-wp-button-manager',
+                'plugin_name' => 'PayPal WP Button Manager',
+                'is_paid' => false
+            ),
+            'angelleye-updater' => array(
+                'plugin_url' => 'angelleye-updater',
+                'plugin_name' => 'Angell EYE Updater',
+                'is_paid' => false
+            ),
+            'angelleye-gravity-forms-braintree' => array(
+                'plugin_url' => 'angelleye-gravity-forms-braintree',
+                'plugin_name' => 'Gravity Forms Braintree Payments',
+                'is_paid' => false
+            ),
+        );
+        $angelleye_plugin_full_list = $this->angelleye_plugin_info;
+        $response = array();
+        $angelleye_activated_plugin_list = $this->get_activated_products();
+        if( !empty($angelleye_activated_plugin_list)) {
+            foreach ($angelleye_activated_plugin_list as $activated_plugin_key => $activated_plugin_value) {
+                unset($angelleye_plugin_full_list[$activated_plugin_value[0]]);
+                $key = $activated_plugin_value[0];
+                $angelleye_plugin_full_list = array($key => $this->angelleye_plugin_info[$key]) + $angelleye_plugin_full_list;
+            }
+        }
+        foreach ($angelleye_plugin_full_list as $plugin_key => $v) {
+            $is_insatlled = $this->angelleye_is_plugin_installed($plugin_key);
+            $version = '2.0.0';
+            $product_status = 'in-active';
+            $license_key = '';
+            $plugin_status = 'Not Installed';
+            $product_file_path = '';
+            if($is_insatlled) {
+                $plugin_status = 'Installed';
+                $version = $this->angelleye_get_plugin_version($v['plugin_url']);
+                $is_key_active = $this->angelleye_is_key_activated($v['plugin_url']);
+                if($is_key_active) {
+                    $license_key = $is_key_active[2];
+                    $product_status = 'active';
+                    $plugin_status = 'Activated';
+                } else {
+                    $license_key = '';
+                    $product_status = 'in-active';
+                }
+                $product_file_path = $this->angelleye_get_product_file_path($v['plugin_url']);
+            } 
+            $response[$plugin_key] = array('product_name' => $v['plugin_name'], 'product_version' => $version, 'file_id' => 999, 'product_id' => $v['plugin_url'], 'product_status' => $product_status, 'product_file_path' => $product_file_path, 'license_key' => $license_key, 'is_paid' => $v['is_paid'], 'plugin_status' => $plugin_status);
+        }
+        return $response;
+    }
+    
+    public function angelleye_is_plugin_installed($plugin_name) {
+        $plugins = get_plugins();
+        if(!empty($plugins)) {
+            foreach ($plugins as $key => $value) {
+                if($value['TextDomain'] == $plugin_name) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public function angelleye_get_plugin_version($plugin_name) {
+        $plugins = get_plugins();
+        if(!empty($plugins)) {
+            foreach ($plugins as $key => $value) {
+                if($value['TextDomain'] == $plugin_name) {
+                    return $value['Version'];
+                }
+            }
+        }
+        return '2.0.0';
+    }
+    
+    public function angelleye_is_key_activated($product_id) {
+        $activated_products = $this->get_activated_products();
+        if( !empty($activated_products)) {
+            foreach ($activated_products as $key => $value) {
+                if($value[0] == $product_id ) {
+                    return $value;
+                }
+            }
+        } else {
+            return false;
+        }
+        
+        
+    }
+    
+    public function angelleye_get_product_file_path($product_id) {
+        $plugins = get_plugins();
+        if(!empty($plugins)) {
+            foreach ($plugins as $key => $value) {
+                if($value['TextDomain'] == $product_id) {
+                    return $key;
+                }
+            }
+        }
+        return $product_id;
+    }
+    
+    public function angelleye_is_plugin_activated($product_id) {
+        $active_plugins = get_option('active_plugins');
+        $plugins = get_plugins();
+        if(!empty($plugins)) {
+            foreach ($plugins as $key => $value) {
+                if($value['TextDomain'] == $product_id) {
+                    if(in_array($key, $active_plugins)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

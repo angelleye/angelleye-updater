@@ -58,7 +58,12 @@ if (!defined('AU_PLUGIN_URL')) {
 if (!defined('AU_PLUGIN_BASENAME')) {
     define('AU_PLUGIN_BASENAME', plugin_basename(__FILE__));
 }
-
+if (!defined('AU_FREE_LICENSE_KEY_TEXT')) {
+    define('AU_FREE_LICENSE_KEY_TEXT', __('N/A', 'angelleye-updater'));
+}
+if (!defined('AU_EMPTY_ACTION_TEXT')) {
+    define('AU_EMPTY_ACTION_TEXT', __('N/A', 'angelleye-updater'));
+}
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-angelleye-updater-activator.php
@@ -107,3 +112,5 @@ add_action( 'plugins_loaded', 'angelleye_updater_load', 99 );
 function angelleye_updater_load() {
 	run_angelleye_updater();
 }
+
+

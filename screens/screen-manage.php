@@ -9,7 +9,7 @@
             <?php
             require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-licenses-table.php';
             $this->list_table = new AngellEYE_Updater_Licenses_Table();
-            $this->list_table->data = $this->get_detected_products();
+            $this->list_table->data = $this->angelleye_get_plugin_list();
             $this->list_table->prepare_items();
             $this->list_table->display();
             wp_nonce_field( 'angelleye-activate-license', 'angelleye-helper-nonce' ); 

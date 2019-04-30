@@ -25,6 +25,7 @@ class AngellEYE_Updater {
      * @var      AngellEYE_Updater_Loader    $loader    Maintains and registers all hooks for the plugin.
      */
     protected $loader;
+    public $angelleye_plugin_more_info_page;
 
     /**
      * The unique identifier of this plugin.
@@ -64,6 +65,57 @@ class AngellEYE_Updater {
 
         $this->plugin_name = 'angelleye-updater';
         $this->version = '2.0.0';
+
+        $this->angelleye_plugin_more_info_page = array(
+            'paypal-ipn-for-wordpress-forwarder' => array(
+                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-ipn-forwarder/'
+            ),
+            'offers-for-woocommerce-wc-vendors' => array(
+                'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce-wc-vendors/'
+            ),
+            'woo-paypal-ratenzahlung' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-ratenzahlung-for-woocommerce/'
+            ),
+            'paypal-for-woocommerce-multi-account-management' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-multi-account-management/'
+            ),
+            'woo-paypal-plus' => array(
+                'web_page' => 'https://www.angelleye.com/product/woocommerce-paypal-plus-plugin/'
+            ),
+            'paypal-ipn-for-wordpress-mailchimp' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-ipn-for-wordpress-paypal-mailchimp-plugin/'
+            ),
+            'offers-for-woocommerce' => array(
+                'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce/'
+            ),
+            'paypal-ipn' => array(
+                'web_page' => 'https://www.angelleye.com/paypal-ipn-update-notice-info/'
+            ),
+            'angelleye_paypal_divi' => array(
+                'web_page' => 'https://www.angelleye.com/product/divi-paypal-module-plugin/'
+            ),
+            'paypal-for-woocommerce' => array(
+                'web_page' => 'https://www.angelleye.com/product/woocommerce-paypal-plugin/'
+            ),
+            'woo-paypal-here' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-here-woocommerce-pos/'
+            ),
+            'angelleye-paypal-invoicing' => array(
+                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-invoice-plugin/'
+            ),
+            'paypal-security' => array(
+                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-security/'
+            ),
+            'paypal-wp-button-manager' => array(
+                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-button-manager/'
+            ),
+            'angelleye-updater' => array(
+                'web_page' => 'https://www.angelleye.com/how-to-get-updates-angelleye-wordpress-plugins/'
+            ),
+            'angelleye-gravity-forms-braintree' => array(
+                'web_page' => 'https://www.angelleye.com/product/gravity-forms-braintree-payments/'
+            ),
+        );
 
         $this->load_dependencies();
         $this->set_locale();
@@ -315,7 +367,8 @@ class AngellEYE_Updater {
      */
     public function angelleye_need_license_message($plugin_data, $r) {
         if (empty($r->package)) {
-            echo wp_kses_post( '<div class="angelleye-updater-plugin-upgrade-notice">' . __( 'To enable this update please activate your '.AU_COMPANY_NAME.' license by visiting the Dashboard > '.AU_COMPANY_NAME.' Helper screen.', 'angelleye-updater' ) . '</div>' );
+            $more_info = sprintf( '<a href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$plugin_data['TextDomain']]['web_page']) ? $this->angelleye_plugin_more_info_page[$plugin_data['TextDomain']]['web_page'] : '' , __( 'More Info', 'angelleye-updater' ) );
+            echo wp_kses_post( '<div class="angelleye-updater-plugin-upgrade-notice">' . __( 'To enable this update please activate your '.AU_COMPANY_NAME.' license by visiting the Dashboard > '.AU_COMPANY_NAME.' Helper screen. ', 'angelleye-updater' ) . $more_info . '</div>' );
         }
     }
 

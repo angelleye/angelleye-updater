@@ -59,7 +59,7 @@ if (!defined('AU_PLUGIN_BASENAME')) {
     define('AU_PLUGIN_BASENAME', plugin_basename(__FILE__));
 }
 if (!defined('AU_FREE_LICENSE_KEY_TEXT')) {
-    define('AU_FREE_LICENSE_KEY_TEXT', __('Free plugin : license key not required', 'angelleye-updater'));
+    define('AU_FREE_LICENSE_KEY_TEXT', __('N/A', 'angelleye-updater'));
 }
 if (!defined('AU_EMPTY_ACTION_TEXT')) {
     define('AU_EMPTY_ACTION_TEXT', __('N/A', 'angelleye-updater'));

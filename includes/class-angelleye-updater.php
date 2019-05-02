@@ -89,7 +89,7 @@ class AngellEYE_Updater {
                 'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce/'
             ),
             'paypal-ipn' => array(
-                'web_page' => 'https://www.angelleye.com/paypal-ipn-update-notice-info/'
+                'web_page' => 'https://www.angelleye.com/product/paypal-ipn-wordpress/'
             ),
             'angelleye_paypal_divi' => array(
                 'web_page' => 'https://www.angelleye.com/product/divi-paypal-module-plugin/'

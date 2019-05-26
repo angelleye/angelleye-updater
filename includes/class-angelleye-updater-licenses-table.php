@@ -81,6 +81,9 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             'angelleye-gravity-forms-braintree' => array(
                 'web_page' => 'https://www.angelleye.com/product/gravity-forms-braintree-payments/'
             ),
+            'angelleye-paypal-webhooks' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-webhooks-for-wordpress/'
+            ),
         );
 
         // Make sure this file is loaded, so we have access to plugins_api(), etc.

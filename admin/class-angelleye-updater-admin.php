@@ -938,6 +938,11 @@ class AngellEYE_Updater_Admin {
                 'plugin_name' => 'Gravity Forms Braintree Payments',
                 'is_paid' => false
             ),
+            'angelleye-paypal-webhooks' => array(
+                'plugin_url' => 'angelleye-paypal-webhooks',
+                'plugin_name' => 'PayPal Webhooks for WordPress',
+                'is_paid' => true
+            ),
         );
         $angelleye_plugin_full_list = $this->angelleye_plugin_info;
         $response = array();

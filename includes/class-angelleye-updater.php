@@ -115,6 +115,9 @@ class AngellEYE_Updater {
             'angelleye-gravity-forms-braintree' => array(
                 'web_page' => 'https://www.angelleye.com/product/gravity-forms-braintree-payments/'
             ),
+            'angelleye-paypal-webhooks' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-webhooks-for-wordpress/'
+            ),
         );
 
         $this->load_dependencies();

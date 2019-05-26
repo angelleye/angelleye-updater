@@ -18,6 +18,9 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
+= 2.0.6 - 05.26.2019 =
+* Tweak - Adjusts more info link for Offers and IPN plugins. ([AEU-69](https://github.com/angelleye/angelleye-updater/pull/6))
+
 = 2.0.5 - 04.30.2019 =
 * Feature - Adds icons / banners to update screens. ([AEU-67](https://github.com/angelleye/angelleye-updater/pull/5))
 * Feature - Adds free plugins to Updater list with status details. ([AEU-64](https://github.com/angelleye/angelleye-updater/pull/4))

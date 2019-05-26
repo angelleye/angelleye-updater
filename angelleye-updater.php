@@ -6,7 +6,7 @@
  * Plugin Name:       Angell EYE Updater
  * Plugin URI:        http://www.angelleye.com/
  * Description:       Manage activations and updates for premium extensions to Angell EYE plugins.
- * Version:           2.0.5
+ * Version:           2.0.6
  * Author:            Angell EYE
  * Author URI:        http://www.angelleye.com/
  * License:           GNU General Public License v3.0

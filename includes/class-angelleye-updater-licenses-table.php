@@ -52,10 +52,10 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
                 'web_page' => 'https://www.angelleye.com/product/paypal-ipn-for-wordpress-paypal-mailchimp-plugin/'
             ),
             'offers-for-woocommerce' => array(
-                'web_page' => 'https://www.angelleye.com/offers-for-woocommerce-update-notice-info'
+                'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce/'
             ),
             'paypal-ipn' => array(
-                'web_page' => 'https://www.angelleye.com/paypal-ipn-update-notice-info/'
+                'web_page' => 'https://www.angelleye.com/product/paypal-ipn-wordpress/'
             ),
             'angelleye-paypal-for-divi' => array(
                 'web_page' => 'https://www.angelleye.com/product/divi-paypal-module-plugin/'

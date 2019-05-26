@@ -145,11 +145,11 @@ class AngellEYE_Updater_Update_Checker {
      * @since  1.0.0
      * @return object $response
      */
-    public function plugin_information($false, $action, $args) {
+    public function plugin_information($response, $action, $args) {
         $transient = get_site_transient('update_plugins');
         // Check if this plugins API is about this plugin
         if (!isset($args->slug) || ( $args->slug != $this->product_id )) {
-            return $false;
+            return $response;
         }
         
         // POST data to send to your API
@@ -262,11 +262,11 @@ class AngellEYE_Updater_Update_Checker {
                     if ( is_plugin_active( $hook_extra['plugin'] ) ) {
                         $this->angelleye_make_auto_active_plugin($hook_extra['plugin'], $result['destination_name'] .'/'. $plugin_folder_path_php_file);
                     } 
-                    return $result;
+                    return $true;
                 }
             }
         }
-        return $result;
+        return $true;
     }
     
     public function angelleye_make_auto_active_plugin($old_plugin_path, $new_plugin_path) {

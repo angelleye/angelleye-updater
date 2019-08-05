@@ -84,6 +84,9 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             'angelleye-paypal-webhooks' => array(
                 'web_page' => 'https://www.angelleye.com/product/paypal-webhooks-for-wordpress/'
             ),
+            'woocommerce-price-per-word' => array(
+                'web_page' => 'https://www.angelleye.com/product/woocommerce-price-per-word/'
+            ),
         );
 
         // Make sure this file is loaded, so we have access to plugins_api(), etc.

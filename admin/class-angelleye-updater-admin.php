@@ -943,6 +943,11 @@ class AngellEYE_Updater_Admin {
                 'plugin_name' => 'PayPal Webhooks for WordPress',
                 'is_paid' => true
             ),
+            'woocommerce-price-per-word' => array(
+                'plugin_url' => 'woocommerce-price-per-word',
+                'plugin_name' => 'WooCommerce Price Per Word',
+                'is_paid' => true
+            ),
         );
         $angelleye_plugin_full_list = $this->angelleye_plugin_info;
         $response = array();

@@ -18,7 +18,7 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 == Changelog ==
 
-= 2.0.7 - 08.12.2019 =
+= 2.0.7 - 08.19.2019 =
 * Feature - Adds Price Per Word to the updater system. ([AEU-87](https://github.com/angelleye/angelleye-updater/pull/9))
 
 = 2.0.6 - 05.26.2019 =

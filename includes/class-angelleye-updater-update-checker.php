@@ -64,7 +64,7 @@ class AngellEYE_Updater_Update_Checker {
         add_filter('pre_set_site_transient_update_plugins', array($this, 'update_check'), 20, 1);
 
         // Check For Plugin Information
-        add_filter('plugins_api', array($this, 'plugin_information'), 0, 3);
+        add_filter('plugins_api', array($this, 'plugin_information'), 20, 3);
         add_filter( "upgrader_post_install", array( $this, "angelleye_post_install" ), 20, 3 );
     }
 

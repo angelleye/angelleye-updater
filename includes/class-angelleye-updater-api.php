@@ -179,6 +179,12 @@ class AngellEYE_Updater_API {
         
         $supported_methods = array('check', 'activation', 'deactivation', 'pingback', 'pluginupdatecheck', 'check_product_license_key_status');
         $supported_params = array('license_key', 'file_id', 'product_id', 'domain_name', 'license_hash', 'plugin_name', 'theme_name', 'version');
+        $require_clean_cache = array('activation', 'deactivation');
+        
+        if(in_array($method, $require_clean_cache)) {
+            delete_transient('license_key_status_check');
+            delete_site_transient( 'update_plugins' );
+        }
 
         $defaults = array(
             'method' => strtoupper($method),

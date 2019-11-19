@@ -1,6 +1,9 @@
 <?php if (!defined('ABSPATH')) exit; // Exit if accessed directly    ?>
 
 <div id="col-container" class="about-wrap">
+    <div class="ag-helper">
+        <a class="button button-update" href="<?php echo esc_url( $refresh_url ); ?>"><span class="dashicons dashicons-image-rotate"></span> <?php _e( 'Update', 'woocommerce' ); ?></a>
+    </div>
    
     <div class="col-wrap">
         <form id="activate-products" method="post" action="" class="validate">

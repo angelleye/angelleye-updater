@@ -80,11 +80,13 @@ class AngellEYE_Updater_Update_Checker {
      */
     public function update_check($transient) {
 
+        
         // Check if the transient contains the 'checked' information
         // If no, just return its value without hacking it
         if (empty($transient->checked))
             return $transient;
 
+        delete_transient('license_key_status_check');
         // The transient contains the 'checked' information
         // Now append to it information form your own API
         $args = array(

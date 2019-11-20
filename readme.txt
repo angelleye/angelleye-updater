@@ -3,8 +3,8 @@ Contributors: angelleye
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9CQZZGGMF78VY
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
-Tested up to: 5.2.2
-Stable tag: 2.0.7
+Tested up to: 5.3
+Stable tag: 2.0.8
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +17,9 @@ Manage activations and updates for Angell EYE plugins.
 Activate your product licenses with Angell EYE to enable automatic updates through the WordPress -> Plugins control panel.
 
 == Changelog ==
+
+= 2.0.8 - 11.20.2019 =
+* Feature - Adds PayPal WP Button Manager to the updater system. ([AEU-88](https://github.com/angelleye/angelleye-updater/pull/10))
 
 = 2.0.7 - 08.19.2019 =
 * Feature - Adds Price Per Word to the updater system. ([AEU-87](https://github.com/angelleye/angelleye-updater/pull/9))

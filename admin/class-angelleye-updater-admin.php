@@ -934,7 +934,7 @@ class AngellEYE_Updater_Admin {
             'paypal-wp-button-manager' => array(
                 'plugin_url' => 'paypal-wp-button-manager',
                 'plugin_name' => 'PayPal WP Button Manager',
-                'is_paid' => false
+                'is_paid' => true
             ),
             'angelleye-updater' => array(
                 'plugin_url' => 'angelleye-updater',

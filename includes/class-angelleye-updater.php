@@ -64,7 +64,7 @@ class AngellEYE_Updater {
     public function __construct($file) {
 
         $this->plugin_name = 'angelleye-updater';
-        $this->version = '2.0.7';
+        $this->version = '2.0.8';
 
         $this->angelleye_plugin_more_info_page = array(
             'paypal-ipn-for-wordpress-forwarder' => array(

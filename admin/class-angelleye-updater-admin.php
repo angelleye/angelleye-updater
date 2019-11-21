@@ -1062,9 +1062,8 @@ class AngellEYE_Updater_Admin {
         if(isset($_GET['cache-refresh'])) {
             delete_transient('license_key_status_check');
             delete_site_transient( 'update_plugins' );
+            delete_site_option('angelleye_helper_dismiss_activation_notice');
             echo '<div id="message" class="updated"><p><strong>' . esc_html( __( 'Caches refreshed successfully.', 'angelleye-updater' ) ) . '</strong></p></div>';
-            $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php'));
-            //wp_redirect($url);
         }
     }
 }

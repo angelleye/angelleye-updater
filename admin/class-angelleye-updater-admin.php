@@ -101,7 +101,7 @@ class AngellEYE_Updater_Admin {
 
         add_action('angelleye_updater_license_screen_before', array($this, 'ensure_keys_are_actually_active'));
         
-        add_action('angelleye_updater_license_screen_before', array($this, 'angelleye_cache_refresh'), 5);
+        add_action('admin_init', array($this, 'angelleye_cache_refresh'), 5);
 
         add_action('wp_ajax_angelleye_activate_license_keys', array($this, 'ajax_process_request'));
         add_action('admin_notices', array($this, 'angelleye_check_product_license_key_status'));

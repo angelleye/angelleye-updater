@@ -696,7 +696,7 @@ class AngellEYE_Updater_Admin {
                 if(isset($product_keys[$k]['product_id']) && !empty($product_keys[$k]['product_id'])) {
                     $product_id = $product_keys[$k]['product_id'];
                 } else {
-                    $plugin_data = get_plugin_data($k);
+                    $plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $k);
                     if( !empty($plugin_data)) {
                         $product_id = $plugin_data['TextDomain'];
                     }

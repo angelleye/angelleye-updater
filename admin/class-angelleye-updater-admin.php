@@ -761,6 +761,7 @@ class AngellEYE_Updater_Admin {
                         }
                     }
                 }
+            }
 
             if ($deactivated) {
                 unset($already_active[$filename]);

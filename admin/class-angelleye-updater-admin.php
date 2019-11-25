@@ -745,7 +745,22 @@ class AngellEYE_Updater_Admin {
                 if (false == $local_only) {
                     $deactivated = $this->api->deactivate($key);
                 }
-            }
+            } else {
+                $plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $filename);
+                if( !empty($plugin_data)) {
+                    $product_id = $plugin_data['TextDomain'];
+                }
+                if( !empty($product_id)) {
+                    foreach ($already_active as $key => $value) {
+                        if(isset($value[0]) && $value[0] == $product_id ) {
+                            $filename = $key;
+                            if (false == $local_only) {
+                                $deactivated = $this->api->deactivate($value[2]);
+                            }
+                            break;
+                        }
+                    }
+                }
 
             if ($deactivated) {
                 unset($already_active[$filename]);

@@ -1063,7 +1063,7 @@ class AngellEYE_Updater_Admin {
             delete_transient('license_key_status_check');
             delete_site_transient( 'update_plugins' );
             delete_site_option('angelleye_helper_dismiss_activation_notice');
-            echo '<div id="message" class="updated"><p><strong>' . esc_html( __( 'Caches refreshed successfully.', 'angelleye-updater' ) ) . '</strong></p></div>';
+            echo '<div id="message" class="updated notice is-dismissible"><p><strong>' . esc_html( __( 'Caches refreshed successfully.', 'angelleye-updater' ) ) . '</strong></p></div>';
         }
     }
 }

@@ -147,6 +147,13 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function maybe_display_activation_notice() {
+        
+        $angelleye_helper_fresh_notice = get_transient( 'angelleye_helper_fresh_notice');
+        if( !empty($angelleye_helper_fresh_notice)) {
+            echo $angelleye_helper_fresh_notice;
+            delete_transient('angelleye_helper_fresh_notice');
+        }
+        
         if (isset($_GET['page']) && 'angelleye-helper' == $_GET['page'])
             return;
         if (!current_user_can('manage_options'))
@@ -851,8 +858,14 @@ class AngellEYE_Updater_Admin {
                          $message = $this->api->check_product_license_key_status($value[2]);
                          if( !empty($message->message) ) {
                             $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php')); 
-                            $dismiss_url = add_query_arg('action', 'angelleye-helper-expired-notice-dismiss', add_query_arg('nonce', wp_create_nonce('angelleye-helper-expired-notice-dismiss')), $url);
-                            $dismiss_url = add_query_arg('product', $message->product_id, $dismiss_url);
+                            
+                            $dismiss_url = add_query_arg( array(
+                                            'screen' => 'licenses',
+                                            'action' => 'angelleye-helper-expired-notice-dismiss',
+                                            'nonce' => wp_create_nonce('angelleye-helper-expired-notice-dismiss'),
+                                            'product' => $message->product_id
+                                        ), $url );
+                            
                             $notice = '<div class="notice notice-error"><p class="alignleft">' . sprintf(__($message->message, 'angelleye-updater')) . '</p><p class="alignright"><a href="' . esc_url($dismiss_url) . '">' . __('Dismiss', 'angelleye-updater') . '</a></p><div class="clear"></div></div>' . "\n"; 
                             $notice_array[$message->product_id] = $notice;
                             echo $notice;
@@ -1080,7 +1093,12 @@ class AngellEYE_Updater_Admin {
             delete_transient('license_key_status_check');
             delete_site_transient( 'update_plugins' );
             delete_site_option('angelleye_helper_dismiss_activation_notice');
-            echo '<div id="message" class="updated notice is-dismissible"><p><strong>' . esc_html( __( 'Caches refreshed successfully.', 'angelleye-updater' ) ) . '</strong></p></div>';
+            $angelleye_helper_fresh_notice = '<div id="message" class="updated notice is-dismissible"><p><strong>' . esc_html( __( 'Caches refreshed successfully.', 'angelleye-updater' ) ) . '</strong></p></div>';
+            set_transient( 'angelleye_helper_fresh_notice', $angelleye_helper_fresh_notice, HOUR_IN_SECONDS );
+            $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php')); 
+            $dismiss_url = add_query_arg( 'screen', 'licenses', $url );
+            wp_redirect($dismiss_url);
+            exit();
         }
     }
 }

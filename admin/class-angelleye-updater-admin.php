@@ -850,7 +850,8 @@ class AngellEYE_Updater_Admin {
                     if( !empty($value[2])) {
                          $message = $this->api->check_product_license_key_status($value[2]);
                          if( !empty($message->message) ) {
-                            $dismiss_url = add_query_arg('action', 'angelleye-helper-expired-notice-dismiss', add_query_arg('nonce', wp_create_nonce('angelleye-helper-expired-notice-dismiss')));
+                            $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php')); 
+                            $dismiss_url = add_query_arg('action', 'angelleye-helper-expired-notice-dismiss', add_query_arg('nonce', wp_create_nonce('angelleye-helper-expired-notice-dismiss')), $url);
                             $dismiss_url = add_query_arg('product', $message->product_id, $dismiss_url);
                             $notice = '<div class="notice notice-error"><p class="alignleft">' . sprintf(__($message->message, 'angelleye-updater')) . '</p><p class="alignright"><a href="' . esc_url($dismiss_url) . '">' . __('Dismiss', 'angelleye-updater') . '</a></p><div class="clear"></div></div>' . "\n"; 
                             $notice_array[$message->product_id] = $notice;

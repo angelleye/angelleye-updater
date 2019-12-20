@@ -179,7 +179,13 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         if (isset($item['license_key']) && !empty($item['license_key'])) {
             return wpautop($item['license_key']);
         } else {
-            if ($item['is_paid'] == true) {
+            if ($item['is_paid'] == true && $item['plugin_status'] == 'Not Installed') {
+                $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('Buy Now', 'angelleye-updater'));
+                return $more_info;
+            } if ($item['is_paid'] == false && $item['plugin_status'] == 'Not Installed') {
+                $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('Download Now', 'angelleye-updater'));
+                return $more_info;
+            } elseif ($item['is_paid'] == true) {
                 $response = '';
                 $response .= '<input name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(__('Enter license key here', 'angelleye-updater')) . '" />' . "\n";
                 return $response;

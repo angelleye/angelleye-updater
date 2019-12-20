@@ -227,9 +227,9 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
     }
 
     public function column_plugin_status($item) {
-        if ($item['plugin_status'] == 'Not Installed') {
-            $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('More Info', 'angelleye-updater'));
-            return '<span class="red-font">' . $item['plugin_status'] . '</span>' . str_repeat('&nbsp;', 2) . $more_info;
+       if ($item['plugin_status'] == 'Not Installed') {
+            $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('Read More', 'angelleye-updater'));
+            return $more_info;
         } else {
             return '<span class="green-font">' . $item['plugin_status'] . '</span>';
         }

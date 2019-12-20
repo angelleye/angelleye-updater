@@ -182,7 +182,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             if ($item['is_paid'] == true && $item['plugin_status'] == 'Not Installed') {
                 $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('Buy Now', 'angelleye-updater'));
                 return $more_info;
-            } if ($item['is_paid'] == false && $item['plugin_status'] == 'Not Installed') {
+            } elseif ($item['is_paid'] == false && $item['plugin_status'] == 'Not Installed') {
                 $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('Download Now', 'angelleye-updater'));
                 return $more_info;
             } elseif ($item['is_paid'] == true) {

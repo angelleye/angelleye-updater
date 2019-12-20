@@ -686,6 +686,7 @@ class AngellEYE_Updater_Admin {
      */
     protected function activate_products($products) {
         $response = false;
+        delete_transient('license_key_status_check');
         if (!is_array($products) || ( 0 >= count($products) )) {
             return false;
         } // Get out if we have incorrect data.

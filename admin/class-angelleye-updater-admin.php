@@ -480,15 +480,10 @@ class AngellEYE_Updater_Admin {
                     $return .= '</div>' . "\n";
                     $return_json = array('success' => 'true', 'message' => $return, 'url' => add_query_arg(array('page' => 'angelleye-helper', 'status' => 'true', 'type' => 'activate-products'), admin_url('index.php')));
                 } else {
-                    $return = '<div class="error fade">' . "\n";
-                    $return .= wpautop(__('There was an error and not all products were activated.', 'angelleye-updater'));
-                    $return .= '</div>' . "\n";
-
                     $message = '';
                     foreach ($request_errors as $k => $v) {
                         $message .= wpautop($v);
                     }
-
                     $return .= '<div class="error fade">' . "\n";
                     $return .= make_clickable($message);
                     $return .= '</div>' . "\n";

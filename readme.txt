@@ -20,6 +20,7 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 = 2.0.9 - 12.23.2019 =
 * Tweak - Improves update system performance. ([AEU-91](https://github.com/angelleye/angelleye-updater/pull/11)) [AEU-93](https://github.com/angelleye/angelleye-updater/pull/12))
+* Fix - Resolves some PHP notices. ([AEU-94](https://github.com/angelleye/angelleye-updater/pull/13))
 
 = 2.0.8 - 11.20.2019 =
 * Feature - Adds PayPal WP Button Manager to the updater system. ([AEU-88](https://github.com/angelleye/angelleye-updater/pull/10))

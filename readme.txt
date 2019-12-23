@@ -20,6 +20,7 @@ Activate your product licenses with Angell EYE to enable automatic updates throu
 
 = 2.0.9 - 12.23.2019 =
 * Tweak - Improves update system performance. ([AEU-91](https://github.com/angelleye/angelleye-updater/pull/11)) [AEU-93](https://github.com/angelleye/angelleye-updater/pull/12))
+* Tweak - Adjusts to Hide the licence key input and add buy now button. ([AEU-95](https://github.com/angelleye/angelleye-updater/pull/14))
 * Fix - Resolves some PHP notices. ([AEU-94](https://github.com/angelleye/angelleye-updater/pull/13))
 
 = 2.0.8 - 11.20.2019 =

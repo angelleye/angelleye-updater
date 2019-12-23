@@ -880,8 +880,12 @@ class AngellEYE_Updater_Admin {
                 $angelleye_helper_dismiss_activation_notice = get_site_option('angelleye_helper_dismiss_activation_notice', false);
                 foreach ($license_key_status_check as $key => $value) {
                     if($angelleye_helper_dismiss_activation_notice != false) {
-                        if(!in_array($key, $angelleye_helper_dismiss_activation_notice)) {
-                            echo $value;
+                        if(!empty($angelleye_helper_dismiss_activation_notice) && is_array($angelleye_helper_dismiss_activation_notice)) {
+                            if(!in_array($key, $angelleye_helper_dismiss_activation_notice)) {
+                                echo $value;
+                            }
+                        } else {
+                             echo $value;
                         }
                     } else {
                         echo $value;

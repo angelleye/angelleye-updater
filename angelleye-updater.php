@@ -36,9 +36,16 @@ if (!defined('AU_PLUGIN_DIR')) {
 /**
  *  define AU_WEBSITE_URL constant for global use
  */
-if (!defined('AU_WEBSITE_URL')) {    
-    define('AU_WEBSITE_URL', 'https://updates.angelleye.com/');
+if( $_SERVER['HTTP_HOST'] == 'www.aetesting.xyz' || $_SERVER['HTTP_HOST'] == 'woo.angelleye.com' ) {
+    if (!defined('AU_WEBSITE_URL')) {    
+        define('AU_WEBSITE_URL', 'https://updates.aetesting.xyz/');
+    }
+} else {
+    if (!defined('AU_WEBSITE_URL')) {    
+        define('AU_WEBSITE_URL', 'https://updates.angelleye.com/');
+    }
 }
+
 
 if (!defined('AU_COMPANY_NAME')) {
     define('AU_COMPANY_NAME', 'Angell EYE');

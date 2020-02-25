@@ -118,6 +118,9 @@ class AngellEYE_Updater {
             'angelleye-paypal-webhooks' => array(
                 'web_page' => 'https://www.angelleye.com/product/paypal-webhooks-for-wordpress/'
             ),
+             'angelleye-paypal-woocommerce-shipment-tracking' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-shipment-tracking/'
+            ),
         );
 
         $this->load_dependencies();

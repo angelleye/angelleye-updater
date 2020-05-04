@@ -948,6 +948,11 @@ class AngellEYE_Updater_Admin {
                 'plugin_name' => 'WooCommerce Price Per Word',
                 'is_paid' => true
             ),
+            'angelleye-paypal-woocommerce-shipment-tracking' => array(
+                'plugin_url' => 'angelleye-paypal-woocommerce-shipment-tracking',
+                'plugin_name' => 'PayPal Shipment Tracking For WooCoomerce',
+                'is_paid' => true
+            ),
         );
         $angelleye_plugin_full_list = $this->angelleye_plugin_info;
         $response = array();

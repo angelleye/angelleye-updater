@@ -88,7 +88,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
                 'web_page' => 'https://www.angelleye.com/product/woocommerce-price-per-word/'
             ),
             'angelleye-paypal-woocommerce-shipment-tracking' => array(
-                'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-shipment-tracking/'
+                'web_page' => 'https://www.angelleye.com/product/paypal-shipment-tracking-numbers-woocommerce/'
             ),
         );
 

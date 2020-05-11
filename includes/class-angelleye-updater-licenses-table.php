@@ -182,7 +182,13 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
         if (isset($item['license_key']) && !empty($item['license_key'])) {
             return wpautop($item['license_key']);
         } else {
-            if ($item['is_paid'] == true) {
+            if ($item['is_paid'] == true && $item['plugin_status'] == 'Not Installed') {
+                $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('Buy Now', 'angelleye-updater'));
+                return $more_info;
+            } elseif ($item['is_paid'] == false && $item['plugin_status'] == 'Not Installed') {
+                $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('Download Now', 'angelleye-updater'));
+                return $more_info;
+            } elseif ($item['is_paid'] == true) {
                 $response = '';
                 $response .= '<input name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(__('Enter license key here', 'angelleye-updater')) . '" />' . "\n";
                 return $response;
@@ -225,8 +231,8 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
 
     public function column_plugin_status($item) {
         if ($item['plugin_status'] == 'Not Installed') {
-            $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('More Info', 'angelleye-updater'));
-            return '<span class="red-font">' . $item['plugin_status'] . '</span>' . str_repeat('&nbsp;', 2) . $more_info;
+            $more_info = sprintf('<a class="" href="%s" target="_blank">%s</a>', isset($this->angelleye_plugin_more_info_page[$item['product_id']]['web_page']) ? $this->angelleye_plugin_more_info_page[$item['product_id']]['web_page'] : '' , __('Read More', 'angelleye-updater'));
+            return $more_info;
         } else {
             return '<span class="green-font">' . $item['plugin_status'] . '</span>';
         }

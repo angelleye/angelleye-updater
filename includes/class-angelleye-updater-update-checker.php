@@ -61,11 +61,11 @@ class AngellEYE_Updater_Update_Checker {
      */
     public function init() {
         // Check For Updates
-        add_filter('pre_set_site_transient_update_plugins', array($this, 'update_check'), 0);
+        add_filter('pre_set_site_transient_update_plugins', array($this, 'update_check'), 20, 1);
 
         // Check For Plugin Information
-        add_filter('plugins_api', array($this, 'plugin_information'), 0, 3);
-        add_filter( "upgrader_post_install", array( $this, "angelleye_post_install" ), 10, 3 );
+        add_filter('plugins_api', array($this, 'plugin_information'), 20, 3);
+        add_filter( "upgrader_post_install", array( $this, "angelleye_post_install" ), 20, 3 );
     }
 
 // End init()
@@ -80,6 +80,7 @@ class AngellEYE_Updater_Update_Checker {
      */
     public function update_check($transient) {
 
+        
         // Check if the transient contains the 'checked' information
         // If no, just return its value without hacking it
         if (empty($transient->checked))

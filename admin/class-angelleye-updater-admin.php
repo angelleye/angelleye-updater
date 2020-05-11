@@ -145,6 +145,13 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function maybe_display_activation_notice() {
+        
+        $angelleye_helper_fresh_notice = get_transient( 'angelleye_helper_fresh_notice');
+        if( !empty($angelleye_helper_fresh_notice)) {
+            echo $angelleye_helper_fresh_notice;
+            delete_transient('angelleye_helper_fresh_notice');
+        }
+        
         if (isset($_GET['page']) && 'angelleye-helper' == $_GET['page'])
             return;
         if (!current_user_can('manage_options'))
@@ -200,7 +207,7 @@ class AngellEYE_Updater_Admin {
      */
     public function settings_screen() {
         ?>
-        <div id="welcome-panel" class="wrap about-wrap angelleye-updater-wrap">
+        <div id="welcome-panel" class="wrap angelleye-updater-wrap">
             <h1><?php _e('Welcome to Angell EYE Updater', 'angelleye-updater'); ?></h1>
 
             <div class="about-text angelleye-helper-about-text">
@@ -465,15 +472,10 @@ class AngellEYE_Updater_Admin {
                     $return .= '</div>' . "\n";
                     $return_json = array('success' => 'true', 'message' => $return, 'url' => add_query_arg(array('page' => 'angelleye-helper', 'status' => 'true', 'type' => 'activate-products'), admin_url('index.php')));
                 } else {
-                    $return = '<div class="error fade">' . "\n";
-                    $return .= wpautop(__('There was an error and not all products were activated.', 'angelleye-updater'));
-                    $return .= '</div>' . "\n";
-
                     $message = '';
                     foreach ($request_errors as $k => $v) {
                         $message .= wpautop($v);
                     }
-
                     $return .= '<div class="error fade">' . "\n";
                     $return .= make_clickable($message);
                     $return .= '</div>' . "\n";
@@ -671,6 +673,7 @@ class AngellEYE_Updater_Admin {
      */
     protected function activate_products($products) {
         $response = false;
+        delete_transient('license_key_status_check');
         if (!is_array($products) || ( 0 >= count($products) )) {
             return false;
         } // Get out if we have incorrect data.
@@ -688,7 +691,7 @@ class AngellEYE_Updater_Admin {
                 if(isset($product_keys[$k]['product_id']) && !empty($product_keys[$k]['product_id'])) {
                     $product_id = $product_keys[$k]['product_id'];
                 } else {
-                    $plugin_data = get_plugin_data($k);
+                    $plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $k);
                     if( !empty($plugin_data)) {
                         $product_id = $plugin_data['TextDomain'];
                     }
@@ -736,6 +739,22 @@ class AngellEYE_Updater_Admin {
 
                 if (false == $local_only) {
                     $deactivated = $this->api->deactivate($key);
+                }
+            } else {
+                $plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $filename);
+                if( !empty($plugin_data)) {
+                    $product_id = $plugin_data['TextDomain'];
+                }
+                if( !empty($product_id)) {
+                    foreach ($already_active as $key => $value) {
+                        if(isset($value[0]) && $value[0] == $product_id ) {
+                            $filename = $key;
+                            if (false == $local_only) {
+                                $deactivated = $this->api->deactivate($value[2]);
+                            }
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -826,8 +845,15 @@ class AngellEYE_Updater_Admin {
                     if( !empty($value[2])) {
                          $message = $this->api->check_product_license_key_status($value[2]);
                          if( !empty($message->message) ) {
-                            $dismiss_url = add_query_arg('action', 'angelleye-helper-expired-notice-dismiss', add_query_arg('nonce', wp_create_nonce('angelleye-helper-expired-notice-dismiss')));
-                            $dismiss_url = add_query_arg('product', $message->product_id, $dismiss_url);
+                            $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php')); 
+                            
+                            $dismiss_url = add_query_arg( array(
+                                            'screen' => 'licenses',
+                                            'action' => 'angelleye-helper-expired-notice-dismiss',
+                                            'nonce' => wp_create_nonce('angelleye-helper-expired-notice-dismiss'),
+                                            'product' => $message->product_id
+                                        ), $url );
+                            
                             $notice = '<div class="notice notice-error"><p class="alignleft">' . sprintf(__($message->message, 'angelleye-updater')) . '</p><p class="alignright"><a href="' . esc_url($dismiss_url) . '">' . __('Dismiss', 'angelleye-updater') . '</a></p><div class="clear"></div></div>' . "\n"; 
                             $notice_array[$message->product_id] = $notice;
                             echo $notice;
@@ -841,9 +867,13 @@ class AngellEYE_Updater_Admin {
                 $angelleye_helper_dismiss_activation_notice = get_site_option('angelleye_helper_dismiss_activation_notice', false);
                 foreach ($license_key_status_check as $key => $value) {
                     if($angelleye_helper_dismiss_activation_notice != false) {
+                        if(!empty($angelleye_helper_dismiss_activation_notice) && is_array($angelleye_helper_dismiss_activation_notice)) {
                         if(!in_array($key, $angelleye_helper_dismiss_activation_notice)) {
                             echo $value;
                         }
+                    } else {
+                        echo $value;
+                    }
                     } else {
                         echo $value;
                     }

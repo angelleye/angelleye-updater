@@ -141,3 +141,40 @@
 .dashboard_page_angelleye-helper .green-font {
     color: green;
 }
+.ag-helper {
+    float: right;
+}
+.ag-helper .button-update, .ag-helper .button-update:hover {
+    background-color: 
+#e6e6e6;
+border-radius: 4px;
+color:
+    #333;
+    font-weight: 800;
+    font-size: 10px;
+    line-height: 20px;
+    margin-left: 6px;
+    opacity: .75;
+    padding: 3px 7px;
+    text-transform: uppercase;
+}
+.ag-helper .button, .ag-helper .button:active, .ag-helper .button:focus, .ag-helper .button:hover {
+    background-color: #955a89;
+    border-width: 0;
+    box-shadow: none;
+    border-radius: 3px;
+    color: #fff;
+    height: auto;
+    padding: 3px 14px;
+    text-align: center;
+    white-space: normal !important;
+}
+.ag-helper .button-update .dashicons, .ag-helper .button-update:hover .dashicons {
+    font-size: 12px;
+    height: 12px;
+    width: 12px;
+    vertical-align: text-bottom;
+}
+.angelleye-helper-about-text {
+    margin-top: 20px;
+}

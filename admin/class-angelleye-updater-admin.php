@@ -366,7 +366,7 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function enqueue_styles() {
-        wp_enqueue_style('angelleye-updater-admin', esc_url($this->assets_url . 'css/angelleye-updater-admin.css'), array(), '1.0.0', 'all');
+        wp_enqueue_style('angelleye-updater-admin', esc_url($this->assets_url . 'css/angelleye-updater-admin.css'), array(), AU_PLUGIN_VERSION, 'all');
     }
 
 // End enqueue_styles()

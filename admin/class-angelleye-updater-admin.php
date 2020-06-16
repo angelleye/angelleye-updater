@@ -954,7 +954,7 @@ class AngellEYE_Updater_Admin {
                 'is_paid' => true
             ),
             'angelleye-paypal-woocommerce-credit-card-split' => array(
-                'plugin_url' => 'paypal-woocommerce-credit-card-split',
+                'plugin_url' => 'angelleye-paypal-woocommerce-credit-card-split',
                 'plugin_name' => 'Split PayPal Credit Card Payment for WooCommerce',
                 'is_paid' => true
             ),

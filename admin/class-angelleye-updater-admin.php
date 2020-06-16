@@ -953,6 +953,11 @@ class AngellEYE_Updater_Admin {
                 'plugin_name' => 'PayPal Shipment Tracking For WooCoomerce',
                 'is_paid' => true
             ),
+            'angelleye-paypal-woocommerce-credit-card-split' => array(
+                'plugin_url' => 'paypal-woocommerce-credit-card-split',
+                'plugin_name' => 'Split PayPal Credit Card Payment for WooCommerce',
+                'is_paid' => true
+            ),
         );
         $angelleye_plugin_full_list = $this->angelleye_plugin_info;
         $response = array();

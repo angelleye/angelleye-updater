@@ -121,6 +121,9 @@ class AngellEYE_Updater {
             'angelleye-paypal-shipment-tracking-woocommerce' => array(
                 'web_page' => 'https://www.angelleye.com/product/paypal-shipment-tracking-numbers-woocommerce/'
             ),
+            'angelleye-paypal-woocommerce-credit-card-split' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-credit-card-split/'
+            ),
         );
 
         $this->load_dependencies();

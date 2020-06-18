@@ -16,8 +16,9 @@ class AngellEYE_Updater_Deactivator {
      * @since    1.0.0
      */
     public static function deactivate() {
-
-
+        delete_transient('license_key_status_check');
+        delete_site_transient( 'update_plugins' );
+        delete_site_option('angelleye_helper_dismiss_activation_notice');
     }
 
 }

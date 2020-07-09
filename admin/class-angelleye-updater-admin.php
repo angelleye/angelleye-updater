@@ -954,7 +954,7 @@ class AngellEYE_Updater_Admin {
             'angelleye-paypal-invoicing' => array(
                 'plugin_url' => 'angelleye-paypal-invoicing',
                 'plugin_name' => 'PayPal Invoicing for WordPress',
-                'is_paid' => false
+                'is_paid' => true
             ),
             'paypal-security' => array(
                 'plugin_url' => 'paypal-security',

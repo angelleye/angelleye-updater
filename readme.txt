@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
 Tested up to: 5.4.1
-Stable tag: 2.0.11
+Stable tag: 2.0.12
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +17,13 @@ Manage activations and updates for Angell EYE plugins.
 Activate your product licenses with Angell EYE to enable automatic updates through the WordPress -> Plugins control panel.
 
 == Changelog ==
+
+= 2.0.12 - 07.23.2020 =
+* Feature - Adds PayPal for WooCommerce - Credit Card Split Payment to the updater system. ([AEU-110](https://github.com/angelleye/angelleye-updater/pull/19))
+* Feature - Adds PayPal Invoicing for WordPress to the updater system. ([AEU-112](https://github.com/angelleye/angelleye-updater/pull/20))
+
+= 2.0.11 - 05.04.2020 =
+* Tweak - Updates plugin slug
 
 = 2.0.10 - 05.04.2020 =
 * Tweak - Adjusts product link. ([AEU-105](https://github.com/angelleye/angelleye-updater/pull/17))

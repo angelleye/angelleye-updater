@@ -90,6 +90,9 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             'angelleye-paypal-shipment-tracking-woocommerce' => array(
                 'web_page' => 'https://www.angelleye.com/product/paypal-shipment-tracking-numbers-woocommerce/'
             ),
+            'angelleye-paypal-woocommerce-credit-card-split' => array(
+                'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-credit-card-split/'
+            ),
         );
 
         // Make sure this file is loaded, so we have access to plugins_api(), etc.

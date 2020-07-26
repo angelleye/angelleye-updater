@@ -34,7 +34,7 @@ class AngellEYE_Updater_Update_Checker {
     protected $product_id;
     protected $file_id;
     protected $license_hash;
-
+	protected static $update_responses = [];
     /**
      * Constructor.
      *
@@ -79,31 +79,48 @@ class AngellEYE_Updater_Update_Checker {
      * @return object $transient
      */
     public function update_check($transient) {
-
-        
         // Check if the transient contains the 'checked' information
         // If no, just return its value without hacking it
-        if (empty($transient->checked))
-            return $transient;
+	    if (empty($transient->checked))
+		    return $transient;
 
-        // The transient contains the 'checked' information
-        // Now append to it information form your own API
-        $args = array(
-            'request' => 'pluginupdatecheck',
-            'plugin_name' => $this->file,
-            'version' => !empty($transient->checked[$this->file]) ? $transient->checked[$this->file] : '1.0.0',
-            'product_id' => $this->product_id,
-            'file_id' => $this->file_id,
-            'license_hash' => $this->license_hash,
-            'url' => esc_url(home_url('/'))
-        );
-        // Send request checking for an update
-        $response = $this->request($args);
+
+	    if(isset(self::$update_responses[$this->file])){
+		    $response = self::$update_responses[$this->file];
+	    }else {
+		    /**
+		     * Retrieve plugin information through WP function
+		     */
+		    $plugin_info_data = get_plugin_data(WP_PLUGIN_DIR . '/'. $this->file, false, false );
+		    if(!is_array($plugin_info_data) || !isset($plugin_info_data['Version'])){
+			    $response = new stdClass ();
+			    $response->slug = $this->product_id;
+			    $transient->no_update[ $this->file ] = $response;
+			    return $transient;
+		    }
+		    $current_plugin_version = !empty($plugin_info_data['Version']) ? $plugin_info_data['Version'] : '1.0.0';
+
+		    $args = array(
+			    'request'           => 'pluginupdatecheck',
+			    'plugin_name'       => $this->file,
+			    'version'           => $current_plugin_version,
+			    'product_id'        => $this->product_id,
+			    'file_id'           => $this->file_id,
+			    'license_hash'      => $this->license_hash,
+			    'url'               => esc_url(home_url('/'))
+		    );
+
+	        // Send request checking for an update
+	        $response = $this->request($args);
+
+		    //cache the response in a static variable, so that we don't make second request
+		    self::$update_responses[$this->file] = $response;
+		}
+
         // If response is false, don't alter the transient
         if (false !== $response) {
 
             if (isset($response->errors) && isset($response->errors->woo_updater_api_license_deactivated)) {
-
                 add_action('admin_notices', array($this, 'error_notice_for_deactivated_plugin'));
             } else {
                 if( isset($response->icons) ) {
@@ -148,6 +165,7 @@ class AngellEYE_Updater_Update_Checker {
      */
     public function plugin_information($response, $action, $args) {
         $transient = get_site_transient('update_plugins');
+
         // Check if this plugins API is about this plugin
         if (!isset($args->slug) || ( $args->slug != $this->product_id )) {
             return $response;

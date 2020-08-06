@@ -906,11 +906,6 @@ class AngellEYE_Updater_Admin {
                 'plugin_name' => 'Offers for WooCommerce - WC Vendors',
                 'is_paid' => true
             ),
-            'woo-paypal-ratenzahlung' => array(
-                'plugin_url' => 'woo-paypal-ratenzahlung',
-                'plugin_name' => 'PayPal Ratenzahlung for WooCommerce',
-                'is_paid' => true
-            ),
             'paypal-for-woocommerce-multi-account-management' => array(
                 'plugin_url' => 'paypal-for-woocommerce-multi-account-management',
                 'plugin_name' => 'PayPal for WooCommerce Multi-Account Management',
@@ -955,11 +950,6 @@ class AngellEYE_Updater_Admin {
                 'plugin_url' => 'angelleye-paypal-invoicing',
                 'plugin_name' => 'PayPal Invoicing for WordPress',
                 'is_paid' => true
-            ),
-            'paypal-security' => array(
-                'plugin_url' => 'paypal-security',
-                'plugin_name' => 'PayPal Security',
-                'is_paid' => false
             ),
             'paypal-wp-button-manager' => array(
                 'plugin_url' => 'paypal-wp-button-manager',

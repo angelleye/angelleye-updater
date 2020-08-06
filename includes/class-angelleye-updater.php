@@ -67,7 +67,7 @@ class AngellEYE_Updater {
         if (defined('AU_PLUGIN_VERSION')) {
             $this->version = AU_PLUGIN_VERSION;
         } else {
-            $this->version = '2.0.11';
+            $this->version = '2.0.13';
         }
         $this->angelleye_plugin_more_info_page = array(
             'paypal-ipn-for-wordpress-forwarder' => array(
@@ -75,9 +75,6 @@ class AngellEYE_Updater {
             ),
             'offers-for-woocommerce-wc-vendors' => array(
                 'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce-wc-vendors/'
-            ),
-            'woo-paypal-ratenzahlung' => array(
-                'web_page' => 'https://www.angelleye.com/product/paypal-ratenzahlung-for-woocommerce/'
             ),
             'paypal-for-woocommerce-multi-account-management' => array(
                 'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-multi-account-management/'
@@ -105,9 +102,6 @@ class AngellEYE_Updater {
             ),
             'angelleye-paypal-invoicing' => array(
                 'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-invoice-plugin/'
-            ),
-            'paypal-security' => array(
-                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-security/'
             ),
             'paypal-wp-button-manager' => array(
                 'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-button-manager/'

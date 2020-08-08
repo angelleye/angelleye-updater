@@ -76,9 +76,6 @@ class AngellEYE_Updater {
             'offers-for-woocommerce-wc-vendors' => array(
                 'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce-wc-vendors/'
             ),
-            'woo-paypal-ratenzahlung' => array(
-                'web_page' => 'https://www.angelleye.com/product/paypal-ratenzahlung-for-woocommerce/'
-            ),
             'paypal-for-woocommerce-multi-account-management' => array(
                 'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-multi-account-management/'
             ),
@@ -105,9 +102,6 @@ class AngellEYE_Updater {
             ),
             'angelleye-paypal-invoicing' => array(
                 'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-invoice-plugin/'
-            ),
-            'paypal-security' => array(
-                'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-security/'
             ),
             'paypal-wp-button-manager' => array(
                 'web_page' => 'https://www.angelleye.com/product/wordpress-paypal-button-manager/'

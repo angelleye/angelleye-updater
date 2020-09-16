@@ -69,8 +69,11 @@ class AngellEYE_Updater_Admin {
 
         // Load the API.
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-api.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-angelleye-updater-admin-rollback.php';
 
         $this->api = new AngellEYE_Updater_API();
+        
+        $rollback = new AngellEYE_Updater_Rollback();
 
         $this->name = __('The ' . AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
         $this->menu_label = __(AU_COMPANY_NAME . ' Helper', 'angelleye-updater');

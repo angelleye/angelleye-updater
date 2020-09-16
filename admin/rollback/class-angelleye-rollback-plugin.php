@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class WP_Rollback_Plugin_Upgrader
+ * Class Angelleye_Rollback_Plugin_Upgrader
  */
-class WP_Rollback_Plugin_Upgrader extends Plugin_Upgrader {
+class Angelleye_Rollback_Plugin_Upgrader extends Plugin_Upgrader {
 
 	/**
 	 * Plugin rollback.
@@ -28,6 +28,10 @@ class WP_Rollback_Plugin_Upgrader extends Plugin_Upgrader {
 	 */
 	public function rollback( $plugin, $args = array() ) {
 
+                
+                $this->api = new AngellEYE_Updater_API();
+                
+            
 		$defaults    = array(
 			'clear_update_cache' => true,
 		);
@@ -49,11 +53,8 @@ class WP_Rollback_Plugin_Upgrader extends Plugin_Upgrader {
 		$plugin_slug = $this->skin->plugin;
 
 		$plugin_version = $this->skin->options['version'];
-
-		$download_endpoint = 'https://downloads.wordpress.org/plugin/';
-
-		$url = $download_endpoint . $plugin_slug . '.' . $plugin_version . '.zip';
-
+                $zip_full_path = add_query_arg(array('action' => 'rollback_download', 'file_id' => '999', 'product_id' => $plugin_slug, 'version' => $plugin_version), $this->api->api_url);
+		$url = $zip_full_path;
 		add_filter( 'upgrader_pre_install', array( $this, 'deactivate_plugin_before_upgrade' ), 10, 2 );
 		add_filter( 'upgrader_clear_destination', array( $this, 'delete_old_plugin' ), 10, 4 );
 

@@ -21,7 +21,7 @@ $plugins = get_plugins();
             <?php _e('Angell EYE Updater', 'wp-rollback'); ?>
         </h1>
 
-        <p><?php echo apply_filters('angelleye_rollback_description', sprintf(__('Please select which %1$s version you would like to rollback to from the releases listed below. You currently have version %2$s installed of %3$s.', 'wp-rollback'), '<span class="type">' . ( $theme_rollback == true ? __('theme', 'wp-rollback') : __('plugin', 'wp-rollback') ) . '</span>', '<span class="current-version">' . esc_html($args['current_version']) . '</span>', '<span class="rollback-name">' . esc_html($args['rollback_name']) . '</span>')); ?></p>
+        <p><?php echo apply_filters('angelleye_rollback_description', sprintf(__('Please select which %1$s version you would like to rollback to from the releases listed below. You currently have version %2$s installed of %3$s.', 'wp-rollback'), '<span class="type">' .  __('plugin', 'wp-rollback') . '</span>', '<span class="current-version">' . esc_html($args['current_version']) . '</span>', '<span class="rollback-name">' . esc_html($args['rollback_name']) . '</span>')); ?></p>
 
         <div class="angelleye-changelog"></div>
     </div>

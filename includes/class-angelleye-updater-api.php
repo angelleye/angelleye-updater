@@ -315,10 +315,4 @@ class AngellEYE_Updater_API {
         $request = $this->request('get_tags', array('plugin_name' => $param['product_name'], 'version' => $param['current_version'], 'domain_name' => esc_url(home_url('/'))));
         return $request;
     }
-    
-    public function angelleye_get_rollback_download_url($product_name, $version) {
-        $response = false;
-        $request = $this->request('rollback_download', array('plugin_name' => $product_name, 'version' => $version, 'domain_name' => esc_url(home_url('/'))));
-        return $request;
-    }
 }

@@ -8,12 +8,15 @@ class AngellEYE_Updater_Rollback {
 
     public $versions;
     public $api;
+    public $current_version;
+    public $angelleye_updater_activated;
 
     public function __construct() {
         add_filter('plugin_action_links', array($this, 'plugin_action_links'), 20, 4);
         add_filter('network_admin_plugin_action_links', array($this, 'plugin_action_links'), 20, 4);
         add_action('admin_menu', array($this, 'admin_menu'), 20);
         add_action('network_admin_menu', array($this, 'admin_menu'), 20);
+        $this->angelleye_updater_activated = get_option('angelleye-updater-activated', array());
         $this->api = new AngellEYE_Updater_API();
     }
 
@@ -26,6 +29,12 @@ class AngellEYE_Updater_Rollback {
             return $actions;
         }
         if (!isset($plugin_data['Version'])) {
+            return $actions;
+        }
+        if (!isset($plugin_data['TextDomain'])) {
+            return $actions;
+        }
+        if ($this->angelleye_is_plugin_key_activated($plugin_data['TextDomain']) === false) {
             return $actions;
         }
         $rollback_url = 'index.php?page=angelleye-rollback&type=plugin&plugin_file=' . $plugin_file;
@@ -112,6 +121,17 @@ class AngellEYE_Updater_Rollback {
                 $this->versions[] = $value->version;
             }
         }
+    }
+
+    public function angelleye_is_plugin_key_activated($product_id) {
+        if (!empty($product_id) && !empty($this->angelleye_updater_activated)) {
+            foreach ($this->angelleye_updater_activated as $product_name_key => $value) {
+                if (strpos($product_name_key, $product_id) !== false) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

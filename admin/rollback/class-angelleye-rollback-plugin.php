@@ -17,7 +17,7 @@ class Angelleye_Rollback_Plugin_Upgrader extends Plugin_Upgrader {
         $this->upgrade_strings();
         $plugin_slug = $this->skin->plugin;
         $plugin_version = $this->skin->options['version'];
-        $zip_full_path = add_query_arg(array('action' => 'rollback_download', 'file_id' => '999', 'product_id' => $plugin_slug, 'version' => $plugin_version), $this->api->api_url);
+        $zip_full_path = add_query_arg(array('action' => 'rollback_download', 'product_id' => base64_encode($plugin_slug), 'version' => base64_encode($plugin_version)), $this->api->api_url);
         $url = $zip_full_path;
         add_filter('upgrader_pre_install', array($this, 'deactivate_plugin_before_upgrade'), 10, 2);
         add_filter('upgrader_clear_destination', array($this, 'delete_old_plugin'), 10, 4);

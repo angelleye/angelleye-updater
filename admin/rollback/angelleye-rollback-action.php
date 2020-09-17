@@ -8,7 +8,7 @@ if (!empty($_GET['plugin_file']) && file_exists(WP_PLUGIN_DIR . '/' . $_GET['plu
     $plugin_slug = $_GET['plugin_slug'];
     $title = $_GET['rollback_name'];
     $nonce = 'upgrade-plugin_' . $plugin_slug;
-    $url = 'index.php?page=wp-rollback&plugin_file=' . esc_url($args['plugin_file']) . '/action=upgrade-plugin';
+    $url = 'index.php?page=angelleye-rollback&plugin_file=' . esc_url($args['plugin_file']) . '/action=upgrade-plugin';
     $plugin = $plugin_slug;
     $version = $args['plugin_version'];
     $plugin_file = WP_PLUGIN_DIR . '/' . $_GET['plugin_file'];

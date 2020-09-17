@@ -40,7 +40,7 @@ class AngellEYE_Updater_Rollback {
                         )
                 ), $rollback_url
         );
-        $actions['rollback'] = apply_filters('angelleye_plugin_markup', '<a href="' . esc_url($rollback_url) . '">' . __('Rollback', 'wp-rollback') . '</a>');
+        $actions['rollback'] = apply_filters('angelleye_plugin_markup', '<a href="' . esc_url($rollback_url) . '">' . __('Rollback', 'angelleye-updater') . '</a>');
         return apply_filters('angelleye_plugin_action_links', $actions);
     }
 
@@ -58,30 +58,24 @@ class AngellEYE_Updater_Rollback {
     }
 
     public function html() {
-        // Permissions check
         if (!current_user_can('update_plugins')) {
-            wp_die(__('You do not have sufficient permissions to perform rollbacks for this site.', 'wp-rollback'));
+            wp_die(__('You do not have sufficient permissions to perform rollbacks for this site.', 'angelleye-updater'));
         }
-
-        // Get the necessary class
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-
         $defaults = apply_filters(
                 'wpr_rollback_html_args', array(
-            'page' => 'wp-rollback',
+            'page' => 'angelleye-updater',
             'plugin_file' => '',
             'action' => '',
             'plugin_version' => '',
             'plugin' => '',
                 )
         );
-
         $args = wp_parse_args($_GET, $defaults);
-
         if (!empty($args['plugin_version'])) {
-             check_admin_referer('angelleye_rollback_nonce');
-             include AU_PLUGIN_DIR . '/admin/rollback/class-angelleye-rollback-plugin.php';
-             include AU_PLUGIN_DIR . '/admin/rollback/angelleye-rollback-action.php';
+            check_admin_referer('angelleye_rollback_nonce');
+            include AU_PLUGIN_DIR . '/admin/rollback/class-angelleye-rollback-plugin.php';
+            include AU_PLUGIN_DIR . '/admin/rollback/angelleye-rollback-action.php';
         } else {
             $versions_html = $this->angelleye_prepare_version_list_html($args);
             check_admin_referer('angelleye_rollback_nonce');
@@ -92,7 +86,7 @@ class AngellEYE_Updater_Rollback {
     public function angelleye_prepare_version_list_html($args) {
         $this->angelleye_get_version_tags($args);
         if (empty($this->versions)) {
-            $versions_html = '<div class="wpr-error"><p>' . sprintf(__('It appears there are no version to select. This is likely due to the %s author not using tags for their versions and only committing new releases to the repository trunk.', 'wp-rollback'), $type) . '</p></div>';
+            $versions_html = '<div class="wpr-error"><p>' . sprintf(__('It appears there are no version to select. This is likely due to the %s author not using tags for their versions and only committing new releases to the repository trunk.', 'angelleye-updater'), $type) . '</p></div>';
             return apply_filters('versions_failure_html', $versions_html);
         }
         $versions_html = '<ul class="wpr-version-list">';
@@ -102,7 +96,7 @@ class AngellEYE_Updater_Rollback {
             $versions_html .= '<li class="wpr-version-li">';
             $versions_html .= '<label><input type="radio" value="' . esc_attr($version) . '" name="plugin_version">' . $version;
             if ($version === $this->current_version) {
-                $versions_html .= '<span class="current-version">' . __('Installed Version', 'wp-rollback') . '</span>';
+                $versions_html .= '<span class="current-version">' . __('Installed Version', 'angelleye-updater') . '</span>';
             }
             $versions_html .= '</label>';
             $versions_html .= '</li>';
@@ -113,12 +107,11 @@ class AngellEYE_Updater_Rollback {
 
     public function angelleye_get_version_tags($args) {
         $tag_result = $this->api->angelleye_get_plugin_tags($args);
-        if( !empty($tag_result->payload) ) {
+        if (!empty($tag_result->payload)) {
             foreach ($tag_result->payload as $key => $value) {
                 $this->versions[] = $value->version;
             }
         }
-        
     }
 
 }

@@ -69,8 +69,11 @@ class AngellEYE_Updater_Admin {
 
         // Load the API.
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-api.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-angelleye-updater-admin-rollback.php';
 
         $this->api = new AngellEYE_Updater_API();
+        
+        $rollback = new AngellEYE_Updater_Rollback();
 
         $this->name = __('The ' . AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
         $this->menu_label = __(AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
@@ -101,7 +104,7 @@ class AngellEYE_Updater_Admin {
 
         add_action('angelleye_updater_license_screen_before', array($this, 'ensure_keys_are_actually_active'));
 
-        add_action('admin_notices', array($this, 'angelleye_cache_refresh'));
+        add_action('admin_init', array($this, 'angelleye_cache_refresh'));
 
         add_action('wp_ajax_angelleye_activate_license_keys', array($this, 'ajax_process_request'));
         add_action('admin_notices', array($this, 'angelleye_check_product_license_key_status'));
@@ -244,7 +247,7 @@ class AngellEYE_Updater_Admin {
 				'page'              => 'angelleye-helper',
 				'cache-refresh' => 1
 			),
-			admin_url( 'admin.php' )
+			admin_url( 'index.php' )
                     );
                     require_once( $this->screens_path . 'screen-manage.php' );
                     do_action('angelleye_updater_license_screen_after');
@@ -1095,9 +1098,8 @@ class AngellEYE_Updater_Admin {
             delete_site_option('angelleye_helper_dismiss_activation_notice');
             $angelleye_helper_fresh_notice = '<div id="message" class="updated notice is-dismissible"><p><strong>' . esc_html( __( 'Caches refreshed successfully.', 'angelleye-updater' ) ) . '</strong></p></div>';
             set_transient( 'angelleye_helper_fresh_notice', $angelleye_helper_fresh_notice, HOUR_IN_SECONDS );
-            $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php')); 
-            $dismiss_url = add_query_arg( 'screen', 'licenses', $url );
-            wp_redirect($dismiss_url);
+            $url = add_query_arg('page', 'angelleye-helper', admin_url( 'index.php' )); 
+            wp_redirect($url);
             exit();
         }
     }

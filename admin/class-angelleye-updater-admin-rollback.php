@@ -18,6 +18,7 @@ class AngellEYE_Updater_Rollback {
         add_action('network_admin_menu', array($this, 'admin_menu'), 20);
         $this->angelleye_updater_activated = get_option('angelleye-updater-activated', array());
         $this->api = new AngellEYE_Updater_API();
+        
     }
 
     public function plugin_action_links($actions, $plugin_file, $plugin_data, $context) {
@@ -124,6 +125,10 @@ class AngellEYE_Updater_Rollback {
     }
 
     public function angelleye_is_plugin_key_activated($product_id) {
+        $plugin_list = angelleye_plugin_list();
+        if( isset($plugin_list[$product_id]) && $plugin_list[$product_id]['is_paid'] === false ) {
+            return true;
+        }
         if (!empty($product_id) && !empty($this->angelleye_updater_activated)) {
             foreach ($this->angelleye_updater_activated as $product_name_key => $value) {
                 if (strpos($product_name_key, $product_id) !== false) {

@@ -44,7 +44,7 @@ class AngellEYE_Updater_Rollback {
                         'angelleye_plugin_query_args', array(
             'current_version' => urlencode($plugin_data['Version']),
             'rollback_name' => urlencode($plugin_data['Name']),
-            'plugin_slug' => urlencode($plugin_data['slug']),
+            'plugin_slug' => urlencode($plugin_data['TextDomain']),
             '_wpnonce' => wp_create_nonce('angelleye_rollback_nonce'),
             'product_name' => $plugin_data['TextDomain']
                         )

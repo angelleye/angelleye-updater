@@ -69,8 +69,11 @@ class AngellEYE_Updater_Admin {
 
         // Load the API.
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-api.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-angelleye-updater-admin-rollback.php';
 
         $this->api = new AngellEYE_Updater_API();
+        
+        $rollback = new AngellEYE_Updater_Rollback();
 
         $this->name = __('The ' . AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
         $this->menu_label = __(AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
@@ -101,7 +104,7 @@ class AngellEYE_Updater_Admin {
 
         add_action('angelleye_updater_license_screen_before', array($this, 'ensure_keys_are_actually_active'));
 
-        add_action('admin_notices', array($this, 'angelleye_cache_refresh'));
+        add_action('admin_init', array($this, 'angelleye_cache_refresh'));
 
         add_action('wp_ajax_angelleye_activate_license_keys', array($this, 'ajax_process_request'));
         add_action('admin_notices', array($this, 'angelleye_check_product_license_key_status'));
@@ -244,7 +247,7 @@ class AngellEYE_Updater_Admin {
 				'page'              => 'angelleye-helper',
 				'cache-refresh' => 1
 			),
-			admin_url( 'admin.php' )
+			admin_url( 'index.php' )
                     );
                     require_once( $this->screens_path . 'screen-manage.php' );
                     do_action('angelleye_updater_license_screen_after');
@@ -895,98 +898,7 @@ class AngellEYE_Updater_Admin {
     }
     
     public function angelleye_get_plugin_list() {
-        $this->angelleye_plugin_info = array(
-            'paypal-ipn-for-wordpress-forwarder' => array(
-                'plugin_url' => 'paypal-ipn-for-wordpress-forwarder',
-                'plugin_name' => 'PayPal IPN for WordPress - Forwarder',
-                'is_paid' => true
-            ),
-            'offers-for-woocommerce-wc-vendors' => array(
-                'plugin_url' => 'offers-for-woocommerce-wc-vendors',
-                'plugin_name' => 'Offers for WooCommerce - WC Vendors',
-                'is_paid' => true
-            ),
-            'paypal-for-woocommerce-multi-account-management' => array(
-                'plugin_url' => 'paypal-for-woocommerce-multi-account-management',
-                'plugin_name' => 'PayPal for WooCommerce Multi-Account Management',
-                'is_paid' => true
-            ),
-            'woo-paypal-plus' => array(
-                'plugin_url' => 'woo-paypal-plus',
-                'plugin_name' => 'PayPal Plus for WooCommerce',
-                'is_paid' => true
-            ),
-            'paypal-ipn-for-wordpress-mailchimp' => array(
-                'plugin_url' => 'paypal-ipn-for-wordpress-mailchimp',
-                'plugin_name' => 'PayPal IPN for WordPress - MailChimp',
-                'is_paid' => true
-            ),
-            'offers-for-woocommerce' => array(
-                'plugin_url' => 'offers-for-woocommerce',
-                'plugin_name' => 'Offers for WooCommerce',
-                'is_paid' => true
-            ),
-            'paypal-ipn' => array(
-                'plugin_url' => 'paypal-ipn',
-                'plugin_name' => 'PayPal IPN for WordPress',
-                'is_paid' => true
-            ),
-            'angelleye_paypal_divi' => array(
-                'plugin_url' => 'angelleye-paypal-for-divi',
-                'plugin_name' => 'PayPal for Divi',
-                'is_paid' => false
-            ),
-            'paypal-for-woocommerce' => array(
-                'plugin_url' => 'paypal-for-woocommerce',
-                'plugin_name' => 'PayPal for WooCommerce',
-                'is_paid' => false
-            ),
-            'woo-paypal-here' => array(
-                'plugin_url' => 'woo-paypal-here',
-                'plugin_name' => 'PayPal Here for WooCommerce',
-                'is_paid' => false
-            ),
-            'angelleye-paypal-invoicing' => array(
-                'plugin_url' => 'angelleye-paypal-invoicing',
-                'plugin_name' => 'PayPal Invoicing for WordPress',
-                'is_paid' => true
-            ),
-            'paypal-wp-button-manager' => array(
-                'plugin_url' => 'paypal-wp-button-manager',
-                'plugin_name' => 'PayPal WP Button Manager',
-                'is_paid' => true
-            ),
-            'angelleye-updater' => array(
-                'plugin_url' => 'angelleye-updater',
-                'plugin_name' => 'Angell EYE Updater',
-                'is_paid' => false
-            ),
-            'angelleye-gravity-forms-braintree' => array(
-                'plugin_url' => 'angelleye-gravity-forms-braintree',
-                'plugin_name' => 'Gravity Forms Braintree Payments',
-                'is_paid' => false
-            ),
-            'angelleye-paypal-webhooks' => array(
-                'plugin_url' => 'angelleye-paypal-webhooks',
-                'plugin_name' => 'PayPal Webhooks for WordPress',
-                'is_paid' => true
-            ),
-            'woocommerce-price-per-word' => array(
-                'plugin_url' => 'woocommerce-price-per-word',
-                'plugin_name' => 'WooCommerce Price Per Word',
-                'is_paid' => true
-            ),
-            'angelleye-paypal-shipment-tracking-woocommerce' => array(
-                'plugin_url' => 'angelleye-paypal-shipment-tracking-woocommerce',
-                'plugin_name' => 'PayPal Shipment Tracking For WooCoomerce',
-                'is_paid' => true
-            ),
-            'angelleye-paypal-woocommerce-credit-card-split' => array(
-                'plugin_url' => 'angelleye-paypal-woocommerce-credit-card-split',
-                'plugin_name' => 'Split PayPal Credit Card Payment for WooCommerce',
-                'is_paid' => true
-            ),
-        );
+        $this->angelleye_plugin_info = angelleye_plugin_list();
         $angelleye_plugin_full_list = $this->angelleye_plugin_info;
         $response = array();
         $angelleye_activated_plugin_list = $this->get_activated_products();
@@ -1095,9 +1007,8 @@ class AngellEYE_Updater_Admin {
             delete_site_option('angelleye_helper_dismiss_activation_notice');
             $angelleye_helper_fresh_notice = '<div id="message" class="updated notice is-dismissible"><p><strong>' . esc_html( __( 'Caches refreshed successfully.', 'angelleye-updater' ) ) . '</strong></p></div>';
             set_transient( 'angelleye_helper_fresh_notice', $angelleye_helper_fresh_notice, HOUR_IN_SECONDS );
-            $url = add_query_arg('page', 'angelleye-helper', network_admin_url('index.php')); 
-            $dismiss_url = add_query_arg( 'screen', 'licenses', $url );
-            wp_redirect($dismiss_url);
+            $url = add_query_arg('page', 'angelleye-helper', admin_url( 'index.php' )); 
+            wp_redirect($url);
             exit();
         }
     }

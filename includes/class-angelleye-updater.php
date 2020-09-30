@@ -180,6 +180,7 @@ class AngellEYE_Updater {
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/angelleye-updater-function.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-angelleye-updater-loader.php';
 
         /**
@@ -192,8 +193,7 @@ class AngellEYE_Updater {
          * The class responsible for defining all actions that occur in the Dashboard.
          */
         //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-angelleye-updater-admin-display.php';
-
-
+        
         $this->loader = new AngellEYE_Updater_Loader();
     }
 

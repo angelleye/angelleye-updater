@@ -178,3 +178,165 @@ color:
 .angelleye-helper-about-text {
     margin-top: 20px;
 }
+
+/**
+ * WP Rollback Styles
+ */
+
+.angelleye-content-wrap {
+	max-width: 805px;
+}
+
+.angelleye-content-wrap h1 {
+	padding: 0 0 15px 0;
+}
+
+.angelleye-content-wrap h1 img {
+	width: 40px;
+	position: relative;
+	top: 11px;
+	margin-right: 10px;
+}
+
+.angelleye-content-wrap p {
+	font-size: 18px;
+	margin-top: 10px;
+}
+
+.angelleye-content-wrap p span {
+	font-style: normal;
+	color: #000;
+	font-weight: 600;
+}
+
+.angelleye-versions-wrap {
+	padding-left: 20px;
+	margin-bottom:30px;
+}
+
+.angelleye-versions-wrap .angelleye-error {
+	margin-left: -20px;
+	max-width: 770px;
+}
+
+.angelleye-submit-wrap {
+	border-top: 1px solid #DADADA;
+	position: fixed;
+	width: 100%;
+	display: block;
+	bottom: 0;
+	background: #FFF;
+	margin: 0 0 0 -22px;
+	padding: 20px 0 20px 20px;
+	z-index: 9999;
+
+}
+
+.rollback-form .current-version {
+	text-transform: lowercase;
+	font-size: 12px;
+	font-style: normal;
+	color: #AEAEAE;
+	margin-left: 14px;
+}
+
+.angelleye-selected {
+	font-weight: bold;
+}
+
+.angelleye-rollback-disabled.magnific-popup.button-primary {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.button-primary {
+	margin-right: 5px !important;
+}
+
+/* List */
+
+.angelleye-version-li {
+	clear: left;
+	padding: 8px 0;
+	overflow: hidden;
+	width: 800px;
+}
+
+.angelleye-version-li label {
+	float:left;
+	font-size: 16px;
+}
+
+.angelleye-version-li label input {
+	margin-right: 5px;
+}
+
+
+/* Modal */
+#angelleye-modal-confirm .button-primary {
+	margin-right: 5px;
+}
+
+.angelleye-error {
+	background: #fff;
+	border-left: 4px solid #FFB800;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	margin: 20px 0;
+	padding: 1px 12px;
+}
+
+.angelleye-error p {
+	margin: 0.5em 0;
+	padding: 2px;
+}
+
+.angelleye-rollback-intro {
+	font-size: 18px;
+	margin-top: 0;
+}
+
+
+/* Changelog link */
+.angelleye-changelog-link {
+	float: left;
+	margin: 4px 0 0 12px;
+	font-size: 11px;
+	font-style: normal;
+	opacity: 0;
+	line-height: 1;
+	transition: .15s ease-in-out;
+	-moz-transition: .15s ease-in-out;
+	-webkit-transition: .15s ease-in-out;
+	display: inline-block;
+	outline:none;
+	box-shadow:none !important;
+	text-decoration: none;
+}
+.angelleye-changelog-link:hover {
+	text-decoration: underline;
+}
+.angelleye-version-li:hover .angelleye-changelog-link {
+	opacity: 0.75;
+}
+/* Hide full changelog */
+.angelleye-changelog, .angelleye-hidden-changelog {
+	display: none;
+}
+
+/* The changelog that appears when loading via AJAX */
+.angelleye-changelog-entry {
+	padding: 6px 25px 18px;
+	background: #FFF;
+	margin: 20px 0;
+	max-height: 350px;
+	overflow-y: auto;
+}
+
+.angelleye-no-changelog-message {
+	margin-bottom:0;
+}
+
+.angelleye-version-list{
+	width: 800px;
+}

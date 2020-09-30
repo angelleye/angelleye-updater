@@ -67,7 +67,7 @@ class AngellEYE_Updater {
         if (defined('AU_PLUGIN_VERSION')) {
             $this->version = AU_PLUGIN_VERSION;
         } else {
-            $this->version = '2.0.14';
+            $this->version = '2.0.15';
         }
         $this->angelleye_plugin_more_info_page = array(
             'paypal-ipn-for-wordpress-forwarder' => array(

@@ -119,13 +119,13 @@ class AngellEYE_Updater_Admin {
      * @return  void
      */
     public function maybe_process_dismiss_link() {
-        if (isset($_GET['action']) && ( 'angelleye-helper-dismiss' == $_GET['action'] ) && isset($_GET['nonce']) && check_admin_referer('angelleye-helper-dismiss', 'nonce')) {
+        if (isset($_GET['action']) && ( 'angelleye-helper-dismiss' == $_GET['action'] ) && isset($_GET['nonce'])) {
             update_site_option('angelleye_helper_dismiss_activation_notice', true);
             $redirect_url = remove_query_arg('action', remove_query_arg('nonce', $_SERVER['REQUEST_URI']));
             wp_safe_redirect($redirect_url);
             exit;
         }
-        if (isset($_GET['action']) && ( 'angelleye-helper-expired-notice-dismiss' == $_GET['action'] ) && isset($_GET['nonce']) && check_admin_referer('angelleye-helper-expired-notice-dismiss', 'nonce')) {
+        if (isset($_GET['action']) && ( 'angelleye-helper-expired-notice-dismiss' == $_GET['action'] ) && isset($_GET['nonce'])) {
             $angelleye_helper_dismiss_activation_notice = get_site_option('angelleye_helper_dismiss_activation_notice', false);
             if( $angelleye_helper_dismiss_activation_notice == false ) {
                 update_site_option('angelleye_helper_dismiss_activation_notice', array('0' => $_GET['product']));

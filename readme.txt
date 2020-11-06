@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
 Tested up to: 5.4.2
-Stable tag: 2.0.14
+Stable tag: 2.0.15
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +17,9 @@ Manage activations and updates for Angell EYE plugins.
 Activate your product licenses with Angell EYE to enable automatic updates through the WordPress -> Plugins control panel.
 
 == Changelog ==
+
+= 2.0.15 - 09.30.2020 =
+* Feature - Adds Revert to Previous Version (Rollback). ([AEU-115](https://github.com/angelleye/angelleye-activation/pull/23))
 
 = 2.0.14 - 08.08.2020 =
 * Update - Removed the PayPal Ratenzahlung and PayPal Security plugin Activation and Update option ([AEU-116](https://github.com/angelleye/angelleye-updater/pull/22))

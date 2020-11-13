@@ -603,7 +603,10 @@ class AngellEYE_Updater_Admin {
         global $angeleye_updater;
         $response = array();
         $response = $angeleye_updater->get_products();
-        
+        $exclude_key = 'woo-paypal-ratenzahlung/woo-paypal-ratenzahlung.php';
+        if(isset($response) && isset($response[$exclude_key])) {
+            unset($response[$exclude_key]);
+        }
         return $response;
     }
 

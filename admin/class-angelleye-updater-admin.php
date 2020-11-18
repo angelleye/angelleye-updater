@@ -581,12 +581,14 @@ class AngellEYE_Updater_Admin {
      */
     protected function get_activated_products() {
         $response = array();
-
         $response = get_option($this->token . '-activated', array());
-
-        if (!is_array($response))
+        $exclude_key = 'woo-paypal-ratenzahlung/woo-paypal-ratenzahlung.php';
+        if(isset($response) && isset($response[$exclude_key])) {
+            unset($response[$exclude_key]);
+        }
+        if (!is_array($response)) {
             $response = array();
-
+        }
         return $response;
     }
 
@@ -603,10 +605,7 @@ class AngellEYE_Updater_Admin {
         global $angeleye_updater;
         $response = array();
         $response = $angeleye_updater->get_products();
-        $exclude_key = 'woo-paypal-ratenzahlung/woo-paypal-ratenzahlung.php';
-        if(isset($response) && isset($response[$exclude_key])) {
-            unset($response[$exclude_key]);
-        }
+        
         return $response;
     }
 

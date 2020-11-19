@@ -3,8 +3,8 @@ Contributors: angelleye
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9CQZZGGMF78VY
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
-Tested up to: 5.4.2
-Stable tag: 2.0.15
+Tested up to: 5.5.3
+Stable tag: 2.0.16
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +17,9 @@ Manage activations and updates for Angell EYE plugins.
 Activate your product licenses with Angell EYE to enable automatic updates through the WordPress -> Plugins control panel.
 
 == Changelog ==
+
+= 2.0.16 - 11.19.2020 =
+* Fix - Resolves expiration notice dismiss issue, ([AEU-120](https://github.com/angelleye/angelleye-updater/pull/24))
 
 = 2.0.15 - 09.30.2020 =
 * Feature - Adds Revert to Previous Version (Rollback). ([AEU-115](https://github.com/angelleye/angelleye-activation/pull/23))

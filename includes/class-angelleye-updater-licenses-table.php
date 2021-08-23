@@ -87,6 +87,9 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             'angelleye-paypal-woocommerce-credit-card-split' => array(
                 'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-credit-card-split/'
             ),
+            'offers-for-woocommerce-dokan' => array(
+                'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce-dokan/'
+            ),
         );
 
         // Make sure this file is loaded, so we have access to plugins_api(), etc.

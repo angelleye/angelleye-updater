@@ -121,6 +121,9 @@ class AngellEYE_Updater {
             'angelleye-paypal-woocommerce-credit-card-split' => array(
                 'web_page' => 'https://www.angelleye.com/product/paypal-woocommerce-credit-card-split/'
             ),
+            'offers-for-woocommerce-dokan' => array(
+                'web_page' => 'https://www.angelleye.com/product/offers-for-woocommerce-dokan/'
+            ),
         );
 
         $this->load_dependencies();

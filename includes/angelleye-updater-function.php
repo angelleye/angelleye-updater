@@ -92,5 +92,10 @@ function angelleye_plugin_list() {
             'plugin_name' => 'Split PayPal Credit Card Payment for WooCommerce',
             'is_paid' => true
         ),
+        'offers-for-woocommerce-dokan' => array(
+            'plugin_url' => 'offers-for-woocommerce-dokan',
+            'plugin_name' => 'Offers for WooCommerce - Dokan',
+            'is_paid' => true
+        ),
     );
 }

@@ -487,7 +487,7 @@ class AngellEYE_Updater_Admin {
                     foreach ($request_errors as $k => $v) {
                         $message .= wpautop($v);
                     }
-                    $return .= '<div class="error fade">' . "\n";
+                    $return = '<div class="error fade">' . "\n";
                     $return .= make_clickable($message);
                     $return .= '</div>' . "\n";
 

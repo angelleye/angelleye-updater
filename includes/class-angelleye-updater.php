@@ -151,9 +151,12 @@ class AngellEYE_Updater {
         // Run this on activation.
         //register_activation_hook($this->file, array($this, 'activation'));
 
-        if (is_admin()) {
-            add_action('init', array($this, 'load_queued_updates'), 2);
-        }
+	    if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) )
+	    {
+		    if(current_user_can('manage_options')){
+			    add_action('init', array($this, 'load_queued_updates'), 2);
+		    }
+	    }
 
         $this->angelleye_add_notice_unlicensed_product();
 
@@ -281,12 +284,15 @@ class AngellEYE_Updater {
      * @return void
      */
     public function load_queued_updates() {
-        global $angelleye_queued_updates;
+	    global $angelleye_queued_updates;
 
-        if (!empty($angelleye_queued_updates) && is_array($angelleye_queued_updates))
-            foreach ($angelleye_queued_updates as $plugin)
-                if (is_object($plugin) && !empty($plugin->file) && !empty($plugin->file_id) && !empty($plugin->product_id))
-                    $this->add_product($plugin->file, $plugin->file_id, $plugin->product_id);
+	    if (!empty($angelleye_queued_updates) && is_array($angelleye_queued_updates)){
+		    foreach ($angelleye_queued_updates as $plugin){
+			    if (is_object($plugin) && !empty($plugin->file) && !empty($plugin->file_id) && !empty($plugin->product_id)){
+				    $this->add_product($plugin->file, $plugin->file_id, $plugin->product_id);
+			    }
+		    }
+	    }
     }
 
 // End load_queued_updates()

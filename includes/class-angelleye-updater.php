@@ -413,7 +413,6 @@ class AngellEYE_Updater {
     
     public function http_api_curl_angelleye_updater_add_curl_parameter($handle, $r, $url) {
         if ( strstr( $url, 'angelleye.com' ) ) {
-            curl_setopt($handle, CURLOPT_VERBOSE, 1);
             curl_setopt($handle, CURLOPT_SSLVERSION, 6);
         }
     }

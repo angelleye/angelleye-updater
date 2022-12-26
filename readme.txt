@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
 Tested up to: 5.8
-Stable tag: 2.0.17
+Stable tag: 2.0.18
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +17,9 @@ Manage activations and updates for Angell EYE plugins.
 Activate your product licenses with Angell EYE to enable automatic updates through the WordPress -> Plugins control panel.
 
 == Changelog ==
+
+= 2.0.18 - 12.26.2022 =
+* Tweak - Remove CURLOPT_VERBOSE. ([AEU-130](https://github.com/angelleye/angelleye-updater/pull/27))
 
 = 2.0.17 - 08.23.2021 =
 * Feature - Adds Offers for WooCommerce - Dokan to the updater system. ([AEU-122](https://github.com/angelleye/angelleye-updater/pull/26))

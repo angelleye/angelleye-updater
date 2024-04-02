@@ -53,6 +53,8 @@ class AngellEYE_Updater_Admin {
     private $assets_url;
     private $installed_products;
     private $pending_products;
+    public $list_table;
+    public $angelleye_plugin_info;
 
     /**
      * Constructor.

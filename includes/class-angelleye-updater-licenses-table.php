@@ -13,6 +13,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
     public $data;
     
     public $angelleye_plugin_more_info_page;
+    public $found_data;
 
     /**
      * Constructor.

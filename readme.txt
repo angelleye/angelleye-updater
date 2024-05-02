@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
 Tested up to: 6.5.2
-Stable tag: 2.0.19
+Stable tag: 2.0.20
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +17,9 @@ Manage activations and updates for Angell EYE plugins.
 Activate your product licenses with Angell EYE to enable automatic updates through the WordPress -> Plugins control panel.
 
 == Changelog ==
+
+= 2.0.20 - 05.02.2024 =
+* Fix - update version.
 
 = 2.0.19 - 04.29.2024 =
 * Fix - Resolves php 8.2 compatibility. ([AEU-134](https://github.com/angelleye/angelleye-updater/pull/29))

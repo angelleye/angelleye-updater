@@ -15,7 +15,7 @@ function angelleye_plugin_list() {
         'paypal-for-woocommerce-multi-account-management' => array(
             'plugin_url' => 'paypal-for-woocommerce-multi-account-management',
             'plugin_name' => 'PayPal for WooCommerce Multi-Account Management',
-            'is_paid' => true
+            'is_paid' => false
         ),
         'woo-paypal-plus' => array(
             'plugin_url' => 'woo-paypal-plus',

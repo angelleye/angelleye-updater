@@ -76,9 +76,6 @@ class AngellEYE_Updater_Admin {
         $this->api = new AngellEYE_Updater_API();
         
         $rollback = new AngellEYE_Updater_Rollback();
-
-        $this->name = __('The ' . AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
-        $this->menu_label = __(AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
         $this->page_slug = 'angelleye-helper';
         $this->plugin_path = trailingslashit(plugin_dir_path($file));
         $this->plugin_url = trailingslashit(plugin_dir_url($file));
@@ -196,6 +193,8 @@ class AngellEYE_Updater_Admin {
      * @return   void
      */
     public function register_settings_screen() {
+        $this->name = __('The ' . AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
+        $this->menu_label = __(AU_COMPANY_NAME . ' Helper', 'angelleye-updater');
         $hook = add_dashboard_page($this->name, $this->menu_label, 'manage_options', $this->page_slug, array($this, 'settings_screen'));
 
         add_action('load-' . $hook, array($this, 'process_request'));

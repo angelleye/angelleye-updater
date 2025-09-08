@@ -194,7 +194,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
                 $response .= '<input name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(__('Enter license key here', 'angelleye-updater')) . '" />' . "\n";
                 return $response;
             } else {
-                return AU_FREE_LICENSE_KEY_TEXT;
+                return __('FREE', 'angelleye-updater');
             }
         }
     }
@@ -226,7 +226,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             $response = '<a href="' . esc_url($deactivate_url) . '">' . __('Deactivate', 'angelleye-updater') . '</a>' . "\n";
             return $response;
         } else {
-            return AU_EMPTY_ACTION_TEXT;
+            return __('N/A', 'angelleye-updater');
         }
     }
 

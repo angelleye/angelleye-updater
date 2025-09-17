@@ -85,7 +85,7 @@ function angelleye_plugin_list() {
         'angelleye-paypal-shipment-tracking-woocommerce' => array(
             'plugin_url' => 'angelleye-paypal-shipment-tracking-woocommerce',
             'plugin_name' => 'PayPal Shipment Tracking For WooCoomerce',
-            'is_paid' => true
+            'is_paid' => false
         ),
         'angelleye-paypal-woocommerce-credit-card-split' => array(
             'plugin_url' => 'angelleye-paypal-woocommerce-credit-card-split',

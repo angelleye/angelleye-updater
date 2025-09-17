@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: angelleye, activation, extensions, updates
 Requires at least: 3.0.1
 Tested up to: 6.5.4
-Stable tag: 2.0.21
+Stable tag: 2.0.22
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +17,10 @@ Manage activations and updates for Angell EYE plugins.
 Activate your product licenses with Angell EYE to enable automatic updates through the WordPress -> Plugins control panel.
 
 == Changelog ==
+
+= 2.0.22 - 09.17.2025 =
+* Fix - Resolves "domain triggered too early" notices. ([AEU-137](https://github.com/angelleye/angelleye-updater/pull/32))
+* Tweak - Sets PFWST to free product. ([AEU-138](https://github.com/angelleye/angelleye-updater/pull/33))
 
 = 2.0.21 - 06.11.2024 =
 * Tweak - Make PFWMA FREE. ([AEU-135](https://github.com/angelleye/angelleye-updater/pull/31))

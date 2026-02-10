@@ -125,6 +125,8 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
             case 'product':
             case 'product_status':
             case 'product_version':
+            case 'installed_version':
+            case 'latest_version':
                 return $item[$column_name];
                 break;
         }
@@ -151,7 +153,8 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
     public function get_columns() {
         $columns = array(
             'product_name' => __('Product', 'angelleye-updater'),
-            'product_version' => __('Version', 'angelleye-updater'),
+            'installed_version' => __('Installed Version', 'angelleye-updater'),
+            'latest_version' => __('Latest Version', 'angelleye-updater'),
             'license_key' => __('License Key', 'angelleye-updater'),
             'product_status' => __('Action', 'angelleye-updater'),
             'plugin_status' => __('Status', 'angelleye-updater'),
@@ -202,13 +205,37 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
     // End column_license_key()
 
     /**
+     * Content for the "installed_version" column.
+     * @param  array  $item The current item.
+     * @since  1.0.0
+     * @return string       The content of this column.
+     */
+    public function column_installed_version($item) {
+        $version = isset($item['installed_version']) ? $item['installed_version'] : '-';
+        return wpautop($version);
+    }
+
+    /**
+     * Content for the "latest_version" column.
+     * @param  array  $item The current item.
+     * @since  1.0.0
+     * @return string       The content of this column.
+     */
+    public function column_latest_version($item) {
+        $version = isset($item['latest_version']) ? $item['latest_version'] : '-';
+        $product_id = isset($item['product_id']) ? $item['product_id'] : '';
+        return '<span class="ae-latest-version-wrap" data-product-id="' . esc_attr($product_id) . '"><span class="ae-latest-version">' . esc_html($version) . '</span><span class="dashicons dashicons-update ae-latest-version-loader" aria-hidden="true" style="display:none;"></span></span>';
+    }
+
+    /**
      * Content for the "product_version" column.
      * @param  array  $item The current item.
      * @since  1.0.0
      * @return string       The content of this column.
      */
     public function column_product_version($item) {
-        return wpautop($item['product_version']);
+        $version = isset($item['installed_version']) ? $item['installed_version'] : ( isset($item['product_version']) ? $item['product_version'] : '-' );
+        return wpautop($version);
     }
 
     // End column_product_version()

@@ -179,6 +179,32 @@ color:
     margin-top: 20px;
 }
 
+.ae-latest-version-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ae-latest-version-loader {
+    color: #2271b1;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+.ae-latest-version-loader.is-spinning {
+    animation: ae-spin 1s linear infinite;
+}
+
+@keyframes ae-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 /**
  * WP Rollback Styles
  */

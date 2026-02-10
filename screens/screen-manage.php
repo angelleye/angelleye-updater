@@ -4,6 +4,7 @@
     <div class="ag-helper">
         <a class="button button-update" href="<?php echo esc_url( $refresh_url ); ?>"><span class="dashicons dashicons-image-rotate"></span> <?php _e( 'Update', 'woocommerce' ); ?></a>
     </div>
+    <div id="ae-version-sync-status" class="notice notice-info inline" style="display:none;"></div>
    
     <div class="col-wrap">
         <form id="activate-products" method="post" action="" class="validate">

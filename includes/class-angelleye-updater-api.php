@@ -346,6 +346,6 @@ class AngellEYE_Updater_API {
             return $request->payload;
         }
 
-        return false;
+        return $request ? $request : false;
     }
 }

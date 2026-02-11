@@ -1171,14 +1171,7 @@ class AngellEYE_Updater_Admin {
             $license_hash
         );
 
-        $latest_version = '-';
-        if (is_object($payload)) {
-            if (isset($payload->new_version) && !empty($payload->new_version)) {
-                $latest_version = $payload->new_version;
-            } elseif (isset($payload->version) && !empty($payload->version)) {
-                $latest_version = $payload->version;
-            }
-        }
+        $latest_version = $this->angelleye_resolve_latest_version_from_payload($payload, $current_version);
 
         $meta[$product_id] = array(
             'latest_version' => $latest_version,
@@ -1225,14 +1218,7 @@ class AngellEYE_Updater_Admin {
                 $license_hash
             );
 
-            $latest_version = '-';
-            if (is_object($payload)) {
-                if (isset($payload->new_version) && !empty($payload->new_version)) {
-                    $latest_version = $payload->new_version;
-                } elseif (isset($payload->version) && !empty($payload->version)) {
-                    $latest_version = $payload->version;
-                }
-            }
+            $latest_version = $this->angelleye_resolve_latest_version_from_payload($payload, $current_version);
 
             $latest_versions[$product_id] = $latest_version;
         }
@@ -1248,6 +1234,32 @@ class AngellEYE_Updater_Admin {
 
         $this->angelleye_set_latest_versions_meta($meta);
         return $latest_versions;
+    }
+
+    private function angelleye_resolve_latest_version_from_payload($payload, $current_version = '-') {
+        // var_dump($payload, $current_version);
+        $latest_version = '-';
+
+        if (is_object($payload)) {
+            if (isset($payload->new_version) && !empty($payload->new_version)) {
+                $latest_version = $payload->new_version;
+            } elseif (isset($payload->version) && !empty($payload->version)) {
+                $latest_version = $payload->version;
+            } elseif (isset($payload->success) && true === $payload->success) {
+                // API success without explicit version means current version is already latest.
+                $latest_version = (!empty($current_version) && '-' !== $current_version) ? $current_version : '-';
+            }
+        } elseif (is_array($payload)) {
+            if (isset($payload['new_version']) && !empty($payload['new_version'])) {
+                $latest_version = $payload['new_version'];
+            } elseif (isset($payload['version']) && !empty($payload['version'])) {
+                $latest_version = $payload['version'];
+            } elseif (isset($payload['success']) && true === $payload['success']) {
+                $latest_version = (!empty($current_version) && '-' !== $current_version) ? $current_version : '-';
+            }
+        }
+
+        return $latest_version;
     }
 
     private function angelleye_extract_latest_version_from_updates($updates, $product_file_path) {

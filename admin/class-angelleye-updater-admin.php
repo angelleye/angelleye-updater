@@ -944,7 +944,7 @@ class AngellEYE_Updater_Admin {
         foreach ($angelleye_plugin_full_list as $plugin_key => $v) {
             $is_insatlled = $this->angelleye_is_plugin_installed($plugin_key);
             $installed_version = '-';
-            $latest_version = $this->angelleye_get_latest_plugin_version($v['plugin_url']);
+            $latest_version = $this->angelleye_get_latest_plugin_version($plugin_key);
             $product_status = 'in-active';
             $license_key = '';
             $plugin_status = 'Not Installed';
@@ -970,7 +970,7 @@ class AngellEYE_Updater_Admin {
                 'installed_version' => $installed_version,
                 'latest_version' => $latest_version,
                 'file_id' => 999,
-                'product_id' => sanitize_key($v['plugin_url']),
+                'product_id' => sanitize_key($plugin_key),
                 'product_status' => $product_status,
                 'product_file_path' => $product_file_path,
                 'license_key' => $license_key,
@@ -1024,14 +1024,23 @@ class AngellEYE_Updater_Admin {
     }
 
     public function angelleye_get_latest_plugin_version($product_id, $product_file_path = '') {
-        $product_id = sanitize_key($product_id);
+        $product_id = $this->angelleye_resolve_plugin_list_key($product_id);
         $latest_versions = $this->angelleye_get_cached_latest_versions();
         if (isset($latest_versions[$product_id]) && !empty($latest_versions[$product_id]) && '-' !== $latest_versions[$product_id]) {
             return $latest_versions[$product_id];
         }
 
+        $plugin_definition = $this->angelleye_get_plugin_definition($product_id);
+        if ($plugin_definition && isset($plugin_definition['plugin_url'])) {
+            $legacy_id = sanitize_key($plugin_definition['plugin_url']);
+            if (isset($latest_versions[$legacy_id]) && !empty($latest_versions[$legacy_id]) && '-' !== $latest_versions[$legacy_id]) {
+                return $latest_versions[$legacy_id];
+            }
+        }
+
         if (empty($product_file_path)) {
-            $plugin = $this->angelleye_find_plugin_by_product_id($product_id);
+            $plugin_lookup_id = ($plugin_definition && isset($plugin_definition['plugin_url'])) ? $plugin_definition['plugin_url'] : $product_id;
+            $plugin = $this->angelleye_find_plugin_by_product_id($plugin_lookup_id);
             if (!$plugin || empty($plugin['file'])) {
                 return '-';
             }
@@ -1087,11 +1096,36 @@ class AngellEYE_Updater_Admin {
         set_transient('angelleye_helper_latest_versions', $latest_versions, 7 * DAY_IN_SECONDS);
     }
 
+    private function angelleye_resolve_plugin_list_key($product_id) {
+        $plugin_list = angelleye_plugin_list();
+        $normalized = sanitize_key($product_id);
+
+        if (!is_array($plugin_list) || empty($normalized)) {
+            return $normalized;
+        }
+
+        if (isset($plugin_list[$normalized])) {
+            return $normalized;
+        }
+
+        foreach ($plugin_list as $plugin_key => $plugin) {
+            if (isset($plugin['plugin_url']) && sanitize_key($plugin['plugin_url']) === $normalized) {
+                return sanitize_key($plugin_key);
+            }
+        }
+
+        return $normalized;
+    }
+
     private function angelleye_get_plugin_definition($product_id) {
         $plugin_list = angelleye_plugin_list();
-        $normalized_product_id = sanitize_key($product_id);
+        $normalized_product_id = $this->angelleye_resolve_plugin_list_key($product_id);
         if (!is_array($plugin_list) || empty($plugin_list)) {
             return false;
+        }
+
+        if (isset($plugin_list[$normalized_product_id])) {
+            return $plugin_list[$normalized_product_id];
         }
 
         foreach ($plugin_list as $plugin) {
@@ -1114,12 +1148,12 @@ class AngellEYE_Updater_Admin {
             return $candidates;
         }
 
-        foreach ($plugin_list as $plugin) {
+        foreach ($plugin_list as $plugin_key => $plugin) {
             if (!isset($plugin['plugin_url']) || empty($plugin['plugin_url'])) {
                 continue;
             }
 
-            $product_id = sanitize_key($plugin['plugin_url']);
+            $product_id = sanitize_key($plugin_key);
             $has_latest = isset($meta[$product_id]['latest_version']) && '' !== $meta[$product_id]['latest_version'] && '-' !== $meta[$product_id]['latest_version'];
             $last_synced = isset($meta[$product_id]['last_synced']) ? (int) $meta[$product_id]['last_synced'] : 0;
             $is_fresh = $last_synced > 0 && ( $now - $last_synced ) < $fresh_window;
@@ -1133,7 +1167,7 @@ class AngellEYE_Updater_Admin {
     }
 
     private function angelleye_sync_latest_version_for_product($product_id, $force = false) {
-        $product_id = sanitize_key($product_id);
+        $product_id = $this->angelleye_resolve_plugin_list_key($product_id);
         $plugin = $this->angelleye_get_plugin_definition($product_id);
         if (!$plugin) {
             return array(
@@ -1147,25 +1181,27 @@ class AngellEYE_Updater_Admin {
         $now = time();
         $fresh_window = DAY_IN_SECONDS;
 
-        if (!$force && isset($meta[$product_id]['last_synced']) && ( $now - (int) $meta[$product_id]['last_synced'] ) < $fresh_window) {
-            return array(
-                'product_id' => $product_id,
-                'latest_version' => isset($meta[$product_id]['latest_version']) ? $meta[$product_id]['latest_version'] : '-',
-                'status' => 'skipped',
-                'last_synced' => (int) $meta[$product_id]['last_synced'],
-            );
-        }
+        // if (!$force && isset($meta[$product_id]['last_synced']) && ( $now - (int) $meta[$product_id]['last_synced'] ) < $fresh_window) {
+        //     return array(
+        //         'product_id' => $product_id,
+        //         'latest_version' => isset($meta[$product_id]['latest_version']) ? $meta[$product_id]['latest_version'] : '-',
+        //         'status' => 'skipped',
+        //         'last_synced' => (int) $meta[$product_id]['last_synced'],
+        //     );
+        // }
 
-        $product_file_path = $this->angelleye_get_product_file_path($product_id);
-        $current_version = $this->angelleye_get_plugin_version($product_id);
-        $license_data = $this->angelleye_is_key_activated($product_id);
+        $api_product_id = $product_id;
+
+        $product_file_path = $this->angelleye_get_product_file_path($api_product_id);
+        $current_version = $this->angelleye_get_plugin_version($api_product_id);
+        $license_data = $this->angelleye_is_key_activated($api_product_id);
         $license_hash = (is_array($license_data) && isset($license_data[2])) ? $license_data[2] : '';
-        $plugin_name_for_request = !empty($product_file_path) ? $product_file_path : $product_id;
+        $plugin_name_for_request = !empty($product_file_path) ? $product_file_path : $api_product_id;
         $file_id = !empty($license_hash) ? '101' : '999';
 
         $payload = $this->api->angelleye_get_plugin_update_payload(
             $plugin_name_for_request,
-            $product_id,
+            $api_product_id,
             $current_version,
             $file_id,
             $license_hash
@@ -1196,23 +1232,20 @@ class AngellEYE_Updater_Admin {
             return $latest_versions;
         }
 
-        foreach ($plugin_list as $plugin) {
-            if (!isset($plugin['plugin_url'])) {
-                continue;
-            }
+        foreach ($plugin_list as $plugin_key => $plugin) {
+            $product_id = sanitize_key($plugin_key);
+            $api_product_id = sanitize_key($plugin['plugin_url']);
 
-            $product_id = $plugin['plugin_url'];
-            $product_file_path = $this->angelleye_get_product_file_path($product_id);
-            $current_version = $this->angelleye_get_plugin_version($product_id);
-            $license_data = $this->angelleye_is_key_activated($product_id);
+            $product_file_path = $this->angelleye_get_product_file_path($api_product_id);
+            $current_version = $this->angelleye_get_plugin_version($api_product_id);
+            $license_data = $this->angelleye_is_key_activated($api_product_id);
             $license_hash = (is_array($license_data) && isset($license_data[2])) ? $license_data[2] : '';
-
-            $plugin_name_for_request = !empty($product_file_path) ? $product_file_path : $product_id;
+            $plugin_name_for_request = !empty($product_file_path) ? $product_file_path : $api_product_id;
             $file_id = !empty($license_hash) ? '101' : '999';
 
             $payload = $this->api->angelleye_get_plugin_update_payload(
                 $plugin_name_for_request,
-                $product_id,
+                $api_product_id,
                 $current_version == '-' ? '2.0.0' : $current_version,
                 $file_id,
                 $license_hash

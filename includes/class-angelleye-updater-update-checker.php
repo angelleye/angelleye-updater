@@ -84,22 +84,22 @@ class AngellEYE_Updater_Update_Checker {
 	    if (empty($transient->checked))
 		    return $transient;
 
+	    /**
+	     * Retrieve plugin information through WP function
+	     */
+	    $plugin_info_data = get_plugin_data(WP_PLUGIN_DIR . '/'. $this->file, false, false );
+	    if(!is_array($plugin_info_data) || !isset($plugin_info_data['Version'])){
+		    $response = new stdClass();
+		    $response->slug = $this->product_id;
+		    $transient->no_update[$this->file] = $response;
+		    return $transient;
+	    }
+	    $current_plugin_version = !empty($plugin_info_data['Version']) ? $plugin_info_data['Version'] : '1.0.0';
+
 
 	    if(isset(self::$update_responses[$this->file])){
 		    $response = self::$update_responses[$this->file];
 	    }else {
-		    /**
-		     * Retrieve plugin information through WP function
-		     */
-		    $plugin_info_data = get_plugin_data(WP_PLUGIN_DIR . '/'. $this->file, false, false );
-		    if(!is_array($plugin_info_data) || !isset($plugin_info_data['Version'])){
-			    $response = new stdClass ();
-			    $response->slug = $this->product_id;
-			    $transient->no_update[ $this->file ] = $response;
-			    return $transient;
-		    }
-		    $current_plugin_version = !empty($plugin_info_data['Version']) ? $plugin_info_data['Version'] : '1.0.0';
-
 		    $args = array(
 			    'request'           => 'pluginupdatecheck',
 			    'plugin_name'       => $this->file,
@@ -123,18 +123,38 @@ class AngellEYE_Updater_Update_Checker {
             if (isset($response->errors) && isset($response->errors->woo_updater_api_license_deactivated)) {
                 add_action('admin_notices', array($this, 'error_notice_for_deactivated_plugin'));
             } else {
+                if (!is_object($response)) {
+                    $response = new stdClass();
+                }
+
                 if( isset($response->icons) ) {
                     $response->icons = (array) $response->icons;
                 }
                 if( isset($response->banners) ) {
                     $response->banners = (array) $response->banners;
                 }
-                $transient->response[$this->file] = $response;
+
+                // Normalize update object for WordPress core update screens.
+                $response->plugin = $this->file;
+                if (!isset($response->slug) || empty($response->slug)) {
+                    $slug = dirname($this->file);
+                    $response->slug = ('.' !== $slug && !empty($slug)) ? $slug : $this->product_id;
+                }
+                if ((!isset($response->new_version) || empty($response->new_version)) && isset($response->version) && !empty($response->version)) {
+                    $response->new_version = $response->version;
+                }
+
+                if (isset($response->new_version) && !empty($response->new_version) && version_compare($response->new_version, $current_plugin_version, '>')) {
+                    $transient->response[$this->file] = $response;
+                } else {
+                    $transient->no_update[$this->file] = $response;
+                }
             }
         } else {
             $response = new stdClass ();
             $response->slug = $this->product_id;
-            $transient->no_update[ $this->file ] = $response;
+            $response->plugin = $this->file;
+            $transient->no_update[$this->file] = $response;
         }
 
         return $transient;

@@ -366,3 +366,7 @@ color:
 .angelleye-version-list{
 	width: 800px;
 }
+
+.mx-w-100-p {
+    max-width: 100%;
+}

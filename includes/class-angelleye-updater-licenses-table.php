@@ -194,7 +194,7 @@ class AngellEYE_Updater_Licenses_Table extends WP_List_Table {
                 return $more_info;
             } elseif ($item['is_paid'] == true) {
                 $response = '';
-                $response .= '<input name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(__('Enter license key here', 'angelleye-updater')) . '" />' . "\n";
+                $response .= '<input class="mx-w-100-p" name="license_keys[' . esc_attr($item['product_file_path']) . ']" id="license_keys-' . esc_attr($item['product_file_path']) . '" type="text" value="" size="37" aria-required="true" placeholder="' . esc_attr(__('Enter license key here', 'angelleye-updater')) . '" />' . "\n";
                 return $response;
             } else {
                 return __('FREE', 'angelleye-updater');

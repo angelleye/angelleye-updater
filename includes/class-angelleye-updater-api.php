@@ -333,15 +333,6 @@ class AngellEYE_Updater_API {
             'domain_name' => esc_url(home_url('/')),
             'url' => esc_url(home_url('/'))
         ));
-        // var_dump($request, array(
-        //     'plugin_name' => $plugin_name,
-        //     'product_id' => $product_id,
-        //     'version' => $version,
-        //     'file_id' => $file_id,
-        //     'license_hash' => $license_hash,
-        //     'domain_name' => esc_url(home_url('/')),
-        //     'url' => esc_url(home_url('/'))
-        // )); die;
         if (is_object($request) && isset($request->payload) && is_object($request->payload)) {
             return $request->payload;
         }

@@ -106,6 +106,7 @@ class AngellEYE_Updater_Admin {
         add_action('admin_init', array($this, 'angelleye_cache_refresh'));
 
         add_action('wp_ajax_angelleye_activate_license_keys', array($this, 'ajax_process_request'));
+        add_action('wp_ajax_angelleye_sync_latest_version', array($this, 'ajax_sync_latest_version'));
         add_action('admin_notices', array($this, 'angelleye_check_product_license_key_status'));
     }
 
@@ -212,6 +213,7 @@ class AngellEYE_Updater_Admin {
      * @return   void
      */
     public function settings_screen() {
+        $this->angelleye_maybe_refresh_plugin_updates();
         ?>
         <div id="welcome-panel" class="wrap angelleye-updater-wrap">
             <h1><?php _e('Welcome to Angell EYE Updater', 'angelleye-updater'); ?></h1>
@@ -388,9 +390,12 @@ class AngellEYE_Updater_Admin {
             wp_enqueue_script('post');
             wp_register_script('angelleye-updater-admin', $this->assets_url . 'js/angelleye-updater-admin.js', array('jquery'));
             wp_enqueue_script('angelleye-updater-admin');
+            $sync_candidates = $this->angelleye_get_sync_candidates();
             $localization = array(
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'activate_license_nonce' => wp_create_nonce('activate-license-keys')
+                'activate_license_nonce' => wp_create_nonce('activate-license-keys'),
+                'sync_latest_nonce' => wp_create_nonce('sync-latest-versions'),
+                'sync_candidates' => $sync_candidates,
             );
             wp_localize_script('angelleye-updater-admin', 'WTHelper', $localization);
         }
@@ -506,6 +511,29 @@ class AngellEYE_Updater_Admin {
             echo json_encode($return_json);
         }
         die();
+    }
+
+    public function ajax_sync_latest_version() {
+        if (!current_user_can('update_plugins')) {
+            wp_send_json_error(array('message' => __('Insufficient permissions.', 'angelleye-updater')));
+        }
+
+        $security = isset($_POST['security']) ? sanitize_text_field(wp_unslash($_POST['security'])) : '';
+        if (!wp_verify_nonce($security, 'sync-latest-versions')) {
+            wp_send_json_error(array('message' => __('Invalid request.', 'angelleye-updater')));
+        }
+
+        $product_id = isset($_POST['product_id']) ? sanitize_key(wp_unslash($_POST['product_id'])) : '';
+        if (empty($product_id)) {
+            wp_send_json_error(array('message' => __('Missing product id.', 'angelleye-updater')));
+        }
+
+        $result = $this->angelleye_sync_latest_version_for_product($product_id);
+        if (!is_array($result)) {
+            wp_send_json_error(array('message' => __('Unable to sync version.', 'angelleye-updater')));
+        }
+
+        wp_send_json_success($result);
     }
 
     /**
@@ -794,6 +822,7 @@ class AngellEYE_Updater_Admin {
     public function load_updater_instances() {
         $products = $this->get_detected_products();
         $all_plugins = get_plugins();
+        
         if( !empty($all_plugins) ) {
             foreach ($all_plugins as $key => $plugins) {
                 if( isset($plugins['Author']) && !empty($plugins['Author']) && trim($plugins['Author']) === 'Angell EYE' ) {
@@ -914,14 +943,17 @@ class AngellEYE_Updater_Admin {
         }
         foreach ($angelleye_plugin_full_list as $plugin_key => $v) {
             $is_insatlled = $this->angelleye_is_plugin_installed($plugin_key);
-            $version = '2.0.0';
+            $installed_version = '-';
+            $latest_version = $this->angelleye_get_latest_plugin_version($plugin_key);
             $product_status = 'in-active';
             $license_key = '';
             $plugin_status = 'Not Installed';
             $product_file_path = '';
             if($is_insatlled) {
                 $plugin_status = 'Installed';
-                $version = $this->angelleye_get_plugin_version($v['plugin_url']);
+                $installed_version = $this->angelleye_get_plugin_version($v['plugin_url']);
+                $product_file_path = $this->angelleye_get_product_file_path($v['plugin_url']);
+                $latest_version = $this->angelleye_get_latest_plugin_version($v['plugin_url'], $product_file_path);
                 $is_key_active = $this->angelleye_is_key_activated($v['plugin_url']);
                 if($is_key_active) {
                     $license_key = $is_key_active[2];
@@ -931,34 +963,383 @@ class AngellEYE_Updater_Admin {
                     $license_key = '';
                     $product_status = 'in-active';
                 }
-                $product_file_path = $this->angelleye_get_product_file_path($v['plugin_url']);
             } 
-            $response[$plugin_key] = array('product_name' => $v['plugin_name'], 'product_version' => $version, 'file_id' => 999, 'product_id' => $v['plugin_url'], 'product_status' => $product_status, 'product_file_path' => $product_file_path, 'license_key' => $license_key, 'is_paid' => $v['is_paid'], 'plugin_status' => $plugin_status);
+            $response[$plugin_key] = array(
+                'product_name' => $v['plugin_name'],
+                'product_version' => $installed_version,
+                'installed_version' => $installed_version,
+                'latest_version' => $latest_version,
+                'file_id' => 999,
+                'product_id' => sanitize_key($plugin_key),
+                'product_status' => $product_status,
+                'product_file_path' => $product_file_path,
+                'license_key' => $license_key,
+                'is_paid' => $v['is_paid'],
+                'plugin_status' => $plugin_status
+            );
         }
         return $response;
     }
-    
-    public function angelleye_is_plugin_installed($plugin_name) {
+
+    private function angelleye_find_plugin_by_product_id($product_id) {
         $plugins = get_plugins();
-        if(!empty($plugins)) {
-            foreach ($plugins as $key => $value) {
-                if($value['TextDomain'] == $plugin_name) {
-                    return true;
-                }
+        $normalized_product_id = sanitize_key(strtolower((string) $product_id));
+
+        if (empty($plugins) || empty($normalized_product_id)) {
+            return false;
+        }
+
+        foreach ($plugins as $plugin_file => $plugin_data) {
+            $text_domain = isset($plugin_data['TextDomain']) ? sanitize_key(strtolower((string) $plugin_data['TextDomain'])) : '';
+            $plugin_folder = sanitize_key(strtolower(dirname($plugin_file)));
+            $plugin_basename = sanitize_key(strtolower(basename($plugin_file, '.php')));
+
+            if (
+                $text_domain === $normalized_product_id ||
+                $plugin_folder === $normalized_product_id ||
+                $plugin_basename === $normalized_product_id
+            ) {
+                return array(
+                    'file' => $plugin_file,
+                    'data' => $plugin_data,
+                );
             }
         }
+
         return false;
     }
+    
+    public function angelleye_is_plugin_installed($plugin_name) {
+        return (bool) $this->angelleye_find_plugin_by_product_id($plugin_name);
+    }
+
     public function angelleye_get_plugin_version($plugin_name) {
-        $plugins = get_plugins();
-        if(!empty($plugins)) {
-            foreach ($plugins as $key => $value) {
-                if($value['TextDomain'] == $plugin_name) {
-                    return $value['Version'];
-                }
+        $plugin = $this->angelleye_find_plugin_by_product_id($plugin_name);
+
+        if ($plugin && !empty($plugin['data']['Version'])) {
+            return $plugin['data']['Version'];
+        }
+
+        return '-';
+    }
+
+    public function angelleye_get_latest_plugin_version($product_id, $product_file_path = '') {
+        $product_id = $this->angelleye_resolve_plugin_list_key($product_id);
+        $latest_versions = $this->angelleye_get_cached_latest_versions();
+        if (isset($latest_versions[$product_id]) && !empty($latest_versions[$product_id]) && '-' !== $latest_versions[$product_id]) {
+            return $latest_versions[$product_id];
+        }
+
+        $plugin_definition = $this->angelleye_get_plugin_definition($product_id);
+        if ($plugin_definition && isset($plugin_definition['plugin_url'])) {
+            $legacy_id = sanitize_key($plugin_definition['plugin_url']);
+            if (isset($latest_versions[$legacy_id]) && !empty($latest_versions[$legacy_id]) && '-' !== $latest_versions[$legacy_id]) {
+                return $latest_versions[$legacy_id];
             }
         }
-        return '2.0.0';
+
+        if (empty($product_file_path)) {
+            $plugin_lookup_id = ($plugin_definition && isset($plugin_definition['plugin_url'])) ? $plugin_definition['plugin_url'] : $product_id;
+            $plugin = $this->angelleye_find_plugin_by_product_id($plugin_lookup_id);
+            if (!$plugin || empty($plugin['file'])) {
+                return '-';
+            }
+            $product_file_path = $plugin['file'];
+        }
+
+        $updates = get_site_transient('update_plugins');
+        $version = $this->angelleye_extract_latest_version_from_updates($updates, $product_file_path);
+        if ('-' !== $version) {
+            return $version;
+        }
+
+        $this->angelleye_maybe_refresh_plugin_updates(true);
+        $updates = get_site_transient('update_plugins');
+        return $this->angelleye_extract_latest_version_from_updates($updates, $product_file_path);
+    }
+
+    private function angelleye_get_cached_latest_versions() {
+        $meta = $this->angelleye_get_latest_versions_meta();
+        $latest_versions = array();
+
+        if (!empty($meta) && is_array($meta)) {
+            foreach ($meta as $product_id => $details) {
+                if (isset($details['latest_version'])) {
+                    $latest_versions[sanitize_key($product_id)] = $details['latest_version'];
+                }
+            }
+            return $latest_versions;
+        }
+
+        $legacy_latest_versions = get_transient('angelleye_helper_latest_versions');
+        return is_array($legacy_latest_versions) ? $legacy_latest_versions : array();
+    }
+
+    private function angelleye_get_latest_versions_meta() {
+        $meta = get_transient('angelleye_helper_latest_versions_meta');
+        return is_array($meta) ? $meta : array();
+    }
+
+    private function angelleye_set_latest_versions_meta($meta) {
+        if (!is_array($meta)) {
+            return;
+        }
+
+        set_transient('angelleye_helper_latest_versions_meta', $meta, 7 * DAY_IN_SECONDS);
+
+        $latest_versions = array();
+        foreach ($meta as $product_id => $details) {
+            if (isset($details['latest_version'])) {
+                $latest_versions[sanitize_key($product_id)] = $details['latest_version'];
+            }
+        }
+        set_transient('angelleye_helper_latest_versions', $latest_versions, 7 * DAY_IN_SECONDS);
+    }
+
+    private function angelleye_resolve_plugin_list_key($product_id) {
+        $plugin_list = angelleye_plugin_list();
+        $normalized = sanitize_key($product_id);
+
+        if (!is_array($plugin_list) || empty($normalized)) {
+            return $normalized;
+        }
+
+        if (isset($plugin_list[$normalized])) {
+            return $normalized;
+        }
+
+        foreach ($plugin_list as $plugin_key => $plugin) {
+            if (isset($plugin['plugin_url']) && sanitize_key($plugin['plugin_url']) === $normalized) {
+                return sanitize_key($plugin_key);
+            }
+        }
+
+        return $normalized;
+    }
+
+    private function angelleye_get_plugin_definition($product_id) {
+        $plugin_list = angelleye_plugin_list();
+        $normalized_product_id = $this->angelleye_resolve_plugin_list_key($product_id);
+        if (!is_array($plugin_list) || empty($plugin_list)) {
+            return false;
+        }
+
+        if (isset($plugin_list[$normalized_product_id])) {
+            return $plugin_list[$normalized_product_id];
+        }
+
+        foreach ($plugin_list as $plugin) {
+            if (isset($plugin['plugin_url']) && sanitize_key($plugin['plugin_url']) === $normalized_product_id) {
+                return $plugin;
+            }
+        }
+
+        return false;
+    }
+
+    private function angelleye_get_sync_candidates() {
+        $plugin_list = angelleye_plugin_list();
+        $meta = $this->angelleye_get_latest_versions_meta();
+        $candidates = array();
+        $now = time();
+        $fresh_window = DAY_IN_SECONDS;
+
+        if (!is_array($plugin_list) || empty($plugin_list)) {
+            return $candidates;
+        }
+
+        foreach ($plugin_list as $plugin_key => $plugin) {
+            if (!isset($plugin['plugin_url']) || empty($plugin['plugin_url'])) {
+                continue;
+            }
+
+            $product_id = sanitize_key($plugin_key);
+            $has_latest = isset($meta[$product_id]['latest_version']) && '' !== $meta[$product_id]['latest_version'] && '-' !== $meta[$product_id]['latest_version'];
+            $last_synced = isset($meta[$product_id]['last_synced']) ? (int) $meta[$product_id]['last_synced'] : 0;
+            $is_fresh = $last_synced > 0 && ( $now - $last_synced ) < $fresh_window;
+
+            if (!$has_latest || !$is_fresh) {
+                $candidates[] = $product_id;
+            }
+        }
+
+        return $candidates;
+    }
+
+    private function angelleye_sync_latest_version_for_product($product_id, $force = false) {
+        $product_id = $this->angelleye_resolve_plugin_list_key($product_id);
+        $plugin = $this->angelleye_get_plugin_definition($product_id);
+        if (!$plugin) {
+            return array(
+                'product_id' => $product_id,
+                'latest_version' => '-',
+                'status' => 'not_found',
+            );
+        }
+
+        $meta = $this->angelleye_get_latest_versions_meta();
+        $now = time();
+        $fresh_window = DAY_IN_SECONDS;
+
+        // if (!$force && isset($meta[$product_id]['last_synced']) && ( $now - (int) $meta[$product_id]['last_synced'] ) < $fresh_window) {
+        //     return array(
+        //         'product_id' => $product_id,
+        //         'latest_version' => isset($meta[$product_id]['latest_version']) ? $meta[$product_id]['latest_version'] : '-',
+        //         'status' => 'skipped',
+        //         'last_synced' => (int) $meta[$product_id]['last_synced'],
+        //     );
+        // }
+
+        $api_product_id = $product_id;
+
+        $product_file_path = $this->angelleye_get_product_file_path($api_product_id);
+        $current_version = $this->angelleye_get_plugin_version($api_product_id);
+        $license_data = $this->angelleye_is_key_activated($api_product_id);
+        $license_hash = (is_array($license_data) && isset($license_data[2])) ? $license_data[2] : '';
+        $plugin_name_for_request = !empty($product_file_path) ? $product_file_path : $api_product_id;
+        $file_id = !empty($license_hash) ? '101' : '999';
+
+        $payload = $this->api->angelleye_get_plugin_update_payload(
+            $plugin_name_for_request,
+            $api_product_id,
+            $current_version,
+            $file_id,
+            $license_hash
+        );
+
+        $latest_version = $this->angelleye_resolve_latest_version_from_payload($payload, $current_version);
+
+        $meta[$product_id] = array(
+            'latest_version' => $latest_version,
+            'last_synced' => $now,
+        );
+        $this->angelleye_set_latest_versions_meta($meta);
+
+        return array(
+            'product_id' => $product_id,
+            'latest_version' => $latest_version,
+            'status' => 'synced',
+            'last_synced' => $now,
+        );
+    }
+
+    private function angelleye_build_latest_versions_from_endpoint() {
+        $latest_versions = array();
+        $plugin_list = angelleye_plugin_list();
+
+        if (!is_array($plugin_list) || empty($plugin_list)) {
+            set_transient('angelleye_helper_latest_versions', $latest_versions, 12 * HOUR_IN_SECONDS);
+            return $latest_versions;
+        }
+
+        foreach ($plugin_list as $plugin_key => $plugin) {
+            $product_id = sanitize_key($plugin_key);
+            $api_product_id = sanitize_key($plugin['plugin_url']);
+
+            $product_file_path = $this->angelleye_get_product_file_path($api_product_id);
+            $current_version = $this->angelleye_get_plugin_version($api_product_id);
+            $license_data = $this->angelleye_is_key_activated($api_product_id);
+            $license_hash = (is_array($license_data) && isset($license_data[2])) ? $license_data[2] : '';
+            $plugin_name_for_request = !empty($product_file_path) ? $product_file_path : $api_product_id;
+            $file_id = !empty($license_hash) ? '101' : '999';
+
+            $payload = $this->api->angelleye_get_plugin_update_payload(
+                $plugin_name_for_request,
+                $api_product_id,
+                $current_version == '-' ? '2.0.0' : $current_version,
+                $file_id,
+                $license_hash
+            );
+
+            $latest_version = $this->angelleye_resolve_latest_version_from_payload($payload, $current_version);
+
+            $latest_versions[$product_id] = $latest_version;
+        }
+
+        $meta = array();
+        $now = time();
+        foreach ($latest_versions as $product_id => $version) {
+            $meta[$product_id] = array(
+                'latest_version' => $version,
+                'last_synced' => $now,
+            );
+        }
+
+        $this->angelleye_set_latest_versions_meta($meta);
+        return $latest_versions;
+    }
+
+    private function angelleye_resolve_latest_version_from_payload($payload, $current_version = '-') {
+        // var_dump($payload, $current_version);
+        $latest_version = '-';
+
+        if (is_object($payload)) {
+            if (isset($payload->new_version) && !empty($payload->new_version)) {
+                $latest_version = $payload->new_version;
+            } elseif (isset($payload->version) && !empty($payload->version)) {
+                $latest_version = $payload->version;
+            } elseif (isset($payload->success) && true === $payload->success) {
+                // API success without explicit version means current version is already latest.
+                $latest_version = (!empty($current_version) && '-' !== $current_version) ? $current_version : '-';
+            }
+        } elseif (is_array($payload)) {
+            if (isset($payload['new_version']) && !empty($payload['new_version'])) {
+                $latest_version = $payload['new_version'];
+            } elseif (isset($payload['version']) && !empty($payload['version'])) {
+                $latest_version = $payload['version'];
+            } elseif (isset($payload['success']) && true === $payload['success']) {
+                $latest_version = (!empty($current_version) && '-' !== $current_version) ? $current_version : '-';
+            }
+        }
+
+        return $latest_version;
+    }
+
+    private function angelleye_extract_latest_version_from_updates($updates, $product_file_path) {
+        if (!is_object($updates) || empty($product_file_path)) {
+            return '-';
+        }
+
+        if (isset($updates->response[$product_file_path]) && isset($updates->response[$product_file_path]->new_version) && !empty($updates->response[$product_file_path]->new_version)) {
+            return $updates->response[$product_file_path]->new_version;
+        }
+
+        if (isset($updates->no_update[$product_file_path]) && isset($updates->no_update[$product_file_path]->new_version) && !empty($updates->no_update[$product_file_path]->new_version)) {
+            return $updates->no_update[$product_file_path]->new_version;
+        }
+
+        if (isset($updates->checked[$product_file_path]) && !empty($updates->checked[$product_file_path])) {
+            return $updates->checked[$product_file_path];
+        }
+
+        return '-';
+    }
+
+    public function angelleye_maybe_refresh_plugin_updates($force = false) {
+        if (!is_admin() || !current_user_can('update_plugins')) {
+            return;
+        }
+
+        if (!isset($_GET['page']) || 'angelleye-helper' !== $_GET['page']) {
+            return;
+        }
+
+        $refresh_key = 'angelleye_helper_updates_last_refresh';
+        $refresh_window = 5 * MINUTE_IN_SECONDS;
+
+        if (!$force) {
+            $last_refresh = (int) get_transient($refresh_key);
+            if (!empty($last_refresh) && (time() - $last_refresh) < $refresh_window) {
+                return;
+            }
+        }
+
+        if (!function_exists('wp_update_plugins')) {
+            require_once ABSPATH . 'wp-includes/update.php';
+        }
+
+        wp_update_plugins();
+        set_transient($refresh_key, time(), 10 * MINUTE_IN_SECONDS);
     }
     
     public function angelleye_is_key_activated($product_id) {
@@ -977,15 +1358,13 @@ class AngellEYE_Updater_Admin {
     }
     
     public function angelleye_get_product_file_path($product_id) {
-        $plugins = get_plugins();
-        if(!empty($plugins)) {
-            foreach ($plugins as $key => $value) {
-                if($value['TextDomain'] == $product_id) {
-                    return $key;
-                }
-            }
+        $plugin = $this->angelleye_find_plugin_by_product_id($product_id);
+
+        if ($plugin && !empty($plugin['file'])) {
+            return $plugin['file'];
         }
-        return $product_id;
+
+        return '';
     }
     
     public function angelleye_is_plugin_activated($product_id) {
@@ -1007,6 +1386,9 @@ class AngellEYE_Updater_Admin {
         if(isset($_GET['cache-refresh'])) {
             delete_transient('license_key_status_check');
             delete_site_transient( 'update_plugins' );
+            delete_transient('angelleye_helper_updates_last_refresh');
+            delete_transient('angelleye_helper_latest_versions');
+            delete_transient('angelleye_helper_latest_versions_meta');
             delete_site_option('angelleye_helper_dismiss_activation_notice');
             $angelleye_helper_fresh_notice = '<div id="message" class="updated notice is-dismissible"><p><strong>' . esc_html( __( 'Caches refreshed successfully.', 'angelleye-updater' ) ) . '</strong></p></div>';
             set_transient( 'angelleye_helper_fresh_notice', $angelleye_helper_fresh_notice, HOUR_IN_SECONDS );

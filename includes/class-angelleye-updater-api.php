@@ -230,7 +230,13 @@ class AngellEYE_Updater_API {
             $url .= '&action=' . $endpoint;
         }
 
-        $response = wp_remote_get($url, $args);
+        if ('GET' == strtoupper($method)){
+            $response = wp_remote_get($url, $args);
+        } else {
+            $response = wp_remote_post($url, $args);
+        }
+
+        // var_dump($response, $url, $args); die;
 
         if (is_wp_error($response)) {
             $error_string = $response->get_error_message();
@@ -314,5 +320,23 @@ class AngellEYE_Updater_API {
         $response = false;
         $request = $this->request('get_tags', array('plugin_name' => $param['product_name'], 'version' => $param['current_version'], 'domain_name' => esc_url(home_url('/'))));
         return $request;
+    }
+
+    public function angelleye_get_plugin_update_payload($plugin_name, $product_id, $version = '1.0.0', $file_id = '999', $license_hash = '') {
+        // var_dump($plugin_name); return false;
+        $request = $this->request('pluginupdatecheck', array(
+            'plugin_name' => $plugin_name,
+            'product_id' => $product_id,
+            'version' => $version,
+            'file_id' => $file_id,
+            'license_hash' => $license_hash,
+            'domain_name' => esc_url(home_url('/')),
+            'url' => esc_url(home_url('/'))
+        ));
+        if (is_object($request) && isset($request->payload) && is_object($request->payload)) {
+            return $request->payload;
+        }
+
+        return $request ? $request : false;
     }
 }

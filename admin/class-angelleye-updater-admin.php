@@ -388,7 +388,7 @@ class AngellEYE_Updater_Admin {
         // Only load script and localization on helper admin page.
         if ('dashboard_page_angelleye-helper' == $screen->id || 'index_page_angelleye-helper-network' ==  $screen->id) {
             wp_enqueue_script('post');
-            wp_register_script('angelleye-updater-admin', $this->assets_url . 'js/angelleye-updater-admin.js', array('jquery'));
+            wp_register_script('angelleye-updater-admin', $this->assets_url . 'js/angelleye-updater-admin.js', array('jquery'), AU_PLUGIN_VERSION);
             wp_enqueue_script('angelleye-updater-admin');
             $sync_candidates = $this->angelleye_get_sync_candidates();
             $localization = array(

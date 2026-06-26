@@ -483,6 +483,9 @@ class AngellEYE_Updater_Admin {
             }
             if ($response == true) {
                 $request_errors = $this->api->get_error_log();
+                if (!is_array($request_errors)) {
+                    $request_errors = array();
+                }
                 if (0 >= count($request_errors)) {
                     $return = '<div class="updated true fade">' . "\n";
                     $return .= wpautop(__('Products activated successfully.', 'angelleye-updater'));
@@ -549,6 +552,12 @@ class AngellEYE_Updater_Admin {
             $classes = array('true' => 'updated', 'false' => 'error');
 
             $request_errors = $this->api->get_error_log();
+            // get_error_log() returns the transient value, which is false when no
+            // error log exists. Normalize to an array so the count() calls below do
+            // not fatal with a TypeError on PHP 8+.
+            if (!is_array($request_errors)) {
+                $request_errors = array();
+            }
 
             switch ($_GET['type']) {
                 case 'no-license-keys':
